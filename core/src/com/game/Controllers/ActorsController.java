@@ -6,6 +6,8 @@ import com.game.Actors.Playable.Creators.CreatorPlayableActor;
 import com.game.Actors.Playable.Products.ProductPlayableActor;
 
 public class ActorsController {
+    private static final String TAG = ActorsController.class.getName();
+
     private CreatorAIActor creatorAIActor1;
     private CreatorAIActor creatorAIActor2;
     private ProductAIActor AIActor1;
