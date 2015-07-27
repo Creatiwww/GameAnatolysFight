@@ -1,7 +1,10 @@
 package com.game.Controllers;
 
-/**
- * Created by creatiwww on 27.07.2015.
- */
 public class WorldController {
+    private ActorsController actorsController;
+    private AIController aiController;
+    private ScreenController screenController;
+    public WorldController () {
+
+    }
 }

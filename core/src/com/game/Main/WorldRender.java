@@ -1,7 +1,7 @@
 package com.game.Main;
 
-/**
- * Created by creatiwww on 27.07.2015.
- */
+import com.game.Controllers.WorldController;
+
 public class WorldRender {
+private WorldController worldController;
 }

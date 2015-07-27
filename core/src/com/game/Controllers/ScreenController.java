@@ -1,7 +1,10 @@
 package com.game.Controllers;
 
-/**
- * Created by creatiwww on 27.07.2015.
- */
+import com.game.Screens.Stage;
+
 public class ScreenController {
+    private Stage gameStage;
+    private Stage gameHelpStage;
+    private Stage gameOverStage;
+    private Stage gamePauseStage;
 }

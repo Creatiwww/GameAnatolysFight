@@ -1,7 +1,7 @@
 package com.game.Actors.Playable.Creators;
 
-/**
- * Created by creatiwww on 26.07.2015.
- */
+import com.game.Actors.Playable.Products.ProductPlayableActor;
+
 public interface CreatorPlayableActor {
+    public ProductPlayableActor factoryMethod();
 }

@@ -1,7 +1,9 @@
 package com.game.Actors.AI.Creators;
 
-/**
- * Created by creatiwww on 27.07.2015.
- */
-public class CreatorAIActor1 {
+import com.game.Actors.AI.Products.AIActor1;
+import com.game.Actors.AI.Products.ProductAIActor;
+
+public class CreatorAIActor1 implements CreatorAIActor {
+    @Override
+    public ProductAIActor factoryMethod() { return new AIActor1(); }
 }
