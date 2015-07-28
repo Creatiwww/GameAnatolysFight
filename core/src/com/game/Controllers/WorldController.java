@@ -8,11 +8,14 @@ public class WorldController {
     private ActorsController actorsController;
     private AIController aiController;
     private ScreenController screenController;
-
-    public Sprite[] Sprites;
+    private Sprite[] sprites;
 
     public WorldController () {
         init();
+    }
+
+    public Sprite[] getSprites (){
+        return sprites;
     }
 
     private void init () {

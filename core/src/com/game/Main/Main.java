@@ -12,15 +12,12 @@ public class Main extends ApplicationAdapter {
 
 	private WorldRender worldRender;
 	private WorldController worldController;
-	private AIController aiController;
 	private AssetsManager assetsManager;
-
 	private boolean paused;
 
 	@Override
 	public void create () {
 		Gdx.app.setLogLevel(Application.LOG_DEBUG); // Set Libgdx log level to DEBUG
-
 		worldController = new WorldController();
 		worldRender = new WorldRender(worldController);
 		paused = false; // Game world is active on start
