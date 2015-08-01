@@ -1,5 +1,6 @@
 package com.game.Main;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.game.Controllers.WorldController;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -13,16 +14,22 @@ public class WorldRender implements Disposable {
     private OrthographicCamera camera;
     private SpriteBatch batch;
 
-    // constructor
     public WorldRender (WorldController worldController) {
         this.worldController = worldController;
         init();
     }
+
     public void render () {
+        //Gdx.app.log("MyTag", "'render' method started @" + TAG);
         batch.setProjectionMatrix(camera.combined);
         batch.begin();
-        for(Sprite sprite : worldController.getSprites()) sprite.draw(batch);
+        for(Sprite sprite : worldController.getSprites()){
+            //Gdx.app.log("MyTag", "'render' method, sprite.draw(bach) started @" + TAG);
+            sprite.draw(batch);
+            //Gdx.app.log("MyTag", "'render' method, sprite.draw(bach) ended @" + TAG);
+        }
         batch.end();
+        //Gdx.app.log("MyTag", "'render' method ended @" + TAG);
     }
 
     public void resize (int width, int height) {

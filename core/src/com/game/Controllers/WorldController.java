@@ -1,5 +1,6 @@
 package com.game.Controllers;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 
 public class WorldController {
@@ -15,14 +16,17 @@ public class WorldController {
     }
 
     public Sprite[] getSprites (){
-        return sprites;
+        //Gdx.app.log("MyTag", "'getSprites' method started @" + TAG);
+        return screenController.getSprites();
     }
 
     private void init () {
-        //TODO: Implement Sprites initialisation
+        //Gdx.app.log("MyTag", "'init' method started @" + TAG);
+        actorsController = new ActorsController();
+        aiController = new AIController();
+        screenController = new ScreenController();
     }
 
     public void update (float deltaTime) {
-        //TODO: Implement Sprites
     }
 }
