@@ -1,9 +1,10 @@
 package com.game.Controllers;
 
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.game.Actors.AI.Creators.CreatorAIActor;
 import com.game.Actors.AI.Products.ProductAIActor;
 import com.game.Actors.Playable.Creators.CreatorPlayableActor;
-import com.game.Actors.Playable.Products.ProductPlayableActor;
+
 
 public class ActorsController {
     private static final String TAG = ActorsController.class.getName();
@@ -14,7 +15,7 @@ public class ActorsController {
     private ProductAIActor AIActor2;
     private CreatorPlayableActor creatorPlayableActor1;
     private CreatorPlayableActor creatorPlayableActor2;
-    private ProductPlayableActor PlayableActor1;
-    private ProductPlayableActor PlayableActor2;
+    private Actor PlayableActor1;
+    private Actor PlayableActor2;
 
 }

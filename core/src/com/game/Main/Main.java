@@ -37,7 +37,6 @@ public class Main extends ApplicationAdapter {
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT); // Clears the screen
 		worldRender.render(); // Render game world to screen
 		//Gdx.app.log("MyTag", "'render' method ended @" + TAG);
-
 	}
 
 	@Override
