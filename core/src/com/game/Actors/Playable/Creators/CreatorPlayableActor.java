@@ -1,7 +1,7 @@
 package com.game.Actors.Playable.Creators;
 
-import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.game.Actors.Playable.Products.MyActor;
 
 public interface CreatorPlayableActor {
-    public Actor factoryMethod();
+    public MyActor factoryMethod();
 }

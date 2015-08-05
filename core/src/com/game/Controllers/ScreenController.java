@@ -1,9 +1,8 @@
 package com.game.Controllers;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
-import com.game.Actors.Playable.Products.PlayableActor1;
+import com.game.Actors.Playable.Products.MyActor;
 import com.game.Main.GameConstants;
 import com.game.Screens.GameHelpStage;
 import com.game.Screens.GameOverStage;
@@ -19,22 +18,26 @@ public class ScreenController  {
     private Stage gameOverStage;
     private Stage gamePauseStage;
     private Batch batch;
-    private PlayableActor1 testActor1; //TODO: remove test actor
+    private MyActor[] myActors;
 
-    public ScreenController(Batch batch, PlayableActor1 testActor1){
+    public ScreenController(Batch batch, MyActor[] myActors){
         this.batch=batch;
-        this.testActor1=testActor1; //TODO: should be an array
+        this.myActors=myActors;
         init();
     }
 
+    //TODO: implement switch between stages
     public Stage getActiveStage(){
         return gameStage;
     }
 
+    //TODO: implement actors draw at active screen only
     private void init(){
         //Gdx.app.log("MyTag", "'init' method started @" + TAG);
         gameStage=new GameStage(new StretchViewport(GameConstants.VIEWPORT_WIDTH, GameConstants.VIEWPORT_HEIGHT), batch);
-        gameStage.addActor(testActor1);
+        for (MyActor myActor : myActors) {
+            gameStage.addActor(myActor);
+        }
         //gameHelpStage=new GameHelpStage();
         //gameOverStage=new GameOverStage();
         //gamePauseStage=new GamePauseStage();

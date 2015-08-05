@@ -1,7 +1,10 @@
 package com.game.Actors.Playable.Products;
 
-import com.badlogic.gdx.scenes.scene2d.Actor;
+public class PlayableActor2 extends MyActor {
+    private static final String TAG = PlayableActor1.class.getName();
 
-public class PlayableActor2 extends Actor {
-    private static final String TAG = PlayableActor2.class.getName();
+    public PlayableActor2(){
+        texturePath = "badlogic.jpg";
+        textureInit();
+    }
 }
