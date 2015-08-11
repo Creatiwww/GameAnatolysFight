@@ -2,9 +2,8 @@ package com.game.Controllers;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.scenes.scene2d.Stage;
 
-public class WorldController {
+public class WorldController  {
     private static final String TAG = WorldController.class.getName();
 
     private ActorsController actorsController;
@@ -13,28 +12,21 @@ public class WorldController {
     private Batch batch;
 
     public WorldController () {
-        init();
+        //Gdx.app.log("MyTag", "'init' method started @" + TAG);
+        batch = new SpriteBatch();
+        actorsController = new ActorsController();
+        actorsController.spawnActor();
+        aiController = new AIController();
+        //Gdx.app.log("MyTag", "'init' method ended @" + TAG);
     }
 
     public Batch getBatch(){
         return batch;
     }
 
-    public Stage getActiveStage(){
-        return screenController.getActiveStage();
+    public ActorsController getActorsController(){
+        return actorsController;
     }
-
-    private void init () {
-        //Gdx.app.log("MyTag", "'init' method started @" + TAG);
-        batch = new SpriteBatch();
-        actorsController = new ActorsController();
-        actorsController.spawnActor();
-        aiController = new AIController();
-        screenController = new ScreenController(batch, actorsController.getActors());
-        //Gdx.app.log("MyTag", "'init' method ended @" + TAG);
-    }
-
-    public void update (float deltaTime) {
-    }
-
 }
+
+
