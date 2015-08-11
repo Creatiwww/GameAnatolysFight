@@ -1,4 +1,4 @@
-package com.game.Screens;
+package com.game.ScreensAndStages.Stages;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Stage;

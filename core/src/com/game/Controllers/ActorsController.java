@@ -9,10 +9,6 @@ import com.game.Actors.Playable.Products.MyActor;
 public class ActorsController {
     private static final String TAG = ActorsController.class.getName();
 
-    private CreatorAIActor creatorAIActor1;
-    private CreatorAIActor creatorAIActor2;
-    private ProductAIActor AIActor1;
-    private ProductAIActor AIActor2;
     private CreatorPlayableActor creatorPlayableActor1;
     private CreatorPlayableActor creatorPlayableActor2;
     private MyActor[] myActors;
