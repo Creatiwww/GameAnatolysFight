@@ -31,7 +31,7 @@ public class Main extends Game {
 		// Do not update game world when paused
 		if (!paused) {
 			// Sets the clear screen color
-			Gdx.gl.glClearColor(0.0f, 250.0f, 0.0f, 1.0f);
+			Gdx.gl.glClearColor(255.0f, 255.0f, 255.0f, 1.0f);
 			Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT); // Clears the screen
 			super.render();
 			//Gdx.app.log("MyTag", "'render' method ended @" + TAG);
