@@ -21,7 +21,7 @@ public class Main extends Game {
 		//Gdx.app.log("MyTag", "'create' method started @"+TAG);
 		worldController = new WorldController();
 		paused = false; // Game world is active on start
-		setScreen(worldController.getGameScreen());
+		setScreen(worldController.getScreen());
 		//Gdx.app.log("MyTag", "'create' method ended @"+TAG);
 	}
 

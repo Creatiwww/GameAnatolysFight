@@ -2,7 +2,6 @@ package com.game.Controllers;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.game.ScreensAndStages.Screens.GameScreen;
 import com.game.ScreensAndStages.Screens.MyScreen;
 
 public class WorldController  {
@@ -12,7 +11,6 @@ public class WorldController  {
     private AIController aiController;
     private ScreenController screenController;
     private Batch batch;
-    private MyScreen gameScreen;
 
     public WorldController () {
         //Gdx.app.log("MyTag", "'init' method started @" + TAG);
@@ -20,6 +18,7 @@ public class WorldController  {
         actorsController = new ActorsController();
         actorsController.spawnActor();
         aiController = new AIController();
+        screenController= new ScreenController(this);
         //Gdx.app.log("MyTag", "'init' method ended @" + TAG);
     }
 
@@ -31,9 +30,8 @@ public class WorldController  {
         return actorsController;
     }
 
-    public MyScreen getGameScreen(){
-        if (gameScreen==null) gameScreen = new GameScreen(this);
-        return gameScreen;
+    public MyScreen getScreen(){
+        return screenController.getScreen();
     }
 }
 
