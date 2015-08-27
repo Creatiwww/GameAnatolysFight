@@ -20,4 +20,5 @@ public abstract class MyActor extends Actor {
     protected void textureInit(){
         texture=new Texture(Gdx.files.internal(texturePath));
     }
+
 }
