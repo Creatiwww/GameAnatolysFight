@@ -1,4 +1,4 @@
-package com.game.ScreensAndStages.Stages;
+package com.game.Actors;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
@@ -7,7 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 
 public class Field extends Actor {
 
-    protected Texture field;
+    private Texture field;
     private Coordinates coordinates;
     private Cell[] cell;
 
@@ -16,8 +16,12 @@ public class Field extends Actor {
         coordinates=new Coordinates();
     }
 
-    public Cell[] getCell() {
-        return cell;
+    public Cell getCellByIndex(int m) {
+        return cell[m];
+    }
+
+    public Coordinates getCoordinates(){
+        return coordinates;
     }
 
     @Override
@@ -27,7 +31,7 @@ public class Field extends Actor {
         //Gdx.app.log("MyTag", "'draw' method ended @" + TAG);
     }
 
-    class Cell{
+    public class Cell{
         private float bLX,bRX,tLX,tRX,bLY,bRY,tLY,tRY;
         private float cX,cY; //center coordinates X Y
 
@@ -37,12 +41,43 @@ public class Field extends Actor {
             cX=(x2+x1)/2; cY=(y2+y1)/2;
         }
 
+        public float getbLX() {
+            return bLX;
+        }
+        public float getbRX() {
+            return bRX;
+        }
+        public float getbLY() {
+            return bLY;
+        }
+        public float getbRY() {
+            return bRY;
+        }
+        public float gettLX() {
+            return tLX;
+        }
+        public float gettLY() {
+            return tLY;
+        }
+        public float gettRX() {
+            return tRX;
+        }
+        public float gettRY() {
+            return tRY;
+        }
+        public float getcX() {
+            return cX;
+        }
+        public float getcY() {
+            return cY;
+        }
     }
 
-    class Coordinates{
+    public class Coordinates{
 
         private final int FIELD_SIZE_X=5;
         private final int FIELD_SIZE_Y=7;
+        private float cellWidth;
 
         Coordinates(){
             int fieldSize=FIELD_SIZE_X*FIELD_SIZE_Y;
@@ -50,7 +85,7 @@ public class Field extends Actor {
 
             float x1, x2, y1, y2;
             float paddingsXWidth=(Gdx.graphics.getWidth()/16);
-            float cellWidth=(Gdx.graphics.getWidth()-2*paddingsXWidth)/FIELD_SIZE_X;
+            cellWidth=(Gdx.graphics.getWidth()-2*paddingsXWidth)/FIELD_SIZE_X;
             int arrayIndexCounter=0;
 
             for (int i=0;i< FIELD_SIZE_X; i++){
@@ -64,6 +99,25 @@ public class Field extends Actor {
                     arrayIndexCounter++;
                 }
             }
+        }
+
+        public int getFieldWidth(){
+            return (int)cellWidth*FIELD_SIZE_X;
+        }
+        public int getFieldHeight(){
+            return (int)cellWidth*FIELD_SIZE_Y;
+        }
+        public float getRightFieldEdge(){
+            return getCellByIndex(FIELD_SIZE_X*FIELD_SIZE_Y-1).tRX;
+        }
+        public float getLeftFieldEdge(){
+            return getCellByIndex(0).bLX;
+        }
+        public float getTopFieldEdge(){
+            return getCellByIndex(FIELD_SIZE_X*FIELD_SIZE_Y-1).tRY;
+        }
+        public float getBottomFieldEdge(){
+            return getCellByIndex(0).bLY;
         }
     }
 }

@@ -4,6 +4,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.game.Controllers.ActorsController;
 import com.game.Controllers.WorldController;
+import com.game.Actors.Field;
 
 abstract public class MyScreen implements Screen {
     protected ActorsController actorsController;
@@ -13,6 +14,8 @@ abstract public class MyScreen implements Screen {
         batch=worldController.getBatch();
         actorsController = worldController.getActorsController();
     }
+
+   // abstract public Field getField();
 
     @Override
     public void resize(int width, int height){
