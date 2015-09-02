@@ -37,9 +37,7 @@ public class WorldController  {
         return screenController.getScreen();
     }
 
- /*   private Field getField(){
-        return screenController.getField();
-    }*/
+
 }
 
 

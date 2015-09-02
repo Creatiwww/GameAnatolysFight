@@ -29,7 +29,7 @@ public class ActorsController {
         //Gdx.app.log("MyTag", "'createTestActor' method started @" + TAG);
         creatorPlayableActor1 = new CreatorPlayableActor1();
         myActors[0] = creatorPlayableActor1.factoryMethod();
-        myActors[0].setSize(300, 300);
+        myActors[0].setSize(200, 200);
         myActors[0].setPosition(100, 400);
         myActors[0].addListener(new PlayableActorsListener(myActors[0],field));
         //Gdx.app.log("MyTag", "'createTestActor' method ended @" + TAG);
