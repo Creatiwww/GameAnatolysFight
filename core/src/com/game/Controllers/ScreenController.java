@@ -22,8 +22,4 @@ public class ScreenController  {
         return gameScreen;
     }
 
- /*   public Field getField(){
-        return gameScreen.getField();
-    }*/
-
 }
