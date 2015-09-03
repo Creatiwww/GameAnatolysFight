@@ -4,7 +4,7 @@ public class PlayableActor2 extends MyActor {
     private static final String TAG = PlayableActor1.class.getName();
 
     public PlayableActor2(){
-        texturePath = "badlogic.jpg";
+        texturePath = "test_actor_men.png";
         textureInit();
     }
 }
