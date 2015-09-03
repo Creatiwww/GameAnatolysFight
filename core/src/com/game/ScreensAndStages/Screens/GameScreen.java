@@ -16,8 +16,8 @@ public class GameScreen extends MyScreen {
         super(worldController);
         gameStage=new GameStage(new StretchViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()), batch);
         gameStage.addActor(field);
-        for(MyActor myActor:actorsController.getActors()) {
-            gameStage.addActor(myActor);
+        for(Object myActor:actorsController.getActors()) {
+            gameStage.addActor((MyActor)myActor);
         }
     }
 

@@ -19,21 +19,28 @@ public class Field extends Actor {
     public Cell getCellByIndex(int m) {
         return cell[m];
     }
-
+    public float getCellWidth(){
+        return coordinates.cellWidth;
+    }
+    public float getFeildSizeX(){
+        return coordinates.FIELD_SIZE_X;
+    }
+    public float getFeildSizeY(){
+        return coordinates.FIELD_SIZE_Y;
+    }
     public Coordinates getCoordinates(){
         return coordinates;
     }
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
-        //Gdx.app.log("MyTag", "'draw' method started @" + TAG);
         batch.draw(field, getX(), getY(), getWidth(), getHeight());
-        //Gdx.app.log("MyTag", "'draw' method ended @" + TAG);
     }
 
     public class Cell{
         private float bLX,bRX,tLX,tRX,bLY,bRY,tLY,tRY;
         private float cX,cY; //center coordinates X Y
+        private int IndexX, IndexY; //cell index from 1 to FIELD_SIZE_X
 
         Cell(float x1, float x2, float y1, float y2){
             bLX=x1; bRX=x2; tLX=x1; tRX=x2;
@@ -71,6 +78,19 @@ public class Field extends Actor {
         public float getcY() {
             return cY;
         }
+        public int getIndexX(){
+            return this.IndexX;
+        }
+        public int getIndexY(){
+            return this.IndexY;
+        }
+
+        public void setIndexX(int indexX){
+            IndexX=indexX;
+        }
+        public void setIndexY(int indexY){
+            IndexY=indexY;
+        }
     }
 
     public class Coordinates{
@@ -78,17 +98,21 @@ public class Field extends Actor {
         private final int FIELD_SIZE_X=5;
         private final int FIELD_SIZE_Y=7;
         private float cellWidth;
+        private int fieldSize;
 
         Coordinates(){
-            int fieldSize=FIELD_SIZE_X*FIELD_SIZE_Y;
+            fieldSize=FIELD_SIZE_X*FIELD_SIZE_Y;
             cell=new Cell[fieldSize];
 
             float x1, x2, y1, y2;
+            int indexX,indexY;
             float paddingsXWidth=(Gdx.graphics.getWidth()/16);
             cellWidth=(Gdx.graphics.getWidth()-2*paddingsXWidth)/FIELD_SIZE_X;
             int arrayIndexCounter=0;
 
             for (int i=0;i< FIELD_SIZE_X; i++){
+                indexX=i+1;
+                indexY=0;
                 for (int j=0;j< FIELD_SIZE_Y; j++) {
                     x1 = paddingsXWidth + cellWidth * i;
                     y1 = ((Gdx.graphics.getHeight() / 2) - (FIELD_SIZE_Y / 2) * cellWidth) + cellWidth * j;
@@ -96,6 +120,9 @@ public class Field extends Actor {
                     y2 = ((Gdx.graphics.getHeight() / 2) - (FIELD_SIZE_Y / 2) * cellWidth) + cellWidth * (j + 1);
 
                     cell[arrayIndexCounter] = new Cell(x1, x2, y1, y2);
+                    indexY=j+1;
+                    cell[arrayIndexCounter].setIndexX(indexX);
+                    cell[arrayIndexCounter].setIndexY(indexY);
                     arrayIndexCounter++;
                 }
             }
@@ -107,6 +134,9 @@ public class Field extends Actor {
         public int getFieldHeight(){
             return (int)cellWidth*FIELD_SIZE_Y;
         }
+        public int getFieldSize(){
+            return fieldSize;
+        } // returns quantity of cells in cell array
         public float getRightFieldEdge(){
             return getCellByIndex(FIELD_SIZE_X*FIELD_SIZE_Y-1).tRX;
         }
@@ -119,5 +149,14 @@ public class Field extends Actor {
         public float getBottomFieldEdge(){
             return getCellByIndex(0).bLY;
         }
+
+        public int getCellIndexByXYIndexes(int IndexX, int IndexY){
+            int i;
+            for (i=0; i<fieldSize; i++ ){
+                if (getCellByIndex(i).getIndexX()==IndexX && getCellByIndex(i).getIndexY()==IndexY) break;
+            }
+            return i;
+        }
+
     }
 }

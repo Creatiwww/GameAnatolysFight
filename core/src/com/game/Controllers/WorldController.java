@@ -18,7 +18,7 @@ public class WorldController  {
         batch = new SpriteBatch();
 
         actorsController = new ActorsController();
-        actorsController.spawnActor();
+        actorsController.spawnInitialSetOfPlayableActors();
         aiController = new AIController();
         screenController= new ScreenController(this, actorsController.getField());
 
