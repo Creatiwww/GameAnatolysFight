@@ -7,40 +7,50 @@ import com.game.Actors.Playable.Listeners.PlayableActorsListener;
 import com.game.Actors.Playable.Products.MyActor;
 import com.game.Actors.Field;
 
+import java.util.ArrayList;
+
 public class ActorsController {
     private static final String TAG = ActorsController.class.getName();
 
     private CreatorPlayableActor creatorPlayableActor1;
     private CreatorPlayableActor creatorPlayableActor2;
-    private MyActor[] myActors;
+    private ArrayList myActors;
     private Field field;
 
     public ActorsController(){
-        myActors=new MyActor[2];
         field = new Field();
+        myActors=new ArrayList();
         field.setSize(field.getCoordinates().getFieldWidth(),field.getCoordinates().getFieldHeight());
-        field.setPosition(field.getCellByIndex(0).getbLX(),field.getCellByIndex(0).getbLY());
+        field.setPosition(field.getCellByIndex(0).getbLX(), field.getCellByIndex(0).getbLY());
+        creatorPlayableActor1=new CreatorPlayableActor1();
+        creatorPlayableActor2=new CreatorPlayableActor2();
     }
 
-    public MyActor[] getActors(){
+    public ArrayList getActors(){
         return myActors;
-    }
-
-    public void spawnActor(){
-        //Gdx.app.log("MyTag", "'createTestActor' method started @" + TAG);
-        creatorPlayableActor1 = new CreatorPlayableActor1();
-        creatorPlayableActor2 = new CreatorPlayableActor2();
-        myActors[0] = creatorPlayableActor1.factoryMethod();
-        myActors[1] = creatorPlayableActor2.factoryMethod();
-        myActors[0].setSize(170, 170);
-        myActors[1].setSize(170, 170);
-        myActors[0].setPosition(100, 400);
-        myActors[1].setPosition(300, 700);
-        myActors[0].addListener(new PlayableActorsListener(myActors[0], field));
-        myActors[1].addListener(new PlayableActorsListener(myActors[1],field));
-        //Gdx.app.log("MyTag", "'createTestActor' method ended @" + TAG);
     }
     public Field getField(){
         return field;
+    }
+
+    public void spawnInitialSetOfPlayableActors(){
+        //Gdx.app.log("MyTag", "'createTestActor' method started @" + TAG);
+        for (int i=0; i<2; i++) {
+
+            if (i==0) myActors.add(creatorPlayableActor1.factoryMethod());
+            else myActors.add(creatorPlayableActor2.factoryMethod());
+
+            MyActor actor = (MyActor) myActors.get(i);
+            final double ACTOR_SIZE_MODIFICATOR=0.15;
+            float actorSize=field.getCellWidth()*(1-(float)ACTOR_SIZE_MODIFICATOR);
+            actor.setSize(actorSize, actorSize);
+            int cellIndexX=3-i;
+            int cellindexY=5+i;
+            int cellIndex=field.getCoordinates().getCellIndexByXYIndexes(cellIndexX, cellindexY);
+            Field.Cell cell= field.getCellByIndex(cellIndex);
+            actor.setPosition(cell.getcX()-actor.getWidth()/2, cell.getcY()-actor.getHeight()/2);
+            actor.addListener(new PlayableActorsListener(actor, field));
+        }
+        //Gdx.app.log("MyTag", "'createTestActor' method ended @" + TAG);
     }
 }
