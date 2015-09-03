@@ -11,6 +11,7 @@ public class PlayableActorsListener extends DragListener {
     private float rightFieldEdge,leftFieldEdge,topFieldEdge,bottomFieldEdge;
     private Field field;
     private float originalActorsWidth, originalActorsHeight,actorsNewWidth,actorsNewHeight, actorsSizeIncrease;
+    private int fieldSize;
 
     public PlayableActorsListener(MyActor draggedActor, Field field){
         this.draggedActor=draggedActor;
@@ -19,6 +20,7 @@ public class PlayableActorsListener extends DragListener {
         leftFieldEdge=field.getCoordinates().getLeftFieldEdge();
         topFieldEdge=field.getCoordinates().getTopFieldEdge();
         bottomFieldEdge=field.getCoordinates().getBottomFieldEdge();
+        fieldSize=field.getCoordinates().getFieldSize();
         originalActorsWidth=draggedActor.getWidth();
         originalActorsHeight=draggedActor.getHeight();
         actorsSizeIncrease=(float)0.3;
@@ -40,11 +42,18 @@ public class PlayableActorsListener extends DragListener {
     public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
         super.touchUp(event, x, y, pointer, button);
         draggedActor.setSize(originalActorsWidth, originalActorsHeight);
-        x=fieldEdgeCheckX(x, event.getListenerActor().getX(), event.getListenerActor().getWidth());
-        y=fieldEdgeCheckY(y, event.getListenerActor().getY(), event.getListenerActor().getHeight());
-        x= fitActorToCellCenterX(x);
-        y= fitActorToCellCenterY(y);
-        draggedActor.moveBy(x, y);
+        //x=fieldEdgeCheckX(x, event.getListenerActor().getX(), event.getListenerActor().getWidth());
+        //y=fieldEdgeCheckY(y, event.getListenerActor().getY(), event.getListenerActor().getHeight());
+        float actorPossitionX=event.getListenerActor().getX();
+        float actorPossitionY=event.getListenerActor().getY();
+        float actorCenterPossitionX=actorPossitionX+event.getListenerActor().getWidth()/2;
+        float actorCenterPossitionY=actorPossitionY+event.getListenerActor().getWidth()/2;
+        int IndexX=findXCellIndex(actorCenterPossitionX);
+        int IndexY=findYCellIndex(actorCenterPossitionY);
+        int cellIndex=getCellIndexByXYIndexes(IndexX,IndexY);
+        x= fitActorToCellCenterX(cellIndex);
+        y= fitActorToCellCenterY(cellIndex);
+        draggedActor.setPosition(x, y);
     }
 
     @Override
@@ -61,7 +70,7 @@ public class PlayableActorsListener extends DragListener {
         x=fieldEdgeCheckX(x, event.getListenerActor().getX(), event.getListenerActor().getWidth());
         y=fieldEdgeCheckY(y, event.getListenerActor().getY(), event.getListenerActor().getHeight());
         x= fitActorToTouchCenterX(x);
-        y= fitActorToTouchCenterX(y);
+        y= fitActorToTouchCenterY(y);
         draggedActor.moveBy(x, y);
     }
 
@@ -88,13 +97,46 @@ public class PlayableActorsListener extends DragListener {
         return y;
     }
 
-    private float fitActorToCellCenterX(float x){
-        x= fitActorToTouchCenterX(x);
-        return x; //TODO: implement aliment on field center
+    private float fitActorToCellCenterX(int cellIndex){
+        float x=field.getCellByIndex(cellIndex).getcX();
+        x=fitActorToTouchCenterX(x);
+        return x;
     }
 
-    private float fitActorToCellCenterY(float y){
-        y= fitActorToTouchCenterY(y);
-        return y; //TODO: implement aliment on field center
+    private float fitActorToCellCenterY(int cellIndex){
+        float y=field.getCellByIndex(cellIndex).getcY();
+        y=fitActorToTouchCenterY(y);
+        return y;
     }
+
+    private int getCellIndexByXYIndexes(int IndexX, int IndexY){
+        int i;
+        for (i=0; i<fieldSize; i++ ){
+           if (field.getCellByIndex(i).getIndexX()==IndexX && field.getCellByIndex(i).getIndexY()==IndexY) break;
+        }
+        return i;
+    }
+
+    private int findXCellIndex(float actorPossitionX){
+        int i;
+        for (i=1;i<=field.getFeildSizeX() ;i++ ){
+            float cell0blX=field.getCellByIndex(0).getbLX();
+            float lenth = field.getCellWidth()*(i-1);
+            if (actorPossitionX>cell0blX+lenth) ;
+            else break;
+        }
+        return i-1;
+    }
+
+    private int findYCellIndex(float actorPossitionY){
+        int j;
+        for (j=1;j<=field.getFeildSizeY() ;j++ ){
+            float cell0blY=field.getCellByIndex(0).getbLY();
+            float lenth = field.getCellWidth()*(j-1);
+            if (actorPossitionY > cell0blY+lenth);
+            else break;
+        }
+        return j-1;
+    }
+
 }

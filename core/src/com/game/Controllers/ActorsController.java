@@ -15,8 +15,8 @@ public class ActorsController {
     private Field field;
 
     public ActorsController(){
-        myActors=new MyActor[1];
         field = new Field();
+        myActors=new MyActor[1];
         field.setSize(field.getCoordinates().getFieldWidth(),field.getCoordinates().getFieldHeight());
         field.setPosition(field.getCellByIndex(0).getbLX(),field.getCellByIndex(0).getbLY());
     }
@@ -25,10 +25,11 @@ public class ActorsController {
         return myActors;
     }
 
-    public void spawnActor(){
+    public void spawnInitialSetOfPlayableActors(){
         //Gdx.app.log("MyTag", "'createTestActor' method started @" + TAG);
         creatorPlayableActor1 = new CreatorPlayableActor1();
         myActors[0] = creatorPlayableActor1.factoryMethod();
+
         myActors[0].setSize(170, 170);
         myActors[0].setPosition(100, 400);
         myActors[0].addListener(new PlayableActorsListener(myActors[0],field));
