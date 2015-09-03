@@ -50,7 +50,7 @@ public class PlayableActorsListener extends DragListener {
         float actorCenterPossitionY=actorPossitionY+event.getListenerActor().getWidth()/2;
         int IndexX=findXCellIndex(actorCenterPossitionX);
         int IndexY=findYCellIndex(actorCenterPossitionY);
-        int cellIndex=getCellIndexByXYIndexes(IndexX,IndexY);
+        int cellIndex=field.getCoordinates().getCellIndexByXYIndexes(IndexX,IndexY);
         x= fitActorToCellCenterX(cellIndex);
         y= fitActorToCellCenterY(cellIndex);
         draggedActor.setPosition(x, y);

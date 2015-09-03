@@ -149,5 +149,14 @@ public class Field extends Actor {
         public float getBottomFieldEdge(){
             return getCellByIndex(0).bLY;
         }
+
+        public int getCellIndexByXYIndexes(int IndexX, int IndexY){
+            int i;
+            for (i=0; i<fieldSize; i++ ){
+                if (getCellByIndex(i).getIndexX()==IndexX && getCellByIndex(i).getIndexY()==IndexY) break;
+            }
+            return i;
+        }
+
     }
 }
