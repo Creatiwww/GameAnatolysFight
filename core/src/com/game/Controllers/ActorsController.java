@@ -54,6 +54,8 @@ public class ActorsController {
             actor.setSize(actorSize, actorSize);
             int cellIndexX=4-i;
             int cellindexY=4+i;
+            actor.getPosition().CellIndexX=cellIndexX;
+            actor.getPosition().CellIndexY=cellindexY;
             int cellIndex=field.getCoordinates().getCellIndexByXYIndexes(cellIndexX, cellindexY);
             Field.Cell cell= field.getCellByIndex(cellIndex);
             actor.setPosition(cell.getcX()-actor.getWidth()/2, cell.getcY()-actor.getHeight()/2);

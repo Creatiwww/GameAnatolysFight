@@ -9,6 +9,8 @@ public abstract class MyActor extends Actor {
 
     protected Texture texture;
     protected String texturePath;
+    protected MovingFacilities movingFacilities;
+    protected APosition aPosition;
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
@@ -17,8 +19,25 @@ public abstract class MyActor extends Actor {
         //Gdx.app.log("MyTag", "'draw' method ended @" + TAG);
     }
 
-    protected void textureInit(){
-        texture=new Texture(Gdx.files.internal(texturePath));
+    public MovingFacilities getMovingFacilities(){
+        return this.movingFacilities;
     }
 
+    public APosition getPosition(){
+        return this.aPosition;
+    }
+
+    protected void textureInit(){
+        texture=new Texture(Gdx.files.internal(texturePath));
+        movingFacilities=new MovingFacilities();
+        aPosition=new APosition();
+    }
+
+    public class MovingFacilities{
+        public int R, L, B, T, TR, TL, BR, BL; // ability to move to int cells at Right, Left ... direction
+    }
+
+    public class APosition{
+        public int CellIndexX, CellIndexY;
+    }
 }

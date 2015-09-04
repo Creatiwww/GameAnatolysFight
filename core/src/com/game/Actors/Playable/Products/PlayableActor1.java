@@ -6,5 +6,13 @@ public class PlayableActor1 extends MyActor {
     public PlayableActor1(){
         texturePath = "test_actor.png";
         textureInit();
+        this.getMovingFacilities().R=0;
+        this.getMovingFacilities().L=0;
+        this.getMovingFacilities().T=0;
+        this.getMovingFacilities().B=0;
+        this.getMovingFacilities().TR=2;
+        this.getMovingFacilities().BR=2;
+        this.getMovingFacilities().TL=2;
+        this.getMovingFacilities().BL=2;
     }
 }

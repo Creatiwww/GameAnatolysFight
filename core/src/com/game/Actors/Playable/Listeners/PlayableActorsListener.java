@@ -12,6 +12,7 @@ public class PlayableActorsListener extends DragListener {
     private Field field;
     private float originalActorsWidth, originalActorsHeight,actorsNewWidth,actorsNewHeight, actorsSizeIncrease;
     private int fieldSize;
+    private int actorCellIndexBeforeMovementX,actorCellIndexBeforeMovementY;
 
     public PlayableActorsListener(MyActor draggedActor, Field field){
         this.draggedActor=draggedActor;
@@ -30,7 +31,20 @@ public class PlayableActorsListener extends DragListener {
 
     @Override
     public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
-        super.touchDown(event,x,y,pointer,button);
+        super.touchDown(event, x, y, pointer, button);
+        draggedActor.toFront();
+
+        float actorPossitionX=event.getListenerActor().getX();
+        float actorPossitionY=event.getListenerActor().getY();
+        float actorCenterPossitionX=actorPossitionX+event.getListenerActor().getWidth()/2;
+        float actorCenterPossitionY=actorPossitionY+event.getListenerActor().getWidth()/2;
+        int IndexX=findXCellIndex(actorCenterPossitionX);
+        int IndexY=findYCellIndex(actorCenterPossitionY);
+        actorCellIndexBeforeMovementX=IndexX;
+        actorCellIndexBeforeMovementY=IndexY;
+        draggedActor.getPosition().CellIndexX=IndexX;
+        draggedActor.getPosition().CellIndexY=IndexY;
+
         draggedActor.setSize(actorsNewWidth, actorsNewHeight);
         x= fitActorToTouchCenterX(x);
         y= fitActorToTouchCenterY(y);
@@ -42,8 +56,6 @@ public class PlayableActorsListener extends DragListener {
     public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
         super.touchUp(event, x, y, pointer, button);
         draggedActor.setSize(originalActorsWidth, originalActorsHeight);
-        //x=fieldEdgeCheckX(x, event.getListenerActor().getX(), event.getListenerActor().getWidth());
-        //y=fieldEdgeCheckY(y, event.getListenerActor().getY(), event.getListenerActor().getHeight());
         float actorPossitionX=event.getListenerActor().getX();
         float actorPossitionY=event.getListenerActor().getY();
         float actorCenterPossitionX=actorPossitionX+event.getListenerActor().getWidth()/2;
@@ -51,8 +63,13 @@ public class PlayableActorsListener extends DragListener {
         int IndexX=findXCellIndex(actorCenterPossitionX);
         int IndexY=findYCellIndex(actorCenterPossitionY);
         int cellIndex=field.getCoordinates().getCellIndexByXYIndexes(IndexX,IndexY);
-        x= fitActorToCellCenterX(cellIndex);
-        y= fitActorToCellCenterY(cellIndex);
+        if (!movementFacilitiesCheck(IndexX,IndexY)){
+            cellIndex=field.getCoordinates().getCellIndexByXYIndexes(actorCellIndexBeforeMovementX,actorCellIndexBeforeMovementY);
+        }
+        x = fitActorToCellCenterX(cellIndex);
+        y = fitActorToCellCenterY(cellIndex);
+        draggedActor.getPosition().CellIndexX=IndexX;
+        draggedActor.getPosition().CellIndexY=IndexY;
         draggedActor.setPosition(x, y);
     }
 
@@ -105,16 +122,8 @@ public class PlayableActorsListener extends DragListener {
 
     private float fitActorToCellCenterY(int cellIndex){
         float y=field.getCellByIndex(cellIndex).getcY();
-        y=fitActorToTouchCenterY(y);
+        y =fitActorToTouchCenterY(y);
         return y;
-    }
-
-    private int getCellIndexByXYIndexes(int IndexX, int IndexY){
-        int i;
-        for (i=0; i<fieldSize; i++ ){
-           if (field.getCellByIndex(i).getIndexX()==IndexX && field.getCellByIndex(i).getIndexY()==IndexY) break;
-        }
-        return i;
     }
 
     private int findXCellIndex(float actorPossitionX){
@@ -130,13 +139,33 @@ public class PlayableActorsListener extends DragListener {
 
     private int findYCellIndex(float actorPossitionY){
         int j;
-        for (j=1;j<=field.getFeildSizeY() ;j++ ){
+        for (j = 1;j<=field.getFeildSizeY() ;j++ ){
             float cell0blY=field.getCellByIndex(0).getbLY();
             float lenth = field.getCellWidth()*(j-1);
             if (actorPossitionY > cell0blY+lenth);
             else break;
         }
         return j-1;
+    }
+
+    private boolean movementFacilitiesCheck(int IndexX,int IndexY){
+        int oldPositionX=draggedActor.getPosition().CellIndexX;
+        int oldPositionY=draggedActor.getPosition().CellIndexY;
+        int newPositionX=IndexX;
+        int newPositionY=IndexY;
+        int R=draggedActor.getMovingFacilities().R;
+        int T=draggedActor.getMovingFacilities().T;
+        int B=draggedActor.getMovingFacilities().B;
+        int L=draggedActor.getMovingFacilities().L;
+        int TR=draggedActor.getMovingFacilities().TR;
+        int TL=draggedActor.getMovingFacilities().TL;
+        int BR=draggedActor.getMovingFacilities().BR;
+        int BL=draggedActor.getMovingFacilities().BL;
+        boolean flag=true;
+
+        // todo: implement if check
+
+        return flag;
     }
 
 }
