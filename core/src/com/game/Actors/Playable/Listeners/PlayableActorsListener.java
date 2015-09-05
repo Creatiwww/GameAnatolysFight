@@ -161,7 +161,18 @@ public class PlayableActorsListener extends DragListener {
         int TL=draggedActor.getMovingFacilities().TL;
         int BR=draggedActor.getMovingFacilities().BR;
         int BL=draggedActor.getMovingFacilities().BL;
-        boolean flag=true;
+
+
+        boolean X=false;
+        boolean Y=false;
+        boolean XY=false;
+        boolean YX=false;
+        boolean flag=false;
+        if(((IndexX-oldPositionX>0)&&(IndexX-oldPositionX<=R))||((oldPositionX-IndexX>0)&&(oldPositionX-IndexX<=L)))X=true;
+        if(((IndexY-oldPositionY>0)&&(IndexY-oldPositionY<=T))||((oldPositionY-IndexY>0)&&(oldPositionY-IndexY<=B)))Y=true;
+        if ((((oldPositionX-IndexX>0)&&(oldPositionX-IndexX<=BL))&&((oldPositionY-IndexY>0)&&(oldPositionY-IndexY<=BL)))||(((IndexX-oldPositionX>0)&&(IndexX-oldPositionX<=TR))&&((IndexY-oldPositionY>0)&&(IndexY-oldPositionY<=TR))))XY=true;
+        if ((((oldPositionX-IndexX>0)&&(oldPositionX-IndexX<=TL))&&((IndexY-oldPositionY>0)&&(IndexY-oldPositionY<=TL)))||(((IndexX-oldPositionX>0)&&(IndexX-oldPositionX<=BR))&&((oldPositionY-IndexY>0)&&(oldPositionY-IndexY<=BR))))YX=true;
+        if(((X==true)&&(IndexY-oldPositionY==0))||((Y==true)&&(IndexX-oldPositionX==0))||((XY==true)&&(Math.abs(newPositionX-oldPositionX)==Math.abs(newPositionY-oldPositionY)))||((YX==true)&&(Math.abs(newPositionX-oldPositionX)==Math.abs(newPositionY-oldPositionY))))flag=true;
 
         // todo: implement if check
 
