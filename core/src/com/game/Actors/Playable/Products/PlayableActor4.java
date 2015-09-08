@@ -1,11 +1,11 @@
 package com.game.Actors.Playable.Products;
 
-public class PlayableActor4 extends MyActor {
+public class PlayableActor4 extends PlayableActor {
     private static final String TAG = PlayableActor4.class.getName();
 
     public PlayableActor4(){
         texturePath = "test_actor_old_man.png";
-        textureInit();
+        init();
         this.getMovingFacilities().R=1;
         this.getMovingFacilities().L=1;
         this.getMovingFacilities().T=1;

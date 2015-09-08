@@ -2,7 +2,7 @@ package com.game.ScreensAndStages.Screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
-import com.game.Actors.Playable.Products.MyActor;
+import com.game.Actors.Playable.Products.PlayableActor;
 import com.game.Controllers.WorldController;
 import com.game.Actors.Field;
 import com.game.ScreensAndStages.Stages.GameStage;
@@ -17,7 +17,7 @@ public class GameScreen extends MyScreen {
         gameStage=new GameStage(new StretchViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()), batch);
         gameStage.addActor(field);
         for(Object myActor:actorsController.getActors()) {
-            gameStage.addActor((MyActor)myActor);
+            gameStage.addActor((PlayableActor)myActor);
         }
     }
 
