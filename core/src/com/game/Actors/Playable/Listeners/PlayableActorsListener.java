@@ -178,5 +178,42 @@ public class PlayableActorsListener extends DragListener {
 
         return flag;
     }
+    private void availableCellsShowing (float x, float y){
+        int oldPositionX=draggedActor.getPosition().CellIndexX;
+        int oldPositionY=draggedActor.getPosition().CellIndexY;
+        int R=draggedActor.getMovingFacilities().R;
+        int T=draggedActor.getMovingFacilities().T;
+        int B=draggedActor.getMovingFacilities().B;
+        int L=draggedActor.getMovingFacilities().L;
+        int TR=draggedActor.getMovingFacilities().TR;
+        int TL=draggedActor.getMovingFacilities().TL;
+        int BR=draggedActor.getMovingFacilities().BR;
+        int BL=draggedActor.getMovingFacilities().BL;
+        if ((R!=0)&&(x<field.getCoordinates().getFieldWidth())){
+
+        }
+        if ((T!=0)&&(y<field.getCoordinates().getFieldHeight())){
+
+        }
+        if ((B!=0)&&(y>0)){
+
+        }
+        if ((L!=0)&&(x>0)){
+
+        }
+        if ((TR!=0)&&(x<field.getCoordinates().getFieldWidth())&&(y<field.getCoordinates().getFieldHeight())){
+
+        }
+        if ((TL!=0)&&(y<field.getCoordinates().getFieldHeight())&&(x>0)){
+
+        }
+        if ((BR!=0)&&(y>0)&&(x<field.getCoordinates().getFieldWidth())){
+
+        }
+        if ((BL!=0)&&(x>0)&&((y>0))){
+
+        }
+
+    }
 
 }
