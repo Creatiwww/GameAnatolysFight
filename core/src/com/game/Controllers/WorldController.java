@@ -19,6 +19,7 @@ public class WorldController  {
 
         actorsController = new ActorsController();
         actorsController.spawnInitialSetOfPlayableActors();
+        actorsController.spawnInitialSetOfAIActors();
         aiController = new AIController();
         screenController= new ScreenController(this, actorsController.getField());
 

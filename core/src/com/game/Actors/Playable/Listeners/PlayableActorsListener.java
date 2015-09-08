@@ -2,19 +2,19 @@ package com.game.Actors.Playable.Listeners;
 
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.DragListener;
-import com.game.Actors.Playable.Products.MyActor;
+import com.game.Actors.Playable.Products.PlayableActor;
 import com.game.Actors.Field;
 
 public class PlayableActorsListener extends DragListener {
 
-    private MyActor draggedActor;
+    private PlayableActor draggedActor;
     private float rightFieldEdge,leftFieldEdge,topFieldEdge,bottomFieldEdge;
     private Field field;
     private float originalActorsWidth, originalActorsHeight,actorsNewWidth,actorsNewHeight, actorsSizeIncrease;
     private int fieldSize;
     private int actorCellIndexBeforeMovementX,actorCellIndexBeforeMovementY;
 
-    public PlayableActorsListener(MyActor draggedActor, Field field){
+    public PlayableActorsListener(PlayableActor draggedActor, Field field){
         this.draggedActor=draggedActor;
         this.field=field;
         rightFieldEdge=field.getCoordinates().getRightFieldEdge();
@@ -162,7 +162,6 @@ public class PlayableActorsListener extends DragListener {
         int BR=draggedActor.getMovingFacilities().BR;
         int BL=draggedActor.getMovingFacilities().BL;
 
-
         boolean X=false;
         boolean Y=false;
         boolean XY=false;
@@ -174,10 +173,9 @@ public class PlayableActorsListener extends DragListener {
         if ((((oldPositionX-IndexX>0)&&(oldPositionX-IndexX<=TL))&&((IndexY-oldPositionY>0)&&(IndexY-oldPositionY<=TL)))||(((IndexX-oldPositionX>0)&&(IndexX-oldPositionX<=BR))&&((oldPositionY-IndexY>0)&&(oldPositionY-IndexY<=BR))))YX=true;
         if(((X==true)&&(IndexY-oldPositionY==0))||((Y==true)&&(IndexX-oldPositionX==0))||((XY==true)&&(Math.abs(newPositionX-oldPositionX)==Math.abs(newPositionY-oldPositionY)))||((YX==true)&&(Math.abs(newPositionX-oldPositionX)==Math.abs(newPositionY-oldPositionY))))flag=true;
 
-        // todo: implement if check
-
         return flag;
     }
+
     private void availableCellsShowing (float x, float y){
         int oldPositionX=draggedActor.getPosition().CellIndexX;
         int oldPositionY=draggedActor.getPosition().CellIndexY;

@@ -1,7 +1,7 @@
 package com.game.Actors.Playable.Creators;
 
-import com.game.Actors.Playable.Products.MyActor;
+import com.game.Actors.Playable.Products.PlayableActor;
 
 public interface CreatorPlayableActor {
-    public MyActor factoryMethod();
+    PlayableActor factoryMethod();
 }
