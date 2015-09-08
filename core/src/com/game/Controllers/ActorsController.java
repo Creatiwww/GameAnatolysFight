@@ -24,18 +24,21 @@ public class ActorsController {
     private CreatorAIActor creatorAIActor1;
     private ArrayList actors;
     private Field field;
+    private WorldController worldController;
     final double ACTOR_SIZE_MODIFICATOR=0.15;
 
-    public ActorsController(){
+    public ActorsController(WorldController worldController){
         field = new Field();
         actors =new ArrayList();
-        field.setSize(field.getCoordinates().getFieldWidth(),field.getCoordinates().getFieldHeight());
+        this.worldController=worldController;
+        field.setSize(field.getCoordinates().getFieldWidth(), field.getCoordinates().getFieldHeight());
         field.setPosition(field.getCellByIndex(0).getbLX(), field.getCellByIndex(0).getbLY());
         creatorPlayableActor1=new CreatorPlayableActor1();
         creatorPlayableActor2=new CreatorPlayableActor2();
         creatorPlayableActor3=new CreatorPlayableActor3();
         creatorPlayableActor4=new CreatorPlayableActor4();
         creatorAIActor1=new CreatorAIActor1();
+        worldController.getTurn().startPlayerTurn();
     }
 
     public ArrayList getActors(){
@@ -63,7 +66,7 @@ public class ActorsController {
             int cellIndex=field.getCoordinates().getCellIndexByXYIndexes(cellIndexX, cellIndexY);
             Field.Cell cell= field.getCellByIndex(cellIndex);
             actor.setPosition(cell.getcX()-actor.getWidth()/2, cell.getcY()-actor.getHeight()/2);
-            actor.addListener(new PlayableActorsListener(actor, field));
+            actor.addListener(new PlayableActorsListener(actor, field, worldController));
         }
     }
 

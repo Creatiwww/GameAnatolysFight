@@ -4,6 +4,7 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.DragListener;
 import com.game.Actors.Playable.Products.PlayableActor;
 import com.game.Actors.Field;
+import com.game.Controllers.WorldController;
 
 public class PlayableActorsListener extends DragListener {
 
@@ -13,10 +14,12 @@ public class PlayableActorsListener extends DragListener {
     private float originalActorsWidth, originalActorsHeight,actorsNewWidth,actorsNewHeight, actorsSizeIncrease;
     private int fieldSize;
     private int actorCellIndexBeforeMovementX,actorCellIndexBeforeMovementY;
+    private WorldController worldController;
 
-    public PlayableActorsListener(PlayableActor draggedActor, Field field){
+    public PlayableActorsListener(PlayableActor draggedActor, Field field, WorldController worldController){
         this.draggedActor=draggedActor;
         this.field=field;
+        this.worldController=worldController;
         rightFieldEdge=field.getCoordinates().getRightFieldEdge();
         leftFieldEdge=field.getCoordinates().getLeftFieldEdge();
         topFieldEdge=field.getCoordinates().getTopFieldEdge();
@@ -31,25 +34,27 @@ public class PlayableActorsListener extends DragListener {
 
     @Override
     public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
-        super.touchDown(event, x, y, pointer, button);
-        draggedActor.toFront();
+        if (worldController.getTurn().isPlayerTurn()) { // if this is a turn of player not AI
+            super.touchDown(event, x, y, pointer, button);
+            draggedActor.toFront();
 
-        float actorPossitionX=event.getListenerActor().getX();
-        float actorPossitionY=event.getListenerActor().getY();
-        float actorCenterPossitionX=actorPossitionX+event.getListenerActor().getWidth()/2;
-        float actorCenterPossitionY=actorPossitionY+event.getListenerActor().getWidth()/2;
-        int IndexX=findXCellIndex(actorCenterPossitionX);
-        int IndexY=findYCellIndex(actorCenterPossitionY);
-        actorCellIndexBeforeMovementX=IndexX;
-        actorCellIndexBeforeMovementY=IndexY;
-        draggedActor.getPosition().CellIndexX=IndexX;
-        draggedActor.getPosition().CellIndexY=IndexY;
+            float actorPossitionX = event.getListenerActor().getX();
+            float actorPossitionY = event.getListenerActor().getY();
+            float actorCenterPossitionX = actorPossitionX + event.getListenerActor().getWidth() / 2;
+            float actorCenterPossitionY = actorPossitionY + event.getListenerActor().getWidth() / 2;
+            int IndexX = findXCellIndex(actorCenterPossitionX);
+            int IndexY = findYCellIndex(actorCenterPossitionY);
+            actorCellIndexBeforeMovementX = IndexX;
+            actorCellIndexBeforeMovementY = IndexY;
+            draggedActor.getPosition().CellIndexX = IndexX;
+            draggedActor.getPosition().CellIndexY = IndexY;
 
-        draggedActor.setSize(actorsNewWidth, actorsNewHeight);
-        x= fitActorToTouchCenterX(x);
-        y= fitActorToTouchCenterY(y);
-        draggedActor.moveBy(x, y);
-        return true;
+            draggedActor.setSize(actorsNewWidth, actorsNewHeight);
+            x = fitActorToTouchCenterX(x);
+            y = fitActorToTouchCenterY(y);
+            draggedActor.moveBy(x, y);
+            return true;
+        } else return false;
     }
 
     @Override
@@ -63,14 +68,17 @@ public class PlayableActorsListener extends DragListener {
         int IndexX=findXCellIndex(actorCenterPossitionX);
         int IndexY=findYCellIndex(actorCenterPossitionY);
         int cellIndex=field.getCoordinates().getCellIndexByXYIndexes(IndexX,IndexY);
+        worldController.getTurn().endPlayerTurn(); // potentially this is possible to move and we end up the turn of player
         if (!movementFacilitiesCheck(IndexX,IndexY)){
             cellIndex=field.getCoordinates().getCellIndexByXYIndexes(actorCellIndexBeforeMovementX,actorCellIndexBeforeMovementY);
+            worldController.getTurn().startPlayerTurn(); // in case the movement is not valid we re-start player's turn
         }
         x = fitActorToCellCenterX(cellIndex);
         y = fitActorToCellCenterY(cellIndex);
         draggedActor.getPosition().CellIndexX=IndexX;
         draggedActor.getPosition().CellIndexY=IndexY;
         draggedActor.setPosition(x, y);
+        worldController.getTurn().startAITurn(); //after player complete his turn we allow AI to move
     }
 
     @Override
