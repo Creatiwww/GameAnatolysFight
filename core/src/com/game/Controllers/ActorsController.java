@@ -1,8 +1,10 @@
 package com.game.Controllers;
 
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.game.Actors.AI.Creators.CreatorAIActor;
 import com.game.Actors.AI.Creators.CreatorAIActor1;
 import com.game.Actors.AI.Products.AIActor;
+import com.game.Actors.AvailableForMovementCell;
 import com.game.Actors.Playable.Creators.CreatorPlayableActor;
 import com.game.Actors.Playable.Creators.CreatorPlayableActor1;
 import com.game.Actors.Playable.Creators.CreatorPlayableActor2;
@@ -25,6 +27,7 @@ public class ActorsController {
     private ArrayList actors;
     private Field field;
     private WorldController worldController;
+    private ArrayList availableCells;
     final double ACTOR_SIZE_MODIFICATOR=0.15;
 
     public ActorsController(WorldController worldController){
@@ -33,6 +36,7 @@ public class ActorsController {
         this.worldController=worldController;
         field.setSize(field.getCoordinates().getFieldWidth(), field.getCoordinates().getFieldHeight());
         field.setPosition(field.getCellByIndex(0).getbLX(), field.getCellByIndex(0).getbLY());
+        availableCells = new ArrayList();
         creatorPlayableActor1=new CreatorPlayableActor1();
         creatorPlayableActor2=new CreatorPlayableActor2();
         creatorPlayableActor3=new CreatorPlayableActor3();
@@ -46,6 +50,27 @@ public class ActorsController {
     }
     public Field getField(){
         return field;
+    }
+    public ArrayList getAvailableCell(){
+        return availableCells;
+    }
+
+    public void drawAvailableForMovementCells(float x, float y){
+        AvailableForMovementCell availableForMovementCell = new AvailableForMovementCell();
+        availableForMovementCell.setSize(field.getCellWidth() - (field.getCellWidth() * 1446/16933), field.getCellWidth()-(field.getCellWidth() * 1446/16933));
+        x= x - availableForMovementCell.getWidth() / 2;
+        y= y - availableForMovementCell.getWidth() / 2;
+        availableForMovementCell.setPosition(x, y);
+        availableCells.add(availableForMovementCell);
+        worldController.getScreen().drawAvailableForMovementCells();
+    }
+
+    public void clearAvailableForMovementCellsArray(){
+        for (int i=0; i<availableCells.size(); i++){
+            Actor availableCell = (Actor) availableCells.get(i);
+            availableCell.remove();
+        }
+        availableCells.clear();
     }
 
     public void spawnInitialSetOfPlayableActors(){
@@ -66,14 +91,14 @@ public class ActorsController {
             int cellIndex=field.getCoordinates().getCellIndexByXYIndexes(cellIndexX, cellIndexY);
             Field.Cell cell= field.getCellByIndex(cellIndex);
             actor.setPosition(cell.getcX()-actor.getWidth()/2, cell.getcY()-actor.getHeight()/2);
-            actor.addListener(new PlayableActorsListener(actor, field, worldController));
+            actor.addListener(new PlayableActorsListener(actor, worldController));
         }
     }
 
     public void spawnInitialSetOfAIActors(){
        actors.add(creatorAIActor1.factoryMethod());
         int index=actors.size();
-        AIActor actor = (AIActor) actors.get(index-1); //TODO: bug is there
+        AIActor actor = (AIActor) actors.get(index-1);
         float actorSize=field.getCellWidth()*(1-(float)ACTOR_SIZE_MODIFICATOR);
         actor.setSize(actorSize, actorSize);
         int cellIndexX=1;

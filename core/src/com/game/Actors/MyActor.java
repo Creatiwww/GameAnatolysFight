@@ -22,9 +22,7 @@ public abstract class MyActor extends Actor {
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
-        //Gdx.app.log("MyTag", "'draw' method started @" + TAG);
         batch.draw(texture, getX(), getY(), getWidth(), getHeight());
-        //Gdx.app.log("MyTag", "'draw' method ended @" + TAG);
     }
 
     public class ActorPosition{

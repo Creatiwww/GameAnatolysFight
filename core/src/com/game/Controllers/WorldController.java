@@ -5,7 +5,6 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.game.ScreensAndStages.Screens.MyScreen;
 
 public class WorldController  {
-    private static final String TAG = WorldController.class.getName();
 
     private ActorsController actorsController;
     private AIController aiController;
@@ -20,7 +19,7 @@ public class WorldController  {
         actorsController.spawnInitialSetOfPlayableActors();
         actorsController.spawnInitialSetOfAIActors();
         aiController = new AIController(this);
-        screenController= new ScreenController(this, actorsController.getField());
+        screenController= new ScreenController(this);
     }
 
     public Batch getBatch(){
