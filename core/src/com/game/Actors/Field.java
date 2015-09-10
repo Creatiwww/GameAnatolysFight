@@ -22,10 +22,10 @@ public class Field extends Actor {
     public float getCellWidth(){
         return coordinates.cellWidth;
     }
-    public float getFeildSizeX(){
+    public int getFeildSizeX(){
         return coordinates.FIELD_SIZE_X;
     }
-    public float getFeildSizeY(){
+    public int getFeildSizeY(){
         return coordinates.FIELD_SIZE_Y;
     }
     public Coordinates getCoordinates(){

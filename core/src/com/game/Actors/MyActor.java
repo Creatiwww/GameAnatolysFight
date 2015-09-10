@@ -10,9 +10,20 @@ public abstract class MyActor extends Actor {
     protected Texture texture;
     protected String texturePath;
     protected ActorPosition actorPosition;
+    protected Boolean owner; //true - player; false - AI
 
     public ActorPosition getPosition(){
         return this.actorPosition;
+    }
+
+    public boolean isOwnedByAI(){
+        if (!this.owner)return true;
+        return false;
+    }
+
+    public boolean isOwnedByPlayer(){
+        if (this.owner)return true;
+        return false;
     }
 
     protected void init(){

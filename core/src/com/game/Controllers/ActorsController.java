@@ -97,7 +97,7 @@ public class ActorsController {
     }
 
     public void spawnInitialSetOfAIActors(){
-       actors.add(creatorAIActor1.factoryMethod());
+        actors.add(creatorAIActor1.factoryMethod());
         int index=actors.size();
         AIActor actor = (AIActor) actors.get(index-1);
         float actorSize=field.getCellWidth()*(1-(float)ACTOR_SIZE_MODIFICATOR);
@@ -109,6 +109,18 @@ public class ActorsController {
         int cellIndex=field.getCoordinates().getCellIndexByXYIndexes(cellIndexX, cellIndexY);
         Field.Cell cell= field.getCellByIndex(cellIndex);
         cell.setActorRef(actor);
-        actor.setPosition(cell.getcX()-actor.getWidth()/2, cell.getcY()-actor.getHeight()/2);
+
+        actors.add(creatorAIActor1.factoryMethod());
+        index=actors.size();
+        actor = (AIActor) actors.get(index-1);
+        actor.setSize(actorSize, actorSize);
+        cellIndexX=1;
+        cellIndexY=2;
+        actor.getPosition().cellIndexX =cellIndexX;
+        actor.getPosition().cellIndexY =cellIndexY;
+        cellIndex=field.getCoordinates().getCellIndexByXYIndexes(cellIndexX, cellIndexY);
+        cell= field.getCellByIndex(cellIndex);
+        cell.setActorRef(actor);
+
     }
 }

@@ -13,12 +13,11 @@ public class PlayableActor extends MyActor  {
     protected void init(){
         super.init();
         movingFacilities=new MovingFacilities();
+        this.owner=true;
     }
 
     public class MovingFacilities{
         public int R, L, B, T, TR, TL, BR, BL; // ability to move to int cells at Right, Left ... direction
     }
-
-
 
 }
