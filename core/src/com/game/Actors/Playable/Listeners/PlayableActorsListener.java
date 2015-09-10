@@ -46,8 +46,8 @@ public class PlayableActorsListener extends DragListener {
             int IndexY = findYCellIndex(actorCenterPossitionY);
             actorCellIndexBeforeMovementX = IndexX;
             actorCellIndexBeforeMovementY = IndexY;
-            draggedActor.getPosition().CellIndexX = IndexX;
-            draggedActor.getPosition().CellIndexY = IndexY;
+            draggedActor.getPosition().cellIndexX = IndexX;
+            draggedActor.getPosition().cellIndexY = IndexY;
             draggedActor.setSize(actorsNewWidth, actorsNewHeight);
             x = fitActorToTouchCenterX(x);
             y = fitActorToTouchCenterY(y);
@@ -68,16 +68,19 @@ public class PlayableActorsListener extends DragListener {
         float actorCenterPositionY=actorPositionY+event.getListenerActor().getWidth()/2;
         int IndexX=findXCellIndex(actorCenterPositionX);
         int IndexY=findYCellIndex(actorCenterPositionY);
-        int cellIndex=field.getCoordinates().getCellIndexByXYIndexes(IndexX,IndexY);
-        worldController.getTurn().endPlayerTurn(); // potentially this is possible to move and we end up the turn of player
+        int newCellIndex=field.getCoordinates().getCellIndexByXYIndexes(IndexX, IndexY);
+        int oldCellIndex=field.getCoordinates().getCellIndexByXYIndexes(actorCellIndexBeforeMovementX,actorCellIndexBeforeMovementY);
         if (!movementFacilitiesCheck(IndexX,IndexY)){
-            cellIndex=field.getCoordinates().getCellIndexByXYIndexes(actorCellIndexBeforeMovementX,actorCellIndexBeforeMovementY);
-            worldController.getTurn().startPlayerTurn(); // in case the movement is not valid we re-start player's turn
+            newCellIndex=oldCellIndex;
+        } else {
+            worldController.getTurn().endPlayerTurn(); // potentially this is possible to move and we end up the turn of player
+            field.getCellByIndex(oldCellIndex).setActorRef(null); // as well we set reference to actor's old cell as null
+            field.getCellByIndex(newCellIndex).setActorRef(draggedActor); // and we set reference to new actor's cell
         }
-        x = fitActorToCellCenterX(cellIndex);
-        y = fitActorToCellCenterY(cellIndex);
-        draggedActor.getPosition().CellIndexX=IndexX;
-        draggedActor.getPosition().CellIndexY=IndexY;
+        x = fitActorToCellCenterX(newCellIndex);
+        y = fitActorToCellCenterY(newCellIndex);
+        draggedActor.getPosition().cellIndexX =IndexX;
+        draggedActor.getPosition().cellIndexY =IndexY;
         draggedActor.setPosition(x, y);
         worldController.getTurn().startAITurn(); //after player complete his turn we allow AI to move
     }
@@ -158,8 +161,8 @@ public class PlayableActorsListener extends DragListener {
     }
 
     private boolean movementFacilitiesCheck(int IndexX,int IndexY){
-        int oldPositionX=draggedActor.getPosition().CellIndexX;
-        int oldPositionY=draggedActor.getPosition().CellIndexY;
+        int oldPositionX=draggedActor.getPosition().cellIndexX;
+        int oldPositionY=draggedActor.getPosition().cellIndexY;
         int newPositionX=IndexX;
         int newPositionY=IndexY;
         int R=draggedActor.getMovingFacilities().R;
@@ -180,8 +183,10 @@ public class PlayableActorsListener extends DragListener {
         if(((IndexY-oldPositionY>0)&&(IndexY-oldPositionY<=T))||((oldPositionY-IndexY>0)&&(oldPositionY-IndexY<=B)))Y=true;
         if ((((oldPositionX-IndexX>0)&&(oldPositionX-IndexX<=BL))&&((oldPositionY-IndexY>0)&&(oldPositionY-IndexY<=BL)))||(((IndexX-oldPositionX>0)&&(IndexX-oldPositionX<=TR))&&((IndexY-oldPositionY>0)&&(IndexY-oldPositionY<=TR))))XY=true;
         if ((((oldPositionX-IndexX>0)&&(oldPositionX-IndexX<=TL))&&((IndexY-oldPositionY>0)&&(IndexY-oldPositionY<=TL)))||(((IndexX-oldPositionX>0)&&(IndexX-oldPositionX<=BR))&&((oldPositionY-IndexY>0)&&(oldPositionY-IndexY<=BR))))YX=true;
-        if(((X)&&(IndexY-oldPositionY==0))||((Y)&&(IndexX-oldPositionX==0))||((XY)&&(Math.abs(newPositionX-oldPositionX)==Math.abs(newPositionY-oldPositionY)))||((YX)&&(Math.abs(newPositionX-oldPositionX)==Math.abs(newPositionY-oldPositionY))))flag=true;
-
+        if ((field.getCellByIndex(field.getCoordinates().getCellIndexByXYIndexes(IndexX,IndexY)).getActorRef()==null)) {
+            if (((X) && (IndexY - oldPositionY == 0)) || ((Y) && (IndexX - oldPositionX == 0)) || ((XY) && (Math.abs(newPositionX - oldPositionX) == Math.abs(newPositionY - oldPositionY))) || ((YX) && (Math.abs(newPositionX - oldPositionX) == Math.abs(newPositionY - oldPositionY))))
+                flag = true;
+        }
         return flag;
     }
 

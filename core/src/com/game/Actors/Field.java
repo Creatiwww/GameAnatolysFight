@@ -40,7 +40,8 @@ public class Field extends Actor {
     public class Cell{
         private float bLX,bRX,tLX,tRX,bLY,bRY,tLY,tRY;
         private float cX,cY; //center coordinates X Y
-        private int IndexX, IndexY; //cell index from 1 to FIELD_SIZE_X
+        private int indexX, indexY; //cell index from 1 to FIELD_SIZE_X
+        private MyActor actorRef;
 
         Cell(float x1, float x2, float y1, float y2){
             bLX=x1; bRX=x2; tLX=x1; tRX=x2;
@@ -79,17 +80,21 @@ public class Field extends Actor {
             return cY;
         }
         public int getIndexX(){
-            return this.IndexX;
+            return this.indexX;
         }
         public int getIndexY(){
-            return this.IndexY;
+            return this.indexY;
         }
+        public MyActor getActorRef() {return this.actorRef;}
 
         public void setIndexX(int indexX){
-            IndexX=indexX;
+            this.indexX =indexX;
         }
         public void setIndexY(int indexY){
-            IndexY=indexY;
+            this.indexY =indexY;
+        }
+        public void setActorRef(MyActor actor){
+            this.actorRef=actor;
         }
     }
 

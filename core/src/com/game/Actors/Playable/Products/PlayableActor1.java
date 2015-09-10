@@ -4,7 +4,7 @@ public class PlayableActor1 extends PlayableActor {
     private static final String TAG = PlayableActor1.class.getName();
 
     public PlayableActor1(){
-        texturePath = "test_actor.png";
+        texturePath = "test_actor_brown_hair.png";
         init();
         this.getMovingFacilities().R=0;
         this.getMovingFacilities().L=0;

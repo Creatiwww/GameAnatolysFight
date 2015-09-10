@@ -26,7 +26,7 @@ public abstract class MyActor extends Actor {
     }
 
     public class ActorPosition{
-        public int CellIndexX, CellIndexY;
+        public int cellIndexX, cellIndexY;
     }
 
 }

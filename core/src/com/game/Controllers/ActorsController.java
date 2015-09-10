@@ -86,10 +86,11 @@ public class ActorsController {
             actor.setSize(actorSize, actorSize);
             int cellIndexX=4-i;
             int cellIndexY=4+i;
-            actor.getPosition().CellIndexX=cellIndexX;
-            actor.getPosition().CellIndexY=cellIndexY;
+            actor.getPosition().cellIndexX =cellIndexX;
+            actor.getPosition().cellIndexY =cellIndexY;
             int cellIndex=field.getCoordinates().getCellIndexByXYIndexes(cellIndexX, cellIndexY);
             Field.Cell cell= field.getCellByIndex(cellIndex);
+            cell.setActorRef(actor);
             actor.setPosition(cell.getcX()-actor.getWidth()/2, cell.getcY()-actor.getHeight()/2);
             actor.addListener(new PlayableActorsListener(actor, worldController));
         }
@@ -103,10 +104,11 @@ public class ActorsController {
         actor.setSize(actorSize, actorSize);
         int cellIndexX=1;
         int cellIndexY=1;
-        actor.getPosition().CellIndexX=cellIndexX;
-        actor.getPosition().CellIndexY=cellIndexY;
+        actor.getPosition().cellIndexX =cellIndexX;
+        actor.getPosition().cellIndexY =cellIndexY;
         int cellIndex=field.getCoordinates().getCellIndexByXYIndexes(cellIndexX, cellIndexY);
         Field.Cell cell= field.getCellByIndex(cellIndex);
+        cell.setActorRef(actor);
         actor.setPosition(cell.getcX()-actor.getWidth()/2, cell.getcY()-actor.getHeight()/2);
     }
 }
