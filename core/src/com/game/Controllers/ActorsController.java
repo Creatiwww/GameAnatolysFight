@@ -74,18 +74,27 @@ public class ActorsController {
     }
 
     public void spawnInitialSetOfPlayableActors(){
-        for (int i=0; i<4; i++) {
+        for (int i=0; i<8; i++) {
 
             if (i==0) actors.add(creatorPlayableActor1.factoryMethod());
             if (i==1) actors.add(creatorPlayableActor2.factoryMethod());
             if (i==2) actors.add(creatorPlayableActor3.factoryMethod());
             if (i==3) actors.add(creatorPlayableActor4.factoryMethod());
+            if (i==4) actors.add(creatorPlayableActor1.factoryMethod());
 
             PlayableActor actor = (PlayableActor) actors.get(i);
             float actorSize=field.getCellWidth()*(1-(float)ACTOR_SIZE_MODIFICATOR);
             actor.setSize(actorSize, actorSize);
             int cellIndexX=4-i;
             int cellIndexY=4+i;
+            if (i==2){
+                cellIndexX=5;
+                cellIndexY=5;
+            }
+            if (i==3){
+                cellIndexX=4;
+                cellIndexY=7;
+            }
             actor.getPosition().cellIndexX =cellIndexX;
             actor.getPosition().cellIndexY =cellIndexY;
             int cellIndex=field.getCoordinates().getCellIndexByXYIndexes(cellIndexX, cellIndexY);
@@ -114,8 +123,8 @@ public class ActorsController {
         index=actors.size();
         actor = (AIActor) actors.get(index-1);
         actor.setSize(actorSize, actorSize);
-        cellIndexX=1;
-        cellIndexY=2;
+        cellIndexX=4;
+        cellIndexY=5;
         actor.getPosition().cellIndexX =cellIndexX;
         actor.getPosition().cellIndexY =cellIndexY;
         cellIndex=field.getCoordinates().getCellIndexByXYIndexes(cellIndexX, cellIndexY);

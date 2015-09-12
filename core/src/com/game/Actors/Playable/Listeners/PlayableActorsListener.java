@@ -70,19 +70,21 @@ public class PlayableActorsListener extends DragListener {
         int IndexY=findYCellIndex(actorCenterPositionY);
         int newCellIndex=field.getCoordinates().getCellIndexByXYIndexes(IndexX, IndexY);
         int oldCellIndex=field.getCoordinates().getCellIndexByXYIndexes(actorCellIndexBeforeMovementX,actorCellIndexBeforeMovementY);
+        boolean flag=false;
         if (!movementFacilitiesCheck(IndexX,IndexY)){
             newCellIndex=oldCellIndex;
         } else {
-            worldController.getTurn().endPlayerTurn(); // potentially this is possible to move and we end up the turn of player
+            worldController.getTurn().endPlayerTurn(); //  this is possible to move and we end up the turn of player
             field.getCellByIndex(oldCellIndex).setActorRef(null); // as well we set reference to actor's old cell as null
             field.getCellByIndex(newCellIndex).setActorRef(draggedActor); // and we set reference to new actor's cell
+            flag=true;
         }
         x = fitActorToCellCenterX(newCellIndex);
         y = fitActorToCellCenterY(newCellIndex);
         draggedActor.getPosition().cellIndexX =IndexX;
         draggedActor.getPosition().cellIndexY =IndexY;
         draggedActor.setPosition(x, y);
-        worldController.getTurn().startAITurn(); //after player complete his turn we allow AI to move
+        if (flag) worldController.getTurn().startAITurn(); //after player complete his turn we allow AI to move
     }
 
     @Override
@@ -179,6 +181,7 @@ public class PlayableActorsListener extends DragListener {
         boolean XY=false;
         boolean YX=false;
         boolean flag=false;
+        if (oldPositionX==newPositionX && oldPositionY==newPositionY) return false;
         if(((IndexX-oldPositionX>0)&&(IndexX-oldPositionX<=R))||((oldPositionX-IndexX>0)&&(oldPositionX-IndexX<=L)))X=true;
         if(((IndexY-oldPositionY>0)&&(IndexY-oldPositionY<=T))||((oldPositionY-IndexY>0)&&(oldPositionY-IndexY<=B)))Y=true;
         if ((((oldPositionX-IndexX>0)&&(oldPositionX-IndexX<=BL))&&((oldPositionY-IndexY>0)&&(oldPositionY-IndexY<=BL)))||(((IndexX-oldPositionX>0)&&(IndexX-oldPositionX<=TR))&&((IndexY-oldPositionY>0)&&(IndexY-oldPositionY<=TR))))XY=true;

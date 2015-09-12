@@ -96,6 +96,11 @@ public class Field extends Actor {
         public void setActorRef(MyActor actor){
             this.actorRef=actor;
         }
+
+        public boolean isEpmty(){
+            if (this.actorRef!=null) return false;
+            return true;
+        }
     }
 
     public class Coordinates{

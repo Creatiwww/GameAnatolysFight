@@ -1,8 +1,8 @@
 package com.game.Controllers;
 
+import com.badlogic.gdx.Gdx;
 import com.game.AI.StrategicAI;
 import com.game.AI.TacticalAI;
-import com.game.Actors.AI.Products.AIActor;
 import com.game.Actors.Field;
 import com.game.Actors.MyActor;
 
@@ -61,9 +61,11 @@ public class AIController {
 
     private void createAIUnitsList(){
         ArrayList myActors=worldController.getActorsController().getActors();
+        aiUnits.clear();
         for (int i=0; i<myActors.size(); i++){
             MyActor myActor=(MyActor)myActors.get(i);
             if (myActor.isOwnedByAI()) aiUnits.add(myActor);
         }
+        Gdx.app.log("MyTag", aiUnits.size()+TAG);
     }
 }
