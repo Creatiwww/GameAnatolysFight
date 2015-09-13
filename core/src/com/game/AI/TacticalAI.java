@@ -114,7 +114,7 @@ public class TacticalAI {
 
                 blockedUnites[counter2] = chosenUnitIndex;
                 counter2++;
-                if(counter2==aiController.getAiUnits().size()) this.aiController.endAITurn();
+               // if(counter2==aiController.getAiUnits().size()) this.aiController.endAITurn();
             }
         }
         int newCellIndex=field.getCoordinates().getCellIndexByXYIndexes(actor.getPosition().cellIndexX,actor.getPosition().cellIndexY);

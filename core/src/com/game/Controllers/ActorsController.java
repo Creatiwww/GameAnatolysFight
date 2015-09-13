@@ -74,13 +74,13 @@ public class ActorsController {
     }
 
     public void spawnInitialSetOfPlayableActors(){
-        for (int i=0; i<8; i++) {
+        for (int i=0; i<4; i++) {
 
             if (i==0) actors.add(creatorPlayableActor1.factoryMethod());
             if (i==1) actors.add(creatorPlayableActor2.factoryMethod());
             if (i==2) actors.add(creatorPlayableActor3.factoryMethod());
             if (i==3) actors.add(creatorPlayableActor4.factoryMethod());
-            if (i==4) actors.add(creatorPlayableActor1.factoryMethod());
+           
 
             PlayableActor actor = (PlayableActor) actors.get(i);
             float actorSize=field.getCellWidth()*(1-(float)ACTOR_SIZE_MODIFICATOR);
