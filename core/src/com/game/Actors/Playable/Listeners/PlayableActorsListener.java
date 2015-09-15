@@ -2,6 +2,7 @@ package com.game.Actors.Playable.Listeners;
 
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.DragListener;
+import com.game.Actors.MyActor;
 import com.game.Actors.Playable.Products.PlayableActor;
 import com.game.Actors.Field;
 import com.game.Controllers.ActorsController;
@@ -16,6 +17,7 @@ public class PlayableActorsListener extends DragListener {
     private float rightFieldEdge,leftFieldEdge,topFieldEdge,bottomFieldEdge;
     private float originalActorsWidth, originalActorsHeight, actorsNewWidth, actorsNewHeight;
     private int actorCellIndexBeforeMovementX,actorCellIndexBeforeMovementY;
+    private boolean aiCell;
 
     public PlayableActorsListener(PlayableActor draggedActor, WorldController worldController){
         this.draggedActor=draggedActor;
@@ -31,6 +33,7 @@ public class PlayableActorsListener extends DragListener {
         float actorsSizeIncrease=0.3f;
         actorsNewWidth = originalActorsWidth*(1+actorsSizeIncrease); // actor's size after increase
         actorsNewHeight = originalActorsHeight*(1+actorsSizeIncrease);
+        aiCell = false;
     }
 
     @Override
@@ -71,19 +74,31 @@ public class PlayableActorsListener extends DragListener {
         int newCellIndex=field.getCoordinates().getCellIndexByXYIndexes(IndexX, IndexY);
         int oldCellIndex=field.getCoordinates().getCellIndexByXYIndexes(actorCellIndexBeforeMovementX,actorCellIndexBeforeMovementY);
         boolean flag=false;
-        if (!movementFacilitiesCheck(IndexX,IndexY)){
+        if (!movementFacilitiesCheck(IndexX,IndexY)){  // if this is not possible to move here due to cell is not empty or intent is out of the movement facilities
             newCellIndex=oldCellIndex;
+            if (aiCell){
+                draggedActor.attack(field.getCellByIndex(newCellIndex).getActorRef());
+                worldController.getTurn().endPlayerTurn();
+                x = fitActorToCellCenterX(oldCellIndex);
+                y = fitActorToCellCenterY(oldCellIndex);
+                draggedActor.setPosition(x, y);
+                flag=true;
+            }
         } else {
-            worldController.getTurn().endPlayerTurn(); //  this is possible to move and we end up the turn of player
-            field.getCellByIndex(oldCellIndex).setActorRef(null); // as well we set reference to actor's old cell as null
-            field.getCellByIndex(newCellIndex).setActorRef(draggedActor); // and we set reference to new actor's cell
-            flag=true;
+            if(!aiCell) {
+                worldController.getTurn().endPlayerTurn(); //  this is possible to move and we end up the turn of player
+                field.getCellByIndex(oldCellIndex).setActorRef(null); // as well we set reference to actor's old cell as null
+                field.getCellByIndex(newCellIndex).setActorRef(draggedActor); // and we set reference to new actor's cell
+                flag = true;
+            }
         }
-        x = fitActorToCellCenterX(newCellIndex);
-        y = fitActorToCellCenterY(newCellIndex);
-        draggedActor.getPosition().cellIndexX =IndexX;
-        draggedActor.getPosition().cellIndexY =IndexY;
-        draggedActor.setPosition(x, y);
+        if(!aiCell) {
+            x = fitActorToCellCenterX(newCellIndex);
+            y = fitActorToCellCenterY(newCellIndex);
+            draggedActor.getPosition().cellIndexX = IndexX;
+            draggedActor.getPosition().cellIndexY = IndexY;
+            draggedActor.setPosition(x, y);
+        }
         if (flag) worldController.getTurn().startAITurn(); //after player complete his turn we allow AI to move
     }
 
@@ -181,14 +196,28 @@ public class PlayableActorsListener extends DragListener {
         boolean XY=false;
         boolean YX=false;
         boolean flag=false;
-        if (oldPositionX==newPositionX && oldPositionY==newPositionY) return false;
-        if(((IndexX-oldPositionX>0)&&(IndexX-oldPositionX<=R))||((oldPositionX-IndexX>0)&&(oldPositionX-IndexX<=L)))X=true;
+        if (oldPositionX==newPositionX && oldPositionY==newPositionY) return false; // if we move to the same cell
+        if(((IndexX-oldPositionX>0)&&(IndexX-oldPositionX<=R))||((oldPositionX-IndexX>0)&&(oldPositionX-IndexX<=L)))X=true; // X means that actor does movement in right direction and this was in line with his movement facilities
         if(((IndexY-oldPositionY>0)&&(IndexY-oldPositionY<=T))||((oldPositionY-IndexY>0)&&(oldPositionY-IndexY<=B)))Y=true;
         if ((((oldPositionX-IndexX>0)&&(oldPositionX-IndexX<=BL))&&((oldPositionY-IndexY>0)&&(oldPositionY-IndexY<=BL)))||(((IndexX-oldPositionX>0)&&(IndexX-oldPositionX<=TR))&&((IndexY-oldPositionY>0)&&(IndexY-oldPositionY<=TR))))XY=true;
         if ((((oldPositionX-IndexX>0)&&(oldPositionX-IndexX<=TL))&&((IndexY-oldPositionY>0)&&(IndexY-oldPositionY<=TL)))||(((IndexX-oldPositionX>0)&&(IndexX-oldPositionX<=BR))&&((oldPositionY-IndexY>0)&&(oldPositionY-IndexY<=BR))))YX=true;
-        if ((field.getCellByIndex(field.getCoordinates().getCellIndexByXYIndexes(IndexX,IndexY)).getActorRef()==null)) {
+        MyActor actorRef = field.getCellByIndex(field.getCoordinates().getCellIndexByXYIndexes(IndexX,IndexY)).getActorRef();
+        if (actorRef==null) { // if the cell where we want to move is empty
             if (((X) && (IndexY - oldPositionY == 0)) || ((Y) && (IndexX - oldPositionX == 0)) || ((XY) && (Math.abs(newPositionX - oldPositionX) == Math.abs(newPositionY - oldPositionY))) || ((YX) && (Math.abs(newPositionX - oldPositionX) == Math.abs(newPositionY - oldPositionY))))
                 flag = true;
+        }else{
+            if (((X) && (IndexY - oldPositionY == 0)) || ((Y) && (IndexX - oldPositionX == 0)) || ((XY) && (Math.abs(newPositionX - oldPositionX) == Math.abs(newPositionY - oldPositionY))) || ((YX) && (Math.abs(newPositionX - oldPositionX) == Math.abs(newPositionY - oldPositionY)))) {
+                aiCell = playableOrAIUnitAtNewCell(actorRef);
+            }
+        }
+
+        return flag;
+    }
+
+    private boolean playableOrAIUnitAtNewCell(MyActor actorRef){
+        boolean flag=false;
+        if (actorRef.isOwnedByAI()){
+            flag = true;
         }
         return flag;
     }

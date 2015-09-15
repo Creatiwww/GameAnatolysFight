@@ -14,5 +14,8 @@ public class PlayableActor1 extends PlayableActor {
         this.getMovingFacilities().BR=2;
         this.getMovingFacilities().TL=2;
         this.getMovingFacilities().BL=2;
+        this.ATK=40;
+        this.maxHP=100;
+        super.initHP();
     }
 }

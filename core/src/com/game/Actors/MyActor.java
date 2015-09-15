@@ -11,9 +11,20 @@ public abstract class MyActor extends Actor {
     protected String texturePath;
     protected ActorPosition actorPosition;
     protected Boolean owner; //true - player; false - AI
+    protected int HP;
+    protected int maxHP;
+    protected int ATK;
 
     public ActorPosition getPosition(){
         return this.actorPosition;
+    }
+
+    public int getHP(){
+        return this.HP;
+    }
+
+    public void attack(MyActor actorRef){
+        actorRef.HP=-this.ATK;
     }
 
     public boolean isOwnedByAI(){
@@ -29,6 +40,10 @@ public abstract class MyActor extends Actor {
     protected void init(){
         texture=new Texture(Gdx.files.internal(texturePath));
         actorPosition= new ActorPosition();
+    }
+
+    protected void initHP(){
+        this.HP=this.maxHP;
     }
 
     @Override

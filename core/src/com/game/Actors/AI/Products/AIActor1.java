@@ -4,6 +4,9 @@ public class AIActor1 extends AIActor {
 
     public AIActor1() {
         texturePath = "Cupcake.png";
-        init();
+        super.init();
+        this.maxHP=100;
+        this.ATK=50;
+        super.initHP();
     }
 }

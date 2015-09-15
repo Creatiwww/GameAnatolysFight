@@ -9,17 +9,22 @@ import com.game.Controllers.WorldController;
 import com.game.Actors.Field;
 import com.game.ScreensAndStages.Stages.GameStage;
 
+import java.util.ArrayList;
+
 public class GameScreen extends MyScreen {
 
     private GameStage gameStage;
     private Field field;
+    private WorldController worldController;
 
     public GameScreen(WorldController worldController){
 
         super(worldController);
+        this.worldController=worldController;
         this.field=worldController.getActorsController().getField();
         gameStage=new GameStage(new StretchViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()), batch);
         gameStage.addActor(field);
+
         for(Object myActor:actorsController.getActors()) {
             gameStage.addActor((MyActor)myActor);
         }
@@ -38,6 +43,8 @@ public class GameScreen extends MyScreen {
     @Override
     public void render(float delta){
         // gameStage.act(delta);
+        worldController.getActorsController().deleteDeadUnits();
         gameStage.draw();
     }
+
 }

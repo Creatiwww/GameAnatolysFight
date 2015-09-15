@@ -5,6 +5,7 @@ import com.game.Actors.AI.Creators.CreatorAIActor;
 import com.game.Actors.AI.Creators.CreatorAIActor1;
 import com.game.Actors.AI.Products.AIActor;
 import com.game.Actors.AvailableForMovementCell;
+import com.game.Actors.MyActor;
 import com.game.Actors.Playable.Creators.CreatorPlayableActor;
 import com.game.Actors.Playable.Creators.CreatorPlayableActor1;
 import com.game.Actors.Playable.Creators.CreatorPlayableActor2;
@@ -131,5 +132,13 @@ public class ActorsController {
         cell= field.getCellByIndex(cellIndex);
         cell.setActorRef(actor);
 
+    }
+
+   public void deleteDeadUnits(){
+       //TODO: implement attack
+/*        for (int i=0; i<actors.size(); i++){
+            MyActor actor=(MyActor)this.actors.get(i);
+            if (actor.getHP()<=0) this.actors.remove(i);
+        }*/
     }
 }
