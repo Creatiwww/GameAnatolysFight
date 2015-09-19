@@ -1,5 +1,6 @@
 package com.game.Actors.Playable.Listeners;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.DragListener;
 import com.game.Actors.MyActor;
@@ -17,6 +18,7 @@ public class PlayableActorsListener extends DragListener {
     private float rightFieldEdge,leftFieldEdge,topFieldEdge,bottomFieldEdge;
     private float originalActorsWidth, originalActorsHeight, actorsNewWidth, actorsNewHeight;
     private int actorCellIndexBeforeMovementX,actorCellIndexBeforeMovementY;
+    private int oldCellIndex;
     private boolean aiCell;
 
     public PlayableActorsListener(PlayableActor draggedActor, WorldController worldController){
@@ -49,6 +51,7 @@ public class PlayableActorsListener extends DragListener {
             int IndexY = findYCellIndex(actorCenterPossitionY);
             actorCellIndexBeforeMovementX = IndexX;
             actorCellIndexBeforeMovementY = IndexY;
+            oldCellIndex=field.getCoordinates().getCellIndexByXYIndexes(actorCellIndexBeforeMovementX, actorCellIndexBeforeMovementY);
             draggedActor.getPosition().cellIndexX = IndexX;
             draggedActor.getPosition().cellIndexY = IndexY;
             draggedActor.setSize(actorsNewWidth, actorsNewHeight);
@@ -71,43 +74,80 @@ public class PlayableActorsListener extends DragListener {
         float actorCenterPositionY=actorPositionY+event.getListenerActor().getWidth()/2;
         int IndexX=findXCellIndex(actorCenterPositionX);
         int IndexY=findYCellIndex(actorCenterPositionY);
+        processMovementIntention(IndexX, IndexY);
+    }
+
+    private void processMovementIntention(int IndexX, int IndexY ) {
+        if (!movementFacilitiesCheck(IndexX, IndexY)) {
+            cancelMovement();
+            return;
+        }
+        if (isCellEmpty(IndexX, IndexY)) {
+            moveUnit(IndexX, IndexY);
+            worldController.getTurn().endPlayerTurn();
+            worldController.getTurn().startAITurn();
+            return;
+        }
+        if (isCellOccupiedByEnemy(IndexX, IndexY)) {
+            attackEnemy(IndexX, IndexY);
+            cancelMovement();
+            worldController.getTurn().endPlayerTurn();
+            worldController.getTurn().startAITurn();
+            return;
+        }
+        if (isAllyAvailableForMerge()) {
+            merge();
+            worldController.getTurn().endPlayerTurn();
+            worldController.getTurn().startAITurn();
+            return;
+        }
+        cancelMovement();
+    }
+
+    private void cancelMovement(){
+        float x = fitActorToCellCenterX(oldCellIndex);
+        float y = fitActorToCellCenterY(oldCellIndex);
+        draggedActor.setPosition(x, y);
+    }
+
+    private void moveUnit(int IndexX, int IndexY){
         int newCellIndex=field.getCoordinates().getCellIndexByXYIndexes(IndexX, IndexY);
-        int oldCellIndex=field.getCoordinates().getCellIndexByXYIndexes(actorCellIndexBeforeMovementX,actorCellIndexBeforeMovementY);
-        boolean flag=false;
-        if (!movementFacilitiesCheck(IndexX,IndexY)){  // if this is not possible to move here due to cell is not empty or intent is out of the movement facilities
-            newCellIndex=oldCellIndex;
-            if (aiCell){
-                draggedActor.attack(field.getCellByIndex(newCellIndex).getActorRef());
-                worldController.getTurn().endPlayerTurn();
-                x = fitActorToCellCenterX(oldCellIndex);
-                y = fitActorToCellCenterY(oldCellIndex);
-                draggedActor.setPosition(x, y);
-                flag=true;
-            }
-        } else {
-            if(!aiCell) {
-                worldController.getTurn().endPlayerTurn(); //  this is possible to move and we end up the turn of player
-                field.getCellByIndex(oldCellIndex).setActorRef(null); // as well we set reference to actor's old cell as null
-                field.getCellByIndex(newCellIndex).setActorRef(draggedActor); // and we set reference to new actor's cell
-                flag = true;
-            }
-        }
-        if(!aiCell) {
-            x = fitActorToCellCenterX(newCellIndex);
-            y = fitActorToCellCenterY(newCellIndex);
-            draggedActor.getPosition().cellIndexX = IndexX;
-            draggedActor.getPosition().cellIndexY = IndexY;
-            draggedActor.setPosition(x, y);
-        }
-        if (flag) worldController.getTurn().startAITurn(); //after player complete his turn we allow AI to move
+        float x = fitActorToCellCenterX(newCellIndex);
+        float y = fitActorToCellCenterY(newCellIndex);
+        draggedActor.setPosition(x, y);
+        field.getCellByIndex(oldCellIndex).setActorRef(null); // we set reference to actor's old cell as null
+        field.getCellByIndex(newCellIndex).setActorRef(draggedActor); // and we set reference to new actor's cell
     }
 
-    @Override
-    public void dragStart (InputEvent event, float x, float y, int pointer) {
+    private void attackEnemy(int IndexX, int IndexY){
+        int newCellIndex=field.getCoordinates().getCellIndexByXYIndexes(IndexX, IndexY);
+        Field.Cell cell=actorsController.getField().getCellByIndex(newCellIndex);
+        MyActor enemy=cell.getActorRef();
+        draggedActor.attack(enemy);
+        Gdx.app.log("MyTag", "Enemy HP equal" + enemy.getHP());
     }
 
-    @Override
-    public void dragStop (InputEvent event, float x, float y, int pointer) {
+    private void merge(){
+        //TODO: implement playable units merging
+    }
+
+    private boolean isCellEmpty(int IndexX, int IndexY){
+        int newCellIndex=field.getCoordinates().getCellIndexByXYIndexes(IndexX, IndexY);
+        Field.Cell cell=actorsController.getField().getCellByIndex(newCellIndex);
+        if (cell.isEpmty()) return true;
+        return false;
+    }
+
+    private boolean isCellOccupiedByEnemy(int IndexX, int IndexY){
+        int newCellIndex=field.getCoordinates().getCellIndexByXYIndexes(IndexX, IndexY);
+        Field.Cell cell=actorsController.getField().getCellByIndex(newCellIndex);
+        if (cell.getActorRef().isOwnedByAI()) return true;
+        return false;
+    }
+
+    private boolean isAllyAvailableForMerge(){
+        //TODO: implement playable units merging
+        return false;
     }
 
     // x, y - coordinates delta
@@ -149,7 +189,7 @@ public class PlayableActorsListener extends DragListener {
         return x;
     }
 
-    private float fitActorToCellCenterY(int cellIndex){
+    private float fitActorToCellCenterY(int cellIndex) {
         float y=field.getCellByIndex(cellIndex).getcY();
         y =fitActorToTouchCenterY(y);
         return y;
@@ -201,24 +241,8 @@ public class PlayableActorsListener extends DragListener {
         if(((IndexY-oldPositionY>0)&&(IndexY-oldPositionY<=T))||((oldPositionY-IndexY>0)&&(oldPositionY-IndexY<=B)))Y=true;
         if ((((oldPositionX-IndexX>0)&&(oldPositionX-IndexX<=BL))&&((oldPositionY-IndexY>0)&&(oldPositionY-IndexY<=BL)))||(((IndexX-oldPositionX>0)&&(IndexX-oldPositionX<=TR))&&((IndexY-oldPositionY>0)&&(IndexY-oldPositionY<=TR))))XY=true;
         if ((((oldPositionX-IndexX>0)&&(oldPositionX-IndexX<=TL))&&((IndexY-oldPositionY>0)&&(IndexY-oldPositionY<=TL)))||(((IndexX-oldPositionX>0)&&(IndexX-oldPositionX<=BR))&&((oldPositionY-IndexY>0)&&(oldPositionY-IndexY<=BR))))YX=true;
-        MyActor actorRef = field.getCellByIndex(field.getCoordinates().getCellIndexByXYIndexes(IndexX,IndexY)).getActorRef();
-        if (actorRef==null) { // if the cell where we want to move is empty
             if (((X) && (IndexY - oldPositionY == 0)) || ((Y) && (IndexX - oldPositionX == 0)) || ((XY) && (Math.abs(newPositionX - oldPositionX) == Math.abs(newPositionY - oldPositionY))) || ((YX) && (Math.abs(newPositionX - oldPositionX) == Math.abs(newPositionY - oldPositionY))))
                 flag = true;
-        }else{
-            if (((X) && (IndexY - oldPositionY == 0)) || ((Y) && (IndexX - oldPositionX == 0)) || ((XY) && (Math.abs(newPositionX - oldPositionX) == Math.abs(newPositionY - oldPositionY))) || ((YX) && (Math.abs(newPositionX - oldPositionX) == Math.abs(newPositionY - oldPositionY)))) {
-                aiCell = playableOrAIUnitAtNewCell(actorRef);
-            }
-        }
-
-        return flag;
-    }
-
-    private boolean playableOrAIUnitAtNewCell(MyActor actorRef){
-        boolean flag=false;
-        if (actorRef.isOwnedByAI()){
-            flag = true;
-        }
         return flag;
     }
 

@@ -135,10 +135,12 @@ public class ActorsController {
     }
 
    public void deleteDeadUnits(){
-       //TODO: implement attack
-/*        for (int i=0; i<actors.size(); i++){
+        for (int i=0; i<actors.size(); i++){
             MyActor actor=(MyActor)this.actors.get(i);
-            if (actor.getHP()<=0) this.actors.remove(i);
-        }*/
+            if (actor.getHP()<=0) {
+                this.actors.remove(i);
+                actor.remove();
+            }
+        }
     }
 }

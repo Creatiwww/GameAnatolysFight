@@ -66,6 +66,5 @@ public class AIController {
             MyActor myActor=(MyActor)myActors.get(i);
             if (myActor.isOwnedByAI()) aiUnits.add(myActor);
         }
-        Gdx.app.log("MyTag", aiUnits.size()+TAG);
     }
 }

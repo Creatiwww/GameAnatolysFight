@@ -24,7 +24,7 @@ public abstract class MyActor extends Actor {
     }
 
     public void attack(MyActor actorRef){
-        actorRef.HP=-this.ATK;
+        actorRef.HP=actorRef.HP-this.ATK;
     }
 
     public boolean isOwnedByAI(){
