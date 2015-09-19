@@ -4,7 +4,9 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.game.Actors.AvailableForMovementCell;
+import com.game.Actors.MergeableCell;
 import com.game.Actors.MyActor;
+import com.game.Actors.OccupiedByAICell;
 import com.game.Controllers.WorldController;
 import com.game.Actors.Field;
 import com.game.ScreensAndStages.Stages.GameStage;
@@ -32,17 +34,27 @@ public class GameScreen extends MyScreen {
 
     @Override
     public void drawAvailableForMovementCells(){
-        for(Object myAvailableCell:actorsController.getAvailableCell()) {
-            gameStage.addActor((AvailableForMovementCell)myAvailableCell);
-            Actor availableCell=(Actor)myAvailableCell;
-            availableCell.toBack();
+        Actor cell;
+        for(Object cellIterator:actorsController.getAvailableCell()) {
+            gameStage.addActor((AvailableForMovementCell)cellIterator);
+            cell=(Actor)cellIterator;
+            cell.toBack();
+        }
+        for(Object cellIterator:actorsController.getMergeableCell()) {
+            gameStage.addActor((MergeableCell)cellIterator);
+            cell=(Actor)cellIterator;
+            cell.toBack();
+        }
+        for(Object cellIterator:actorsController.getOccupiedByAICell()) {
+            gameStage.addActor((OccupiedByAICell)cellIterator);
+            cell=(Actor)cellIterator;
+            cell.toBack();
         }
         field.toBack();
     }
 
     @Override
     public void render(float delta){
-        // gameStage.act(delta);
         worldController.getActorsController().deleteDeadUnits();
         gameStage.draw();
     }

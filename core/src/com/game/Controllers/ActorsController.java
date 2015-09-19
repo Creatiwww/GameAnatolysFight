@@ -5,7 +5,9 @@ import com.game.Actors.AI.Creators.CreatorAIActor;
 import com.game.Actors.AI.Creators.CreatorAIActor1;
 import com.game.Actors.AI.Products.AIActor;
 import com.game.Actors.AvailableForMovementCell;
+import com.game.Actors.MergeableCell;
 import com.game.Actors.MyActor;
+import com.game.Actors.OccupiedByAICell;
 import com.game.Actors.Playable.Creators.CreatorPlayableActor;
 import com.game.Actors.Playable.Creators.CreatorPlayableActor1;
 import com.game.Actors.Playable.Creators.CreatorPlayableActor2;
@@ -29,6 +31,8 @@ public class ActorsController {
     private Field field;
     private WorldController worldController;
     private ArrayList availableCells;
+    private ArrayList occupiedByAICells;
+    private ArrayList mergeableCells;
     final double ACTOR_SIZE_MODIFICATOR=0.15;
 
     public ActorsController(WorldController worldController){
@@ -38,6 +42,8 @@ public class ActorsController {
         field.setSize(field.getCoordinates().getFieldWidth(), field.getCoordinates().getFieldHeight());
         field.setPosition(field.getCellByIndex(0).getbLX(), field.getCellByIndex(0).getbLY());
         availableCells = new ArrayList();
+        occupiedByAICells = new ArrayList();
+        mergeableCells = new ArrayList();
         creatorPlayableActor1=new CreatorPlayableActor1();
         creatorPlayableActor2=new CreatorPlayableActor2();
         creatorPlayableActor3=new CreatorPlayableActor3();
@@ -55,6 +61,12 @@ public class ActorsController {
     public ArrayList getAvailableCell(){
         return availableCells;
     }
+    public ArrayList getOccupiedByAICell(){
+        return occupiedByAICells;
+    }
+    public ArrayList getMergeableCell(){
+        return mergeableCells;
+    }
 
     public void drawAvailableForMovementCells(float x, float y){
         AvailableForMovementCell availableForMovementCell = new AvailableForMovementCell();
@@ -63,7 +75,27 @@ public class ActorsController {
         y= y - availableForMovementCell.getWidth() / 2;
         availableForMovementCell.setPosition(x, y);
         availableCells.add(availableForMovementCell);
-        worldController.getScreen().drawAvailableForMovementCells();
+        //worldController.getScreen().drawAvailableForMovementCells();
+    }
+
+    public void drawOccupiedByAICells(float x, float y){
+        OccupiedByAICell occupiedByAICell = new OccupiedByAICell();
+        occupiedByAICell.setSize(field.getCellWidth() - (field.getCellWidth() * 1446/16933), field.getCellWidth()-(field.getCellWidth() * 1446/16933));
+        x= x - occupiedByAICell.getWidth() / 2;
+        y= y - occupiedByAICell.getWidth() / 2;
+        occupiedByAICell.setPosition(x, y);
+        occupiedByAICells.add(occupiedByAICell);
+        //worldController.getScreen().drawAvailableForMovementCells();
+    }
+
+    public void drawMergeableCells(float x, float y){
+        MergeableCell mergeableCell = new MergeableCell();
+        mergeableCell.setSize(field.getCellWidth() - (field.getCellWidth() * 1446/16933), field.getCellWidth()-(field.getCellWidth() * 1446/16933));
+        x= x - mergeableCell.getWidth() / 2;
+        y= y - mergeableCell.getWidth() / 2;
+        mergeableCell.setPosition(x, y);
+        mergeableCells.add(mergeableCell);
+        //worldController.getScreen().drawAvailableForMovementCells();
     }
 
     public void clearAvailableForMovementCellsArray(){
@@ -71,7 +103,17 @@ public class ActorsController {
             Actor availableCell = (Actor) availableCells.get(i);
             availableCell.remove();
         }
+        for (int i=0; i<mergeableCells.size(); i++){
+            Actor mergeableCell = (Actor) mergeableCells.get(i);
+            mergeableCell.remove();
+        }
+        for (int i=0; i<occupiedByAICells.size(); i++){
+            Actor occupiedByAICell = (Actor) occupiedByAICells.get(i);
+            occupiedByAICell.remove();
+        }
         availableCells.clear();
+        mergeableCells.clear();
+        occupiedByAICells.clear();
     }
 
     public void spawnInitialSetOfPlayableActors(){
@@ -138,6 +180,12 @@ public class ActorsController {
         for (int i=0; i<actors.size(); i++){
             MyActor actor=(MyActor)this.actors.get(i);
             if (actor.getHP()<=0) {
+                // remove ref from the cell
+                int IndexX=actor.getPosition().cellIndexX;
+                int IndexY=actor.getPosition().cellIndexY;
+                int cellIndex=field.getCoordinates().getCellIndexByXYIndexes(IndexX,IndexY);
+                field.getCellByIndex(cellIndex).setActorRef(null);
+                // remove from array of actors to be added to stage
                 this.actors.remove(i);
                 actor.remove();
             }

@@ -95,7 +95,7 @@ public class PlayableActorsListener extends DragListener {
             worldController.getTurn().startAITurn();
             return;
         }
-        if (isAllyAvailableForMerge()) {
+        if (isAllyAvailableForMerge(IndexX,IndexY)) {
             merge();
             worldController.getTurn().endPlayerTurn();
             worldController.getTurn().startAITurn();
@@ -141,11 +141,13 @@ public class PlayableActorsListener extends DragListener {
     private boolean isCellOccupiedByEnemy(int IndexX, int IndexY){
         int newCellIndex=field.getCoordinates().getCellIndexByXYIndexes(IndexX, IndexY);
         Field.Cell cell=actorsController.getField().getCellByIndex(newCellIndex);
-        if (cell.getActorRef().isOwnedByAI()) return true;
+        if (cell.getActorRef()!=null){
+            if(cell.getActorRef().isOwnedByAI()) return true;
+        }
         return false;
     }
 
-    private boolean isAllyAvailableForMerge(){
+    private boolean isAllyAvailableForMerge(int IndexX, int IndexY){
         //TODO: implement playable units merging
         return false;
     }
@@ -246,13 +248,18 @@ public class PlayableActorsListener extends DragListener {
         return flag;
     }
 
-    private void displayAvailableForMovementCells(){
+    private void displayAvailableForMovementCells(){ // Cell occupied by AI, Mergeable, Empty
         Field.Cell cell;
+        boolean isMovable, isMergeable, isAI;
         for (int i=0; i<field.getCoordinates().getFieldSize(); i++){
             cell=field.getCellByIndex(i);
-            if(movementFacilitiesCheck(cell.getIndexX(), cell.getIndexY())){
-                actorsController.drawAvailableForMovementCells(cell.getcX(), cell.getcY());
-            }
+            isMovable = movementFacilitiesCheck(cell.getIndexX(), cell.getIndexY());
+            isMergeable = isAllyAvailableForMerge(cell.getIndexX(), cell.getIndexY());
+            isAI=isCellOccupiedByEnemy(cell.getIndexX(), cell.getIndexY());
+            if((isMovable && !isMergeable && !isAI))  actorsController.drawAvailableForMovementCells(cell.getcX(), cell.getcY());
+            if(isMovable && isMergeable)  actorsController.drawMergeableCells(cell.getcX(), cell.getcY());
+            if(isMovable && isAI) actorsController.drawOccupiedByAICells(cell.getcX(), cell.getcY());
+            worldController.getScreen().drawAvailableForMovementCells();
         }
     }
 
