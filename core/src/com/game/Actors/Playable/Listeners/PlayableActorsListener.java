@@ -250,13 +250,14 @@ public class PlayableActorsListener extends DragListener {
 
     private void displayAvailableForMovementCells(){ // Cell occupied by AI, Mergeable, Empty
         Field.Cell cell;
-        boolean isMovable, isMergeable, isAI;
+        boolean isMovable, isMergeable, isAI, isEmpty;
         for (int i=0; i<field.getCoordinates().getFieldSize(); i++){
             cell=field.getCellByIndex(i);
             isMovable = movementFacilitiesCheck(cell.getIndexX(), cell.getIndexY());
             isMergeable = isAllyAvailableForMerge(cell.getIndexX(), cell.getIndexY());
             isAI=isCellOccupiedByEnemy(cell.getIndexX(), cell.getIndexY());
-            if((isMovable && !isMergeable && !isAI))  actorsController.drawAvailableForMovementCells(cell.getcX(), cell.getcY());
+            isEmpty = isCellEmpty(cell.getIndexX(), cell.getIndexY());
+            if((isMovable && isEmpty))  actorsController.drawAvailableForMovementCells(cell.getcX(), cell.getcY());
             if(isMovable && isMergeable)  actorsController.drawMergeableCells(cell.getcX(), cell.getcY());
             if(isMovable && isAI) actorsController.drawOccupiedByAICells(cell.getcX(), cell.getcY());
             worldController.getScreen().drawAvailableForMovementCells();

@@ -2,7 +2,10 @@ package com.game.AI;
 
 import com.game.Actors.AI.Products.AIActor;
 import com.game.Actors.Field;
+import com.game.Actors.MyActor;
 import com.game.Controllers.AIController;
+
+import java.util.ArrayList;
 import java.util.Random;
 
 public class TacticalAI {
@@ -13,7 +16,7 @@ public class TacticalAI {
     private int chosenUnitIndex;
     private AIActor actor;
     private int counter2; //counter of ai units with no ability to move
-
+    private ArrayList <ArrayPath> arrayPath;
 
     public TacticalAI(AIController aiController){
         this.aiController=aiController;
@@ -127,6 +130,8 @@ public class TacticalAI {
     }
 
     private void attackStrategyImplementation(){
+        // initiating an array of path between AI units and Playable units
+        if (arrayPath==null) arrayPath=new ArrayList<ArrayPath>();
 
     }
 
@@ -149,10 +154,15 @@ public class TacticalAI {
         return (AIActor) aiController.getAiUnits().get(chosenUnitIndex);
     }
 
-
     private boolean isCellEmpty(int cellIndexX, int cellIndexY){
         int cellIndex=field.getCoordinates().getCellIndexByXYIndexes(cellIndexX,cellIndexY);
         return field.getCellByIndex(cellIndex).isEpmty();
+    }
+
+    private class ArrayPath {
+        protected int stepsQuantity;
+        protected MyActor aiUnitRef;
+        protected MyActor playableUnitRef;
     }
 }
 
