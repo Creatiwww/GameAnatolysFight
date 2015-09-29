@@ -28,6 +28,7 @@ public class ActorsController {
     private CreatorPlayableActor creatorPlayableActor4;
     private CreatorAIActor creatorAIActor1;
     private ArrayList actors;
+    private ArrayList <MyActor> pActors;
     private Field field;
     private WorldController worldController;
     private ArrayList availableCells;
@@ -54,6 +55,14 @@ public class ActorsController {
 
     public ArrayList getActors(){
         return actors;
+    }
+    public ArrayList getPActors(){
+        pActors=new <MyActor>ArrayList(actors);
+        for (int i=0; i<pActors.size();i++){
+            MyActor actor=pActors.get(i);
+            if(!actor.isOwnedByPlayer()) pActors.remove(i);
+        }
+        return pActors;
     }
     public Field getField(){
         return field;
