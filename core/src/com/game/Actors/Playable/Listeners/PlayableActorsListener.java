@@ -117,6 +117,8 @@ public class PlayableActorsListener extends DragListener {
         draggedActor.setPosition(x, y);
         field.getCellByIndex(oldCellIndex).setActorRef(null); // we set reference to actor's old cell as null
         field.getCellByIndex(newCellIndex).setActorRef(draggedActor); // and we set reference to new actor's cell
+        draggedActor.getPosition().cellIndexX=IndexX;
+        draggedActor.getPosition().cellIndexY=IndexY;
     }
 
     private void attackEnemy(int IndexX, int IndexY){

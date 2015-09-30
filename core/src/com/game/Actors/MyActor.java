@@ -28,13 +28,11 @@ public abstract class MyActor extends Actor {
     }
 
     public boolean isOwnedByAI(){
-        if (!this.owner)return true;
-        return false;
+        return (!this.owner);
     }
 
     public boolean isOwnedByPlayer(){
-        if (this.owner)return true;
-        return false;
+        return (this.owner);
     }
 
     protected void init(){

@@ -160,7 +160,7 @@ public class Field extends Actor {
             return getCellByIndex(0).bLY;
         }
 
-        public int getCellIndexByXYIndexes(int IndexX, int IndexY){
+        public int getCellIndexByXYIndexes(int IndexX, int IndexY){ //TODO bug is there!!!
             int i;
             for (i=0; i<fieldSize; i++ ){
                 if (getCellByIndex(i).getIndexX()==IndexX && getCellByIndex(i).getIndexY()==IndexY) break;

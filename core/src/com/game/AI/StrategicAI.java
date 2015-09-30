@@ -12,7 +12,8 @@ public class StrategicAI {
 
     public void defineStrategy(){
         //TODO: the core of strategic AI logic should be there
-        setObserveStrategy();
+        // setObserveStrategy();
+        setAttackStrategy();
     }
 
     private void setDefendStrategy(){

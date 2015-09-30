@@ -58,7 +58,8 @@ public class ActorsController {
     }
     public ArrayList getPActors(){
         pActors=new <MyActor>ArrayList(actors);
-        for (int i=0; i<pActors.size();i++){
+        int size=pActors.size();
+        for (int i=size-1; i>-1; i--){
             MyActor actor=pActors.get(i);
             if(!actor.isOwnedByPlayer()) pActors.remove(i);
         }
