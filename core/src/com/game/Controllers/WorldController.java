@@ -2,6 +2,7 @@ package com.game.Controllers;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.game.Main.GameConstants;
 import com.game.ScreensAndStages.Screens.MyScreen;
 
 public class WorldController  {
@@ -30,6 +31,10 @@ public class WorldController  {
         return actorsController;
     }
 
+    public AIController getAiController(){
+        return aiController;
+    }
+
     public MyScreen getScreen(){
         return screenController.getScreen();
     }
@@ -40,14 +45,21 @@ public class WorldController  {
 
     public class Turn {
         public int turnIndex; // 0 - nobody; 1 - player; 2 - AI
+        public boolean isTurnAlreadyMadeByAI;
 
         Turn(){
-            turnIndex=0;
+            this.turnIndex=0;
+            this.isTurnAlreadyMadeByAI=false;
         }
 
+        public void setTurnAlreadyMadeByAI(){
+            isTurnAlreadyMadeByAI=true;
+        }
+        public boolean isTurnAlreadyMadeByAI(){
+            return isTurnAlreadyMadeByAI;
+        }
         public void startAITurn(){
             setAITurn();
-            aiController.startAITurn();
         }
         public void endAITurn(){
             setNobodyTurn();
@@ -79,6 +91,7 @@ public class WorldController  {
             turnIndex=1;
         }
         private void setNobodyTurn(){
+            isTurnAlreadyMadeByAI=false; // TODO < ----------------
             turnIndex=0;
         }
 

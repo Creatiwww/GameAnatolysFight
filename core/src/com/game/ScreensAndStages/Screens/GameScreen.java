@@ -9,6 +9,7 @@ import com.game.Actors.MyActor;
 import com.game.Actors.OccupiedByAICell;
 import com.game.Controllers.WorldController;
 import com.game.Actors.Field;
+import com.game.Main.GameConstants;
 import com.game.ScreensAndStages.Stages.GameStage;
 
 import java.util.ArrayList;
@@ -57,6 +58,9 @@ public class GameScreen extends MyScreen {
     public void render(float delta){
         worldController.getActorsController().deleteDeadUnits();
         gameStage.draw();
+        if (worldController.getTurn().isAITurn() && !worldController.getTurn().isTurnAlreadyMadeByAI()){
+            worldController.getTurn().setTurnAlreadyMadeByAI(); // ai turn already initiated
+            worldController.getAiController().startAITurn();
+        }
     }
-
 }

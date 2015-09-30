@@ -34,9 +34,11 @@ public class TacticalAI {
     private void attackStrategyImplementation(){
         // initiating an array of path between AI units and Playable units
         if (arrayPath==null) arrayPath=new ArrayList<ArrayPath>();
+        if (arrayPath!=null) arrayPath.clear();
         waveTrace();
         ArrayPath bestPath = chosePath(); // which AI should attack which player
         defineCommand(bestPath);
+        aiController.endAITurn();
     }
 
     private void waveTrace(){
@@ -66,7 +68,6 @@ public class TacticalAI {
                 array[i][j]=-1;
             }
         }
-
 
         int x=aiUnit.getPosition().cellIndexX;
         int y=aiUnit.getPosition().cellIndexY;
@@ -197,8 +198,8 @@ public class TacticalAI {
     }
 
     private ArrayPath chosePath(){
-        final double K_HP=0.001;
-        final double K_STEPS=0.999;
+        final double K_HP=0.0000001;
+        final double K_STEPS=0.9999999;
         double targetEstimation= arrayPath.get(0).playableUnitHP*K_HP+arrayPath.get(0).stepsQuantity*K_STEPS;
         ArrayPath bestPath = arrayPath.get(0);
         for (int i=0; i<arrayPath.size(); i++){
@@ -214,13 +215,24 @@ public class TacticalAI {
 
         Field.Cell cell=field.getCellByIndex(path.nextMoveCellIndex);
         boolean isCellWhereAiWillMoveOccupiedByPUnit=false;
-        if (cell.getActorRef().isOwnedByPlayer()) isCellWhereAiWillMoveOccupiedByPUnit=true;
+        if (cell.getActorRef()!=null) {
+            if (cell.getActorRef().isOwnedByPlayer()) {
+                isCellWhereAiWillMoveOccupiedByPUnit = true;
+            }
+        }
         AIActor aiUnit=(AIActor)path.aiUnitRef;
         if (isCellWhereAiWillMoveOccupiedByPUnit){
             aiUnit.attack(path.playableUnitRef);
             return;
         }
-        int cellWhereAiWillMoveIndexX=cell.getIndexX();
+        int oldCellIndexX = aiUnit.getPosition().cellIndexX;
+        int oldCellIndexY = aiUnit.getPosition().cellIndexY;
+        int oldCellIndex = field.getCoordinates().getCellIndexByXYIndexes(oldCellIndexX,oldCellIndexY);
+        field.getCellByIndex(oldCellIndex).setActorRef(null);
+        cell.setActorRef(aiUnit);
+        aiUnit.getPosition().cellIndexX=cell.getIndexX();
+        aiUnit.getPosition().cellIndexY=cell.getIndexY();
+/*        int cellWhereAiWillMoveIndexX=cell.getIndexX();
         int cellWhereAiWillMoveIndexY=cell.getIndexY();
         int aiUnitCellIndexX=aiUnit.getPosition().cellIndexX;
         int aiUnitCellIndexY=aiUnit.getPosition().cellIndexY;
@@ -228,7 +240,7 @@ public class TacticalAI {
         if (aiUnitCellIndexX==cellWhereAiWillMoveIndexX && aiUnitCellIndexY-cellWhereAiWillMoveIndexY==1) aiUnit.moveD();
         if (aiUnitCellIndexX==cellWhereAiWillMoveIndexX && aiUnitCellIndexY-cellWhereAiWillMoveIndexY==-1) aiUnit.moveT();
         if (aiUnitCellIndexY==cellWhereAiWillMoveIndexY && aiUnitCellIndexX-cellWhereAiWillMoveIndexX==1) aiUnit.moveL();
-        if (aiUnitCellIndexY==cellWhereAiWillMoveIndexY && aiUnitCellIndexX-cellWhereAiWillMoveIndexX==-1) aiUnit.moveR();
+        if (aiUnitCellIndexY==cellWhereAiWillMoveIndexY && aiUnitCellIndexX-cellWhereAiWillMoveIndexX==-1) aiUnit.moveR();*/
     }
 
     private void observeStrategyImplementation(){
