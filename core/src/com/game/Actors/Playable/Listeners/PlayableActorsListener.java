@@ -3,6 +3,7 @@ package com.game.Actors.Playable.Listeners;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.DragListener;
+import com.game.Actors.AI.Products.AIActor;
 import com.game.Actors.MyActor;
 import com.game.Actors.Playable.Products.PlayableActor;
 import com.game.Actors.Field;
@@ -95,8 +96,8 @@ public class PlayableActorsListener extends DragListener {
             worldController.getTurn().startAITurn();
             return;
         }
-        if (isAllyAvailableForMerge(IndexX,IndexY)) {
-            merge();
+        if (isCellAvailableForMerge(IndexX, IndexY)) {
+            merge(IndexX, IndexY);
             worldController.getTurn().endPlayerTurn();
             worldController.getTurn().startAITurn();
             return;
@@ -121,27 +122,36 @@ public class PlayableActorsListener extends DragListener {
         draggedActor.getPosition().cellIndexY=IndexY;
     }
 
-    private void attackEnemy(int IndexX, int IndexY){
-        int newCellIndex=field.getCoordinates().getCellIndexByXYIndexes(IndexX, IndexY);
+    private void attackEnemy(int indexX, int indexY){
+        int newCellIndex=field.getCoordinates().getCellIndexByXYIndexes(indexX, indexY);
         Field.Cell cell=actorsController.getField().getCellByIndex(newCellIndex);
         MyActor enemy=cell.getActorRef();
         draggedActor.attack(enemy);
-        Gdx.app.log("MyTag", "Enemy HP equal" + enemy.getHP());
     }
 
-    private void merge(){
-        //TODO: implement playable units merging
+    private void merge(int indexX, int indexY){
+        int pActorCellIndex=field.getCoordinates().getCellIndexByXYIndexes(indexX, indexY);
+        Field.Cell cell=field.getCellByIndex(pActorCellIndex);
+        PlayableActor secondPActor=(PlayableActor) cell.getActorRef();
+        int spawnCellIndex=findAvailableForSpawnCell(draggedActor, secondPActor);
+        worldController.getActorsController().spawnChild(spawnCellIndex);
+        cancelMovement();
     }
 
-    private boolean isCellEmpty(int IndexX, int IndexY){
-        int newCellIndex=field.getCoordinates().getCellIndexByXYIndexes(IndexX, IndexY);
+    private int findAvailableForSpawnCell(PlayableActor firstPActor, PlayableActor secondPActor){
+        // TODO<---------------------Implement
+        return 6;
+
+    }
+
+    private boolean isCellEmpty(int indexX, int indexY){
+        int newCellIndex=field.getCoordinates().getCellIndexByXYIndexes(indexX, indexY);
         Field.Cell cell=actorsController.getField().getCellByIndex(newCellIndex);
-        if (cell.isEpmty()) return true;
-        return false;
+        return cell.isEpmty();
     }
 
-    private boolean isCellOccupiedByEnemy(int IndexX, int IndexY){
-        int newCellIndex=field.getCoordinates().getCellIndexByXYIndexes(IndexX, IndexY);
+    private boolean isCellOccupiedByEnemy(int indexX, int indexY){
+        int newCellIndex=field.getCoordinates().getCellIndexByXYIndexes(indexX, indexY);
         Field.Cell cell=actorsController.getField().getCellByIndex(newCellIndex);
         if (cell.getActorRef()!=null){
             if(cell.getActorRef().isOwnedByAI()) return true;
@@ -149,9 +159,15 @@ public class PlayableActorsListener extends DragListener {
         return false;
     }
 
-    private boolean isAllyAvailableForMerge(int IndexX, int IndexY){
-        //TODO: implement playable units merging
-        return false;
+    private boolean isCellAvailableForMerge(int indexX, int indexY){
+
+        int cellIndex=field.getCoordinates().getCellIndexByXYIndexes(indexX, indexY);
+        Field.Cell cell=field.getCellByIndex(cellIndex);
+        if (cell.isEpmty() || cell.getActorRef().isOwnedByAI()) return false;
+        else {
+            PlayableActor pActor = (PlayableActor) cell.getActorRef();
+            return (draggedActor.isReproductive() && pActor.isReproductive());
+        }
     }
 
     // x, y - coordinates delta
@@ -256,7 +272,7 @@ public class PlayableActorsListener extends DragListener {
         for (int i=0; i<field.getCoordinates().getFieldSize(); i++){
             cell=field.getCellByIndex(i);
             isMovable = movementFacilitiesCheck(cell.getIndexX(), cell.getIndexY());
-            isMergeable = isAllyAvailableForMerge(cell.getIndexX(), cell.getIndexY());
+            isMergeable = isCellAvailableForMerge(cell.getIndexX(), cell.getIndexY());
             isAI=isCellOccupiedByEnemy(cell.getIndexX(), cell.getIndexY());
             isEmpty = isCellEmpty(cell.getIndexX(), cell.getIndexY());
             if((isMovable && isEmpty))  actorsController.drawAvailableForMovementCells(cell.getcX(), cell.getcY());

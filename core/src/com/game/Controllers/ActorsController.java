@@ -16,6 +16,7 @@ import com.game.Actors.Playable.Creators.CreatorPlayableActor4;
 import com.game.Actors.Playable.Listeners.PlayableActorsListener;
 import com.game.Actors.Field;
 import com.game.Actors.Playable.Products.PlayableActor;
+import com.game.ScreensAndStages.Screens.GameScreen;
 
 import java.util.ArrayList;
 
@@ -184,6 +185,20 @@ public class ActorsController {
         cell= field.getCellByIndex(cellIndex);
         cell.setActorRef(actor);
 
+    }
+
+    public void spawnChild(int spawnCellIndex){
+        actors.add(creatorPlayableActor1.factoryMethod());
+        int actorIndex=actors.size()-1;
+        PlayableActor actor = (PlayableActor) actors.get(actorIndex);
+        float actorSize=field.getCellWidth()*(1-(float)ACTOR_SIZE_MODIFICATOR);
+        actor.setSize(actorSize, actorSize);
+        Field.Cell spawnCell=field.getCellByIndex(spawnCellIndex);
+        actor.getPosition().cellIndexX =spawnCell.getIndexX();
+        actor.getPosition().cellIndexY =spawnCell.getIndexY();
+        spawnCell.setActorRef(actor);
+        actor.setPosition(spawnCell.getcX() - actor.getWidth() / 2, spawnCell.getcY() - actor.getHeight() / 2);
+        actor.addListener(new PlayableActorsListener(actor, worldController));
     }
 
    public void deleteDeadUnits(){

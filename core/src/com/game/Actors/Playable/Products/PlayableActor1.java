@@ -16,6 +16,8 @@ public class PlayableActor1 extends PlayableActor {
         this.getMovingFacilities().BL=2;
         this.ATK=40;
         this.maxHP=100;
+        this.reproduction=true;
+        this.gender='F';
         super.initHP();
     }
 }
