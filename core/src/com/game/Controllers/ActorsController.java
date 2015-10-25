@@ -13,6 +13,7 @@ import com.game.Actors.Playable.Creators.CreatorPlayableActor1;
 import com.game.Actors.Playable.Creators.CreatorPlayableActor2;
 import com.game.Actors.Playable.Creators.CreatorPlayableActor3;
 import com.game.Actors.Playable.Creators.CreatorPlayableActor4;
+import com.game.Actors.Playable.Creators.CreatorPlayableActor5;
 import com.game.Actors.Playable.Listeners.PlayableActorsListener;
 import com.game.Actors.Field;
 import com.game.Actors.Playable.Products.PlayableActor;
@@ -27,6 +28,7 @@ public class ActorsController {
     private CreatorPlayableActor creatorPlayableActor2;
     private CreatorPlayableActor creatorPlayableActor3;
     private CreatorPlayableActor creatorPlayableActor4;
+    private CreatorPlayableActor creatorPlayableActor5;
     private CreatorAIActor creatorAIActor1;
     private ArrayList actors;
     private ArrayList <MyActor> pActors;
@@ -50,6 +52,7 @@ public class ActorsController {
         creatorPlayableActor2=new CreatorPlayableActor2();
         creatorPlayableActor3=new CreatorPlayableActor3();
         creatorPlayableActor4=new CreatorPlayableActor4();
+        creatorPlayableActor5=new CreatorPlayableActor5();
         creatorAIActor1=new CreatorAIActor1();
         worldController.getTurn().startPlayerTurn();
     }
@@ -188,17 +191,19 @@ public class ActorsController {
     }
 
     public void spawnChild(int spawnCellIndex){
-        actors.add(creatorPlayableActor1.factoryMethod());
+        actors.add(creatorPlayableActor5.factoryMethod());
         int actorIndex=actors.size()-1;
         PlayableActor actor = (PlayableActor) actors.get(actorIndex);
         float actorSize=field.getCellWidth()*(1-(float)ACTOR_SIZE_MODIFICATOR);
         actor.setSize(actorSize, actorSize);
+        //actor.toFront();
         Field.Cell spawnCell=field.getCellByIndex(spawnCellIndex);
         actor.getPosition().cellIndexX =spawnCell.getIndexX();
         actor.getPosition().cellIndexY =spawnCell.getIndexY();
         spawnCell.setActorRef(actor);
         actor.setPosition(spawnCell.getcX() - actor.getWidth() / 2, spawnCell.getcY() - actor.getHeight() / 2);
         actor.addListener(new PlayableActorsListener(actor, worldController));
+        worldController.getScreen().drawActors();
     }
 
    public void deleteDeadUnits(){

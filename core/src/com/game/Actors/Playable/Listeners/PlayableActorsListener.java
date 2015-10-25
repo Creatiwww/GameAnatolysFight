@@ -10,6 +10,9 @@ import com.game.Actors.Field;
 import com.game.Controllers.ActorsController;
 import com.game.Controllers.WorldController;
 
+import java.util.ArrayList;
+import java.util.Random;
+
 public class PlayableActorsListener extends DragListener {
 
     private Field field;
@@ -98,6 +101,7 @@ public class PlayableActorsListener extends DragListener {
         }
         if (isCellAvailableForMerge(IndexX, IndexY)) {
             merge(IndexX, IndexY);
+            cancelMovement();
             worldController.getTurn().endPlayerTurn();
             worldController.getTurn().startAITurn();
             return;
@@ -139,14 +143,34 @@ public class PlayableActorsListener extends DragListener {
     }
 
     private int findAvailableForSpawnCell(PlayableActor firstPActor, PlayableActor secondPActor){
-        // TODO<---------------------Implement
-        return 6;
-
+        ArrayList cells = new ArrayList();
+        int actorPosX;
+        int actorPosY;
+        ArrayList <PlayableActor> actors = new ArrayList();
+        actors.add(firstPActor);
+        actors.add(secondPActor);
+        for (PlayableActor actor: actors) {
+            actorPosX = actor.getPosition().cellIndexX;
+            actorPosY = actor.getPosition().cellIndexY;
+            for (int i = actorPosX - 1; i <= actorPosX + 1; i++) {
+                for (int j = actorPosY - 1; j <= actorPosY + 1; j++) {
+                    if (i == 0 || j == 0 || i == field.getFeildSizeX() + 1 || j == field.getFeildSizeY() + 1)
+                        continue;
+                    if (isCellEmpty(i, j))
+                        cells.add(field.getCoordinates().getCellIndexByXYIndexes(i, j));
+                }
+            }
+        }
+        if (cells.size()==0) return -1;
+        Random random=new Random();
+        int randomInt=random.nextInt(cells.size());
+        Integer cellIndex=(Integer)cells.get(randomInt);
+        return cellIndex;
     }
 
     private boolean isCellEmpty(int indexX, int indexY){
         int newCellIndex=field.getCoordinates().getCellIndexByXYIndexes(indexX, indexY);
-        Field.Cell cell=actorsController.getField().getCellByIndex(newCellIndex);
+        Field.Cell cell=field.getCellByIndex(newCellIndex);
         return cell.isEpmty();
     }
 
@@ -160,13 +184,16 @@ public class PlayableActorsListener extends DragListener {
     }
 
     private boolean isCellAvailableForMerge(int indexX, int indexY){
-
+        boolean flag=false;
         int cellIndex=field.getCoordinates().getCellIndexByXYIndexes(indexX, indexY);
         Field.Cell cell=field.getCellByIndex(cellIndex);
         if (cell.isEpmty() || cell.getActorRef().isOwnedByAI()) return false;
         else {
             PlayableActor pActor = (PlayableActor) cell.getActorRef();
-            return (draggedActor.isReproductive() && pActor.isReproductive());
+            if ((draggedActor.isMan() && pActor.isFemale()) ||
+                    (draggedActor.isFemale() && pActor.isMan())) flag = true;
+            if (findAvailableForSpawnCell(draggedActor, pActor)==-1) return false;
+            return (draggedActor.isReproductive() && pActor.isReproductive() && flag);
         }
     }
 

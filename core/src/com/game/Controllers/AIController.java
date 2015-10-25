@@ -38,7 +38,7 @@ public class AIController {
 
     public void startAITurn(){
         strategicAI.defineStrategy();
-        tacticalAI.implementStrategy();
+        tacticalAI.implementStrategy(); //TODO: bug is there!!!
     }
 
     public void endAITurn(){
