@@ -18,6 +18,9 @@ public class PlayableActor3 extends PlayableActor {
         this.ATK=70;
         this.reproduction=false;
         this.gender='F';
+        this.age=6;
+        this.reproductionPause=0;
+        this.type='O';
         super.initHP();
     }
 }

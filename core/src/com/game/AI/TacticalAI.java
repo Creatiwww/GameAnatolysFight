@@ -370,7 +370,7 @@ public class TacticalAI {
         protected int stepsQuantity;
         protected MyActor aiUnitRef;
         protected MyActor playableUnitRef;
-        protected int playableUnitHP;
+        protected double playableUnitHP;
         protected int nextMoveCellIndex;
 
         ArrayPath(int stepsQuantity, MyActor aiUnitRef, MyActor playableUnitRef){

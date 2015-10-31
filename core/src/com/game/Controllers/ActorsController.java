@@ -17,9 +17,9 @@ import com.game.Actors.Playable.Creators.CreatorPlayableActor5;
 import com.game.Actors.Playable.Listeners.PlayableActorsListener;
 import com.game.Actors.Field;
 import com.game.Actors.Playable.Products.PlayableActor;
-import com.game.ScreensAndStages.Screens.GameScreen;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 public class ActorsController {
     private static final String TAG = ActorsController.class.getName();
@@ -205,6 +205,86 @@ public class ActorsController {
         actor.addListener(new PlayableActorsListener(actor, worldController));
         worldController.getScreen().drawActors();
     }
+
+    public void reproductionPauseRedaction(){
+        for (Object PActor: getPActors()){
+            PlayableActor playableActor = (PlayableActor) PActor;
+            if (playableActor.getReproductionPause()!=0)playableActor.setReproductionPause(playableActor.getReproductionPause() - 1);
+        }
+    }
+    public void ageIncrease(){
+        for (Object PActor: getPActors()){
+            PlayableActor playableActor = (PlayableActor) PActor;
+            playableActor.setAge(playableActor.getAge() + 1);
+        }
+    }
+    public void maturation(){
+        float actorSize=field.getCellWidth()*(1-(float)ACTOR_SIZE_MODIFICATOR);
+        double bufHP;
+        for (int i=0; i<actors.size(); i++){
+            MyActor PActor = (MyActor)actors.get(i);
+            if(PActor.isOwnedByPlayer()) {
+                PlayableActor playableActor = (PlayableActor) PActor;
+                if (playableActor.isOld() && playableActor.getAge() == 9) {
+                    // remove ref from the cell
+                    int IndexX = playableActor.getPosition().cellIndexX;
+                    int IndexY = playableActor.getPosition().cellIndexY;
+                    int cellIndex = field.getCoordinates().getCellIndexByXYIndexes(IndexX, IndexY);
+                    field.getCellByIndex(cellIndex).setActorRef(null);
+                    // remove from array of actors to be added to stage
+                    this.actors.remove(i);
+                    i--;
+                    playableActor.remove();
+                }
+                if (playableActor.isYoung() && playableActor.getAge() == 6) {
+                    if(playableActor.isFemale())actors.add(creatorPlayableActor3.factoryMethod());
+                    if(playableActor.isMan())actors.add(creatorPlayableActor4.factoryMethod());
+                    PlayableActor newPlayableActor = (PlayableActor) actors.get(actors.size()-1);
+                    int IndexX = playableActor.getPosition().cellIndexX;
+                    int IndexY = playableActor.getPosition().cellIndexY;
+                    int cellIndex = field.getCoordinates().getCellIndexByXYIndexes(IndexX, IndexY);
+                    Field.Cell cellForSpawn = field.getCellByIndex(cellIndex);
+                    cellForSpawn.setActorRef(newPlayableActor);
+                    bufHP = playableActor.getHP()/playableActor.getMaxHP();
+                    playableActor.remove();
+                    newPlayableActor.getPosition().cellIndexX =IndexX;
+                    newPlayableActor.getPosition().cellIndexY =IndexY;
+                    newPlayableActor.setSize(actorSize, actorSize);
+                    newPlayableActor.setPosition(cellForSpawn.getcX() - newPlayableActor.getWidth() / 2, cellForSpawn.getcY()-newPlayableActor.getHeight() / 2);
+                    newPlayableActor.addListener(new PlayableActorsListener(newPlayableActor, worldController));
+                    newPlayableActor.setHP(bufHP * newPlayableActor.getHP());
+                    this.actors.remove(i);
+                    i--;
+
+
+                }
+                if (playableActor.isNewBorn() && playableActor.getAge() == 3) {
+                    Random random = new Random();
+                    int rndVal = random.nextInt(2);
+                    if(rndVal==0)actors.add(creatorPlayableActor1.factoryMethod());
+                    if(rndVal==1)actors.add(creatorPlayableActor2.factoryMethod());
+                    PlayableActor newPlayableActor = (PlayableActor) actors.get(actors.size()-1);
+                    int IndexX = playableActor.getPosition().cellIndexX;
+                    int IndexY = playableActor.getPosition().cellIndexY;
+                    int cellIndex = field.getCoordinates().getCellIndexByXYIndexes(IndexX, IndexY);
+                    Field.Cell cell = field.getCellByIndex(cellIndex);
+                    cell.setActorRef(newPlayableActor);
+                    bufHP = playableActor.getHP()/playableActor.getMaxHP();
+                    playableActor.remove();
+                    newPlayableActor.getPosition().cellIndexX =IndexX;
+                    newPlayableActor.getPosition().cellIndexY =IndexY;
+                    newPlayableActor.setSize(actorSize, actorSize);
+                    newPlayableActor.setPosition(cell.getcX() - newPlayableActor.getWidth() / 2, cell.getcY() - newPlayableActor.getHeight() / 2);
+                    newPlayableActor.addListener(new PlayableActorsListener(newPlayableActor, worldController));
+                    newPlayableActor.setHP(bufHP * newPlayableActor.getHP());
+                    this.actors.remove(i);
+                    i--;
+                }
+            }
+        }
+        worldController.getScreen().drawActors();
+    }
+
 
    public void deleteDeadUnits(){
         for (int i=0; i<actors.size(); i++){

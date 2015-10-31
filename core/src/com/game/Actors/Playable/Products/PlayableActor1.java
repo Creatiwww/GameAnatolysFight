@@ -18,6 +18,9 @@ public class PlayableActor1 extends PlayableActor {
         this.maxHP=100;
         this.reproduction=true;
         this.gender='F';
+        this.age=3;
+        this.reproductionPause=0;
+        this.type='Y';
         super.initHP();
     }
 }

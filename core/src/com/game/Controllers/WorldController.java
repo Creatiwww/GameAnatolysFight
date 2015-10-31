@@ -2,7 +2,6 @@ package com.game.Controllers;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.game.Main.GameConstants;
 import com.game.ScreensAndStages.Screens.MyScreen;
 
 public class WorldController  {
@@ -63,6 +62,10 @@ public class WorldController  {
         }
         public void endAITurn(){
             setNobodyTurn();
+            actorsController.reproductionPauseRedaction();
+            actorsController.ageIncrease();
+            actorsController.maturation();
+           // screenController.getScreen().drawActors();
         }
         public void startPlayerTurn(){
             setPlayerTurn();

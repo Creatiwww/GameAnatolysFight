@@ -1,9 +1,7 @@
 package com.game.Actors.Playable.Listeners;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.DragListener;
-import com.game.Actors.AI.Products.AIActor;
 import com.game.Actors.MyActor;
 import com.game.Actors.Playable.Products.PlayableActor;
 import com.game.Actors.Field;
@@ -137,6 +135,8 @@ public class PlayableActorsListener extends DragListener {
         int pActorCellIndex=field.getCoordinates().getCellIndexByXYIndexes(indexX, indexY);
         Field.Cell cell=field.getCellByIndex(pActorCellIndex);
         PlayableActor secondPActor=(PlayableActor) cell.getActorRef();
+        draggedActor.setReproductionPause(3);
+        secondPActor.setReproductionPause(3);
         int spawnCellIndex=findAvailableForSpawnCell(draggedActor, secondPActor);
         worldController.getActorsController().spawnChild(spawnCellIndex);
         cancelMovement();
@@ -190,6 +190,7 @@ public class PlayableActorsListener extends DragListener {
         if (cell.isEpmty() || cell.getActorRef().isOwnedByAI()) return false;
         else {
             PlayableActor pActor = (PlayableActor) cell.getActorRef();
+            if (draggedActor.getReproductionPause()!=0 || pActor.getReproductionPause()!=0)return false;
             if ((draggedActor.isMan() && pActor.isFemale()) ||
                     (draggedActor.isFemale() && pActor.isMan())) flag = true;
             if (findAvailableForSpawnCell(draggedActor, pActor)==-1) return false;

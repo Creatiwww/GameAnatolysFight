@@ -11,17 +11,15 @@ public abstract class MyActor extends Actor {
     protected String texturePath;
     protected ActorPosition actorPosition;
     protected Boolean owner; //true - player; false - AI
-    protected int HP;
-    protected int maxHP;
+    protected double HP;
+    protected double maxHP;
     protected int ATK;
 
-    public ActorPosition getPosition(){
-        return this.actorPosition;
-    }
+    public ActorPosition getPosition(){return this.actorPosition;}
 
-    public int getHP(){
-        return this.HP;
-    }
+    public double getHP(){return this.HP;}
+
+    public void setHP(double newHP){this.HP=newHP;}
 
     public void attack(MyActor actorRef){
         actorRef.HP=actorRef.HP-this.ATK;
