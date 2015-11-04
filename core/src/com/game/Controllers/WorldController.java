@@ -11,15 +11,19 @@ public class WorldController  {
     private ScreenController screenController;
     private Batch batch;
     private Turn turn;
+    private EnemyWave enemyWave;
 
     public WorldController () {
         batch = new SpriteBatch();
         turn = new Turn();
+        enemyWave = new EnemyWave();
         actorsController = new ActorsController(this);
         actorsController.spawnInitialSetOfPlayableActors();
-        actorsController.spawnInitialSetOfAIActors();
         aiController = new AIController(this);
-        screenController= new ScreenController(this);
+        // generates initial set of ai enemies
+        aiController.generateNextWavesEnemies();
+        aiController.updateAIUnitsCoordinates();
+        screenController = new ScreenController(this);
     }
 
     public Batch getBatch(){
@@ -40,6 +44,10 @@ public class WorldController  {
 
     public Turn getTurn(){
         return this.turn;
+    }
+
+    public EnemyWave getEnemyWave(){
+        return this.enemyWave;
     }
 
     public class Turn {
@@ -94,8 +102,23 @@ public class WorldController  {
             turnIndex=1;
         }
         private void setNobodyTurn(){
-            isTurnAlreadyMadeByAI=false; // TODO < ----------------
+            isTurnAlreadyMadeByAI=false;
             turnIndex=0;
+        }
+    }
+
+    public class EnemyWave {
+        private int waveNumber;
+
+        EnemyWave(){
+            waveNumber=1;
+        }
+
+        public void setNextWave(){
+            waveNumber++;
+        }
+        public int getWaveNumber(){
+            return waveNumber;
         }
 
     }

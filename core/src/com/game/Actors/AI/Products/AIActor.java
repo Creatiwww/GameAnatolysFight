@@ -4,11 +4,16 @@ import com.game.Actors.MyActor;
 
 public class AIActor extends MyActor {
 
+    protected int cost;
+
     protected void init(){
         super.init();
         this.owner=false;
     }
 
+    public int getCost(){
+        return this.cost;
+    }
     public void moveR(){
         this.actorPosition.cellIndexX++;
     }

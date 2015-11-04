@@ -10,8 +10,11 @@ public class StrategicAI {
         this.aiController=aiController;
     }
 
+    /**
+     * This class encapsulates algorithm for option definition for AI strategy, like attack
+     * or defend or just walk
+     */
     public void defineStrategy(){
-        //TODO: the core of strategic AI logic should be there
         // setObserveStrategy();
         setAttackStrategy();
     }

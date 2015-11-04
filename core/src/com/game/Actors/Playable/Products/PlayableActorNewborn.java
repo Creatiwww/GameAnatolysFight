@@ -1,10 +1,10 @@
 package com.game.Actors.Playable.Products;
 
-public class PlayableActor5 extends PlayableActor {
-    private static final String TAG = PlayableActor5.class.getName();
+public class PlayableActorNewborn extends PlayableActor {
+    private static final String TAG = PlayableActorNewborn.class.getName();
 
-    public PlayableActor5(){
-        texturePath = "test_actor_child.png";
+    public PlayableActorNewborn(){
+        texturePath = "baby.png";
         init();
         this.getMovingFacilities().R=0;
         this.getMovingFacilities().L=0;

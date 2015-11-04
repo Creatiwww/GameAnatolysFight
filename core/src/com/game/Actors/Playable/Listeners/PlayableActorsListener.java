@@ -139,7 +139,6 @@ public class PlayableActorsListener extends DragListener {
         secondPActor.setReproductionPause(3);
         int spawnCellIndex=findAvailableForSpawnCell(draggedActor, secondPActor);
         worldController.getActorsController().spawnChild(spawnCellIndex);
-        cancelMovement();
     }
 
     private int findAvailableForSpawnCell(PlayableActor firstPActor, PlayableActor secondPActor){

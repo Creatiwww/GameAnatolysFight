@@ -43,13 +43,16 @@ public class TacticalAI {
 
     private void waveTrace(){
         //calculate array of path
+        //ToDo - bug it there aiUnits=0 !
         ArrayList <MyActor> aiUnits=aiController.getAiUnits();
         ArrayList <MyActor> pUnits=aiController.getWorldController().getActorsController().getPActors();
         for (int i=0;i<aiUnits.size();i++){
             for (int j=0; j<pUnits.size();j++){
                 int stepsQuantity=stepsQuantity(aiUnits.get(i), pUnits.get(j));
-                arrayPath.add(new ArrayPath (stepsQuantity, aiUnits.get(i), pUnits.get(j)));
-                arrayPath.get(arrayPath.size()-1).setNextMoveCellIndex(nextMoveCellIndex);
+                if (stepsQuantity!=0 && stepsQuantity!=-1) {
+                    arrayPath.add(new ArrayPath(stepsQuantity, aiUnits.get(i), pUnits.get(j)));
+                    arrayPath.get(arrayPath.size() - 1).setNextMoveCellIndex(nextMoveCellIndex);
+                }
             }
         }
     }
@@ -83,7 +86,6 @@ public class TacticalAI {
                         if (h+1==px && j+1==py) {
                             isPUnitFound = true;   // if player unit founded
                             this.nextMoveCellIndex=nextMovementCellIndex(waveNo, array, sizeX, sizeY, px, py, pUnit);
-
                             return;
                         }
                         calcWaveIteration(h, j, waveNo, array, pUnit);
@@ -91,6 +93,7 @@ public class TacticalAI {
                 }
             }
             waveNo++;
+            if (waveNo==36)return;
         }
     }
 
