@@ -3,6 +3,7 @@ package com.game.Controllers;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.game.ScreensAndStages.Screens.MyScreen;
+import com.game.UI.NotificationsInterface;
 
 public class WorldController  {
 
@@ -12,18 +13,25 @@ public class WorldController  {
     private Batch batch;
     private Turn turn;
     private EnemyWave enemyWave;
+    private NotificationsInterface notificationsInterface;
 
-    public WorldController () {
+    public WorldController (NotificationsInterface notificationsInterface) {
         batch = new SpriteBatch();
         turn = new Turn();
         enemyWave = new EnemyWave();
         actorsController = new ActorsController(this);
-        actorsController.spawnInitialSetOfPlayableActors();
         aiController = new AIController(this);
-        // generates initial set of ai enemies
+        notificationsInterface.toast("    Level    " + getEnemyWave().getWaveNumber() + "    ");
+        // generates initial set of p and ai enemies
+        aiController.generateNextWavesPlayableUnits();
         aiController.generateNextWavesEnemies();
         aiController.updateAIUnitsCoordinates();
+        this.notificationsInterface=notificationsInterface;
         screenController = new ScreenController(this);
+    }
+
+    public NotificationsInterface getNotificationsInterface(){
+        return notificationsInterface;
     }
 
     public Batch getBatch(){

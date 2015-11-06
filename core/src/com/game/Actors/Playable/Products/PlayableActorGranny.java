@@ -21,6 +21,7 @@ public class PlayableActorGranny extends PlayableActor {
         this.age=OLD_START_AGE;
         this.reproductionPause=0;
         this.type='O';
+        this.cost=1;
         super.initHP();
     }
 }

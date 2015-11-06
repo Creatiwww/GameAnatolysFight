@@ -7,10 +7,14 @@ import com.game.Actors.AvailableForMovementCell;
 import com.game.Actors.MergeableCell;
 import com.game.Actors.MyActor;
 import com.game.Actors.OccupiedByAICell;
+import com.game.Actors.Playable.Products.PlayableActor;
 import com.game.Controllers.AIController;
 import com.game.Controllers.WorldController;
 import com.game.Actors.Field;
 import com.game.ScreensAndStages.Stages.GameStage;
+import com.game.UI.NotificationsInterface;
+
+import java.util.Objects;
 
 public class GameScreen extends MyScreen {
 
@@ -18,9 +22,10 @@ public class GameScreen extends MyScreen {
     private Field field;
     private WorldController worldController;
     private AIController aiController;
+    private NotificationsInterface notificationsInterface;
+    boolean isGameOverToastShown=false;
 
     public GameScreen(WorldController worldController){
-
         super(worldController);
         this.worldController=worldController;
         this.field=worldController.getActorsController().getField();
@@ -28,6 +33,7 @@ public class GameScreen extends MyScreen {
         gameStage=new GameStage(new StretchViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()), batch);
         gameStage.addActor(field);
         drawActors();
+        notificationsInterface=worldController.getNotificationsInterface();
     }
 
     @Override
@@ -65,16 +71,35 @@ public class GameScreen extends MyScreen {
     public void render(float delta){
         worldController.getActorsController().deleteDeadUnits();
         gameStage.draw();
-        // if this is the turn of AI and turn has not already been made
+
+        // game over when all PActor are dead and size of its array = 0
+        if (actorsController.getPActors().isEmpty()){
+            if (!isGameOverToastShown) {
+                notificationsInterface.toast("    Game Over    ");
+                isGameOverToastShown = true;
+            }
+        }
 
         // if all ai actors are dead, next wave starts
         if (aiController.getAiUnits().isEmpty()) {
+            // force setting HP as -1 for all PUnits to let method deleteDeadUnits work correctly
+            for (Object actor: actorsController.getActors()){
+                PlayableActor playableActor=(PlayableActor)actor;
+                playableActor.setHP(-1);
+            }
+            actorsController.deleteDeadUnits();
+            worldController.getEnemyWave().setNextWave();
+            aiController.calculateNextWaveDifficulty();
+            aiController.generateNextWavesPlayableUnits();
+            notificationsInterface.toast("    Level    " + worldController.getEnemyWave().getWaveNumber() + "    ");
             aiController.generateNextWavesEnemies();
         }
 
+        // if this is the turn of AI and turn has not already been made
         if (worldController.getTurn().isAITurn() && !worldController.getTurn().isTurnAlreadyMadeByAI()){
             worldController.getTurn().setTurnAlreadyMadeByAI(); // ai turn already initiated
             worldController.getAiController().startAITurn();
         }
+
     }
 }

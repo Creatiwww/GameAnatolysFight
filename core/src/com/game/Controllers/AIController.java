@@ -57,15 +57,26 @@ public class AIController {
      * difficulty of current wave.
      */
     public void generateNextWavesEnemies(){
-        calculateNextWaveDifficulty();
+       // calculateNextWaveDifficulty();
         int squadCost = 0;
         int squadCostLimit = waveDifficulty;
         Random random = new Random();
-        final int NUMBER_OF_ENEMY_TYPES = 2;
+        final int NUMBER_OF_ENEMY_TYPES = 3;
         int rndEnemyTypeCode;
         while (squadCost < squadCostLimit) {
             rndEnemyTypeCode = random.nextInt(NUMBER_OF_ENEMY_TYPES);
             squadCost=squadCost + worldController.getActorsController().spawnEnemyUnit(rndEnemyTypeCode);
+        }
+    }
+    public void generateNextWavesPlayableUnits(){
+        int squadCost = 0;
+        int squadCostLimit = waveDifficulty;
+        Random random = new Random();
+        final int NUMBER_OF_PLAYABLE_UNITS_TYPES = 3; // except old lady and old men
+        int rndPlayableUnitTypeCode;
+        while (squadCost < squadCostLimit) {
+            rndPlayableUnitTypeCode = random.nextInt(NUMBER_OF_PLAYABLE_UNITS_TYPES);
+            squadCost=squadCost + worldController.getActorsController().spawnPlayableUnit(rndPlayableUnitTypeCode);
         }
     }
 
@@ -86,7 +97,7 @@ public class AIController {
      * |   ...  |  ...   |     ...  |
      * +--------+--------+----------+
      */
-    private void calculateNextWaveDifficulty(){
+    public void calculateNextWaveDifficulty(){
         int waveNumber = worldController.getEnemyWave().getWaveNumber();
         int difficultyIncrease;
         // difficulty decrease every 5 turn
@@ -101,8 +112,8 @@ public class AIController {
             MyActor aiActor=(MyActor) aiUnits.get(j);
             Field field=worldController.getActorsController().getField();
             int cellIndex=field.getCoordinates().getCellIndexByXYIndexes(aiActor.getPosition().cellIndexX, aiActor.getPosition().cellIndexY);
-            float x = field.getCellByIndex(cellIndex).getcX()-aiActor.getWidth()/2;
-            float y = field.getCellByIndex(cellIndex).getcY()-aiActor.getWidth()/2;
+            float x = field.getCellByIndex(cellIndex).getcX() - aiActor.getWidth()/2;
+            float y = field.getCellByIndex(cellIndex).getcY() - aiActor.getWidth()/2;
             aiActor.setPosition(x, y);
         }
     }

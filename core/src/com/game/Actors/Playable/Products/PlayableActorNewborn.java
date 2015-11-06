@@ -21,6 +21,7 @@ public class PlayableActorNewborn extends PlayableActor {
         this.age=0;
         this.reproductionPause=0;
         this.type='N';
+        this.cost=1;
         super.initHP();
     }
 }

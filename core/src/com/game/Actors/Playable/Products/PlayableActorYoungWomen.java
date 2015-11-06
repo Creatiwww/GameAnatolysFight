@@ -21,6 +21,7 @@ public class PlayableActorYoungWomen extends PlayableActor {
         this.age=YOUNG_START_AGE;
         this.reproductionPause=0;
         this.type='Y';
+        this.cost=2;
         super.initHP();
     }
 }

@@ -14,6 +14,7 @@ public abstract class MyActor extends Actor {
     protected double HP;
     protected double maxHP;
     protected int ATK;
+    protected int cost;
 
     public ActorPosition getPosition(){return this.actorPosition;}
 
@@ -31,6 +32,10 @@ public abstract class MyActor extends Actor {
 
     public boolean isOwnedByPlayer(){
         return (this.owner);
+    }
+
+    public int getCost(){
+        return this.cost;
     }
 
     protected void init(){

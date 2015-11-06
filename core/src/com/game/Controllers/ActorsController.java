@@ -4,6 +4,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.game.Actors.AI.Creators.CreatorAIActor;
 import com.game.Actors.AI.Creators.CreatorAIActor1;
 import com.game.Actors.AI.Creators.CreatorAIActor2;
+import com.game.Actors.AI.Creators.CreatorAIActor3;
 import com.game.Actors.AI.Products.AIActor;
 import com.game.Actors.AvailableForMovementCell;
 import com.game.Actors.MergeableCell;
@@ -31,6 +32,7 @@ public class ActorsController {
     private CreatorPlayableActor creatorPlayableActor5;
     private CreatorAIActor creatorAIActor1;
     private CreatorAIActor creatorAIActor2;
+    private CreatorAIActor creatorAIActor3;
     private ArrayList actors;
     private ArrayList <MyActor> pActors;
     private Field field;
@@ -56,6 +58,7 @@ public class ActorsController {
         creatorPlayableActor5=new CreatorPlayableActor5();
         creatorAIActor1=new CreatorAIActor1();
         creatorAIActor2=new CreatorAIActor2();
+        creatorAIActor3=new CreatorAIActor3();
         worldController.getTurn().startPlayerTurn();
     }
 
@@ -139,6 +142,8 @@ public class ActorsController {
             case 0: actors.add(creatorAIActor1.factoryMethod());
                 break;
             case 1: actors.add(creatorAIActor2.factoryMethod());
+                break;
+            case 2: actors.add(creatorAIActor3.factoryMethod());
         }
         int index=actors.size();
         AIActor actor = (AIActor) actors.get(index-1);
@@ -165,33 +170,40 @@ public class ActorsController {
         return actor.getCost();
     }
 
-    public void spawnInitialSetOfPlayableActors(){
-        for (int i=0; i<4; i++) {
-            if (i==0) actors.add(creatorPlayableActor1.factoryMethod());
-            if (i==1) actors.add(creatorPlayableActor2.factoryMethod());
-            if (i==2) actors.add(creatorPlayableActor3.factoryMethod());
-            if (i==3) actors.add(creatorPlayableActor4.factoryMethod());
-            PlayableActor actor = (PlayableActor) actors.get(i);
-            float actorSize=field.getCellWidth()*(1-(float)ACTOR_SIZE_MODIFICATOR);
-            actor.setSize(actorSize, actorSize);
-            int cellIndexX=4-i;
-            int cellIndexY=4+i;
-            if (i==2){
-                cellIndexX=5;
-                cellIndexY=5;
-            }
-            if (i==3){
-                cellIndexX=4;
-                cellIndexY=7;
-            }
-            actor.getPosition().cellIndexX =cellIndexX;
-            actor.getPosition().cellIndexY =cellIndexY;
-            int cellIndex=field.getCoordinates().getCellIndexByXYIndexes(cellIndexX, cellIndexY);
-            Field.Cell cell= field.getCellByIndex(cellIndex);
-            cell.setActorRef(actor);
-            actor.setPosition(cell.getcX()-actor.getWidth()/2, cell.getcY()-actor.getHeight()/2);
-            actor.addListener(new PlayableActorsListener(actor, worldController));
+    public int spawnPlayableUnit(int playableUnitTypeCode){
+        switch (playableUnitTypeCode){
+            case 0: actors.add(creatorPlayableActor1.factoryMethod());
+                break;
+            case 1: actors.add(creatorPlayableActor2.factoryMethod());
+                break;
+            case 2: actors.add(creatorPlayableActor5.factoryMethod());
         }
+        Field.Cell cell = field.getCellByIndex(0);
+        int index=actors.size();
+        PlayableActor actor = (PlayableActor) actors.get(index-1);
+        float actorSize=field.getCellWidth()*(1-(float)ACTOR_SIZE_MODIFICATOR);
+        actor.setSize(actorSize, actorSize);
+        // P units spawn at random cell
+        Random rndX=new Random();
+        Random rndY=new Random();
+        int cellIndexX;
+        int cellIndexY;
+        boolean flag = false;
+        while (!flag){
+            cellIndexX = rndX.nextInt(field.getFeildSizeX())+1;
+            cellIndexY = rndY.nextInt(field.getFeildSizeY())+1;
+            int cellIndex = field.getCoordinates().getCellIndexByXYIndexes(cellIndexX, cellIndexY);
+            cell = field.getCellByIndex(cellIndex);
+            if (cell.getActorRef() == null) {
+                actor.getPosition().cellIndexX = cellIndexX;
+                actor.getPosition().cellIndexY = cellIndexY;
+                cell.setActorRef(actor);
+                flag = true;
+            }
+        }
+        actor.setPosition(cell.getcX() - actor.getWidth() / 2, cell.getcY() - actor.getHeight() / 2);
+        actor.addListener(new PlayableActorsListener(actor, worldController));
+        return actor.getCost();
     }
 
     public void spawnChild(int spawnCellIndex){

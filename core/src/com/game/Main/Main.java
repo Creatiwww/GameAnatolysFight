@@ -5,18 +5,24 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.game.Controllers.WorldController;
+import com.game.UI.NotificationsInterface;
 
 public class Main extends Game {
 	private static final String TAG = Main.class.getName();
 
 	private WorldController worldController;
 	private boolean paused;
+	private NotificationsInterface notificationsInterface;
+
+	public Main(NotificationsInterface notificationsInterface){
+		this.notificationsInterface=notificationsInterface;
+	}
 
 	@Override
 	public void create () {
 		//TODO: don't forget to change log level before publishing
 		Gdx.app.setLogLevel(Application.LOG_DEBUG); // Set Libgdx log level to DEBUG
-		worldController = new WorldController();
+		worldController = new WorldController(notificationsInterface);
 		paused = false; // Game world is active on start
 		setScreen(worldController.getScreen());
 	}
