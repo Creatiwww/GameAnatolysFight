@@ -4,6 +4,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.game.Controllers.ActorsController;
 import com.game.Controllers.WorldController;
+import com.game.ScreensAndStages.Stages.GameStage;
 
 abstract public class MyScreen implements Screen {
     protected ActorsController actorsController;
@@ -17,6 +18,8 @@ abstract public class MyScreen implements Screen {
     abstract public void drawAvailableForMovementCells();
 
     abstract public void drawActors();
+
+    abstract public GameStage getGameStage();
 
     @Override
     public void resize(int width, int height){

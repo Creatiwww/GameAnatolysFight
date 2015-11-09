@@ -7,7 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
 import com.game.Main.Main;
@@ -38,10 +37,8 @@ public class AndroidLauncher extends AndroidApplication implements Notifications
 				toast.setGravity(Gravity.CENTER, 0, 0);
 				toast.setDuration(Toast.LENGTH_LONG);
 				toast.setView(layout);
-
 				toast.show();
 				//Toast.makeText(context, text, Toast.LENGTH_SHORT).show();
-
 			}
 		});
 	}

@@ -1,7 +1,10 @@
 package com.game.Controllers;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.game.Actors.Playable.Products.PlayableActor;
+import com.game.Main.Main;
 import com.game.ScreensAndStages.Screens.MyScreen;
 import com.game.UI.NotificationsInterface;
 
@@ -14,6 +17,7 @@ public class WorldController  {
     private Turn turn;
     private EnemyWave enemyWave;
     private NotificationsInterface notificationsInterface;
+    boolean isGameOverToastShown = false;
 
     public WorldController (NotificationsInterface notificationsInterface) {
         batch = new SpriteBatch();
@@ -21,12 +25,12 @@ public class WorldController  {
         enemyWave = new EnemyWave();
         actorsController = new ActorsController(this);
         aiController = new AIController(this);
-        notificationsInterface.toast("    Level    " + getEnemyWave().getWaveNumber() + "    ");
+        this.notificationsInterface=notificationsInterface;
+        this.notificationsInterface.toast("    Level    " + getEnemyWave().getWaveNumber() + "    ");
         // generates initial set of p and ai enemies
         aiController.generateNextWavesPlayableUnits();
         aiController.generateNextWavesEnemies();
         aiController.updateAIUnitsCoordinates();
-        this.notificationsInterface=notificationsInterface;
         screenController = new ScreenController(this);
     }
 
@@ -52,6 +56,43 @@ public class WorldController  {
 
     public Turn getTurn(){
         return this.turn;
+    }
+
+    /**
+     * Main game cycle
+     */
+    public void runMainGameCycle(){
+        actorsController.deleteDeadUnits();
+        screenController.getScreen().getGameStage().draw();
+
+        // game over when all PActor are dead and size of its array = 0
+        if (actorsController.getPActors().isEmpty()){
+            if (!isGameOverToastShown) {
+                notificationsInterface.toast("    Game Over    ");
+                isGameOverToastShown = true;
+            }
+        }
+
+        // if all ai actors are dead, next wave starts
+        if (aiController.getAiUnits().isEmpty()) {
+            // force setting HP as -1 for all PUnits to let method deleteDeadUnits work correctly
+            for (Object actor: actorsController.getActors()){
+                PlayableActor playableActor=(PlayableActor)actor;
+                playableActor.setHP(-1);
+            }
+            actorsController.deleteDeadUnits();
+            getEnemyWave().setNextWave();
+            aiController.calculateNextWaveDifficulty();
+            aiController.generateNextWavesPlayableUnits();
+            notificationsInterface.toast("    Level    " + getEnemyWave().getWaveNumber() + "    ");
+            aiController.generateNextWavesEnemies();
+        }
+
+        // if this is the turn of AI and turn has not already been made
+        if (getTurn().isAITurn() && !getTurn().isTurnAlreadyMadeByAI()){
+            getTurn().setTurnAlreadyMadeByAI(); // ai turn already initiated
+            getAiController().startAITurn();
+        }
     }
 
     public EnemyWave getEnemyWave(){

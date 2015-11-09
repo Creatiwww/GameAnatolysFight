@@ -2,5 +2,6 @@
 <resources>
 
     <string name="app_name">game</string>
+    <string name="level">    Level #    </string>
 
 </resources>
