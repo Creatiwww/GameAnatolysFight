@@ -1,10 +1,9 @@
 package com.game.Controllers;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.game.Actors.Playable.Products.PlayableActor;
-import com.game.Main.Main;
+import com.game.Main.AssetLoader;
 import com.game.ScreensAndStages.Screens.MyScreen;
 import com.game.UI.NotificationsInterface;
 
@@ -13,13 +12,15 @@ public class WorldController  {
     private ActorsController actorsController;
     private AIController aiController;
     private ScreenController screenController;
-    private Batch batch;
+    private SpriteBatch batch;
     private Turn turn;
     private EnemyWave enemyWave;
     private NotificationsInterface notificationsInterface;
     boolean isGameOverToastShown = false;
+    private int score = 0;
 
     public WorldController (NotificationsInterface notificationsInterface) {
+        AssetLoader.load();
         batch = new SpriteBatch();
         turn = new Turn();
         enemyWave = new EnemyWave();
@@ -38,7 +39,7 @@ public class WorldController  {
         return notificationsInterface;
     }
 
-    public Batch getBatch(){
+    public SpriteBatch getBatch(){
         return batch;
     }
 
@@ -58,15 +59,24 @@ public class WorldController  {
         return this.turn;
     }
 
+    public int getScore() {
+        return score;
+    }
+
+    public void addScore(int increment) {
+        score += increment;
+    }
+
     /**
      * Main game cycle
      */
     public void runMainGameCycle(){
         actorsController.deleteDeadUnits();
-        screenController.getScreen().getGameStage().draw();
 
         // game over when all PActor are dead and size of its array = 0
         if (actorsController.getPActors().isEmpty()){
+            // current score saving
+            //AssetLoader.setHighScore(score);
             if (!isGameOverToastShown) {
                 notificationsInterface.toast("    Game Over    ");
                 isGameOverToastShown = true;
@@ -88,6 +98,7 @@ public class WorldController  {
             aiController.generateNextWavesEnemies();
         }
 
+        // start turn of AI
         // if this is the turn of AI and turn has not already been made
         if (getTurn().isAITurn() && !getTurn().isTurnAlreadyMadeByAI()){
             getTurn().setTurnAlreadyMadeByAI(); // ai turn already initiated
