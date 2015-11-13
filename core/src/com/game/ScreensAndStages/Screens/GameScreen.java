@@ -2,6 +2,7 @@ package com.game.ScreensAndStages.Screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.game.Actors.AvailableForMovementCell;
@@ -68,6 +69,7 @@ public class GameScreen extends MyScreen {
     @Override
     public void render(float delta){
         worldController.runMainGameCycle();
+        gameStage.act();
         score = worldController.getScore() + "";
         hiScore = AssetLoader.getHighScore() + "";
         spriteBatch.begin();
@@ -75,5 +77,6 @@ public class GameScreen extends MyScreen {
         AssetLoader.font.draw(spriteBatch, "" + AssetLoader.getHighScore(), (136 / 2) - (3 * hiScore.length() - 1), 311);
         spriteBatch.end();
         gameStage.draw();
+
     }
 }

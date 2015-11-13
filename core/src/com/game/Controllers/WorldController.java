@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.game.Actors.Playable.Products.PlayableActor;
 import com.game.Main.AssetLoader;
 import com.game.ScreensAndStages.Screens.MyScreen;
+import com.game.UI.AnimationController;
 import com.game.UI.NotificationsInterface;
 
 public class WorldController  {
@@ -71,6 +72,11 @@ public class WorldController  {
      * Main game cycle
      */
     public void runMainGameCycle(){
+        if (turn.isNobodyTurnMade) {
+            turn.playAnimation();
+            screenController.getScreen().getGameStage().act();
+        }
+
         actorsController.deleteDeadUnits();
 
         // game over when all PActor are dead and size of its array = 0
@@ -113,10 +119,12 @@ public class WorldController  {
     public class Turn {
         public int turnIndex; // 0 - nobody; 1 - player; 2 - AI
         public boolean isTurnAlreadyMadeByAI;
+        public boolean isNobodyTurnMade;
 
         Turn(){
-            this.turnIndex=0;
-            this.isTurnAlreadyMadeByAI=false;
+            turnIndex=0;
+            isTurnAlreadyMadeByAI=false;
+            isNobodyTurnMade=false;
         }
 
         public void setTurnAlreadyMadeByAI(){
@@ -133,7 +141,6 @@ public class WorldController  {
             actorsController.reproductionPauseRedaction();
             actorsController.ageIncrease();
             actorsController.maturation();
-           // screenController.getScreen().drawActors();
         }
         public void startPlayerTurn(){
             setPlayerTurn();
@@ -162,9 +169,23 @@ public class WorldController  {
             turnIndex=1;
         }
         private void setNobodyTurn(){
-            isTurnAlreadyMadeByAI=false;
-            turnIndex=0;
+            turnIndex = 0;
+            isNobodyTurnMade=true;
+
         }
+
+        public void playAnimation(){
+            // play attack animation if attack animation planned (MyActor class, method attack sets up variables)
+            if (AnimationController.isAttackAnimationPlanned()) {
+                AnimationController.playAttackAnimation();
+                AnimationController.setAttackingActor(null);
+                AnimationController.setAttackedActor(null);
+            }
+            isNobodyTurnMade = false;
+            isTurnAlreadyMadeByAI = false;
+
+        }
+
     }
 
     public class EnemyWave {

@@ -7,6 +7,9 @@ import com.game.Actors.MyActor;
 import java.util.ArrayList;
 import java.util.Random;
 
+import javafx.animation.TranslateTransition;
+import javafx.util.Duration;
+
 public class AIController {
     private static final String TAG = AIController.class.getName();
     private WorldController worldController;
@@ -37,6 +40,7 @@ public class AIController {
     public ArrayList getAiUnits(){
         updateAIUnitsList();
         return aiUnits;
+
     }
 
     public void startAITurn(){
