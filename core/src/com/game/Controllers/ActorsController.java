@@ -61,7 +61,7 @@ public class ActorsController {
         creatorAIActor1 = new CreatorAIActor1();
         creatorAIActor2 = new CreatorAIActor2();
         creatorAIActor3 = new CreatorAIActor3();
-        worldController.getTurn().startPlayerTurn();
+        //worldController.getTurn().startPlayerTurn();
     }
 
     public ArrayList getActors() {

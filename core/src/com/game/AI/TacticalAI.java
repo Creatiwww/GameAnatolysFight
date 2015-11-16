@@ -38,7 +38,7 @@ public class TacticalAI {
         waveTrace();
         ArrayPath bestPath = chosePath(); // which AI should attack which player
         defineCommand(bestPath);
-        aiController.endAITurn();
+        //aiController.endAITurn();
     }
 
     private void waveTrace(){
@@ -338,7 +338,7 @@ public class TacticalAI {
         }
         int newCellIndex=field.getCoordinates().getCellIndexByXYIndexes(actor.getPosition().cellIndexX, actor.getPosition().cellIndexY);
         field.getCellByIndex(newCellIndex).setActorRef(actor);
-        aiController.endAITurn();
+        //aiController.endAITurn();
     }
 
     private void defendStrategyImplementation(){

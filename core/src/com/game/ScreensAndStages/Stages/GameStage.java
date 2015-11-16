@@ -11,6 +11,5 @@ public class GameStage extends Stage {
  public GameStage(StretchViewport viewport, Batch batch){
      super(viewport, batch);
      Gdx.input.setInputProcessor(this);
-     //Gdx.app.log("MyTag", "'constructor call end' method started @" + TAG);
  }
 }

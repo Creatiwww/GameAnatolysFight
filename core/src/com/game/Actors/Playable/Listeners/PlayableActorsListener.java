@@ -6,6 +6,7 @@ import com.game.Actors.MyActor;
 import com.game.Actors.Playable.Products.PlayableActor;
 import com.game.Actors.Field;
 import com.game.Controllers.ActorsController;
+import com.game.Controllers.GameCycle;
 import com.game.Controllers.WorldController;
 
 import java.util.ArrayList;
@@ -42,7 +43,7 @@ public class PlayableActorsListener extends DragListener {
 
     @Override
     public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
-        if (worldController.getTurn().isPlayerTurn()) { // if this is a turn of player not AI
+        if ( worldController.getGameCycle().gameState == GameCycle.GameState.PLAYER_TURN_IN_PROGRESS /*worldController.getTurn().isPlayerTurn()*/) { // if this is a turn of player not AI
             super.touchDown(event, x, y, pointer, button);
             draggedActor.toFront();
             float actorPossitionX = event.getListenerActor().getX();
@@ -86,22 +87,25 @@ public class PlayableActorsListener extends DragListener {
         }
         if (isCellEmpty(IndexX, IndexY)) {
             moveUnit(IndexX, IndexY);
-            worldController.getTurn().endPlayerTurn();
-            worldController.getTurn().startAITurn();
+            //worldController.getTurn().endPlayerTurn();
+            //worldController.getTurn().startAITurn();
+            worldController.getGameCycle().gameState = GameCycle.GameState.PLAYER_TURN_END;
             return;
         }
         if (isCellOccupiedByEnemy(IndexX, IndexY)) {
             attackEnemy(IndexX, IndexY);
             cancelMovement();
-            worldController.getTurn().endPlayerTurn();
-            worldController.getTurn().startAITurn();
+            //worldController.getTurn().endPlayerTurn();
+            //worldController.getTurn().startAITurn();
+            worldController.getGameCycle().gameState = GameCycle.GameState.PLAYER_TURN_END;
             return;
         }
         if (isCellAvailableForMerge(IndexX, IndexY)) {
             merge(IndexX, IndexY);
             cancelMovement();
-            worldController.getTurn().endPlayerTurn();
-            worldController.getTurn().startAITurn();
+            worldController.getGameCycle().gameState = GameCycle.GameState.PLAYER_TURN_END;
+            //worldController.getTurn().endPlayerTurn();
+            //worldController.getTurn().startAITurn();
             return;
         }
         cancelMovement();

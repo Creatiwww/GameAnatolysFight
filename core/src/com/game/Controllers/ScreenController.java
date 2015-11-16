@@ -9,11 +9,11 @@ public class ScreenController  {
     private WorldController worldController;
 
     public ScreenController(WorldController worldController){
-        this.worldController=worldController;
+        this.worldController = worldController;
     }
 
     public MyScreen getScreen(){
-        if (gameScreen==null) gameScreen = new GameScreen(worldController);
+        if (gameScreen == null) gameScreen = new GameScreen(worldController);
         return gameScreen;
     }
 

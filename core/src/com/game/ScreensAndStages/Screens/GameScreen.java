@@ -2,7 +2,6 @@ package com.game.ScreensAndStages.Screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.game.Actors.AvailableForMovementCell;
@@ -28,7 +27,7 @@ public class GameScreen extends MyScreen {
         spriteBatch = worldController.getBatch();
         this.worldController=worldController;
         field=worldController.getActorsController().getField();
-        gameStage=new GameStage(new StretchViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()), batch);
+        gameStage=new GameStage(new StretchViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()), worldController.getBatch());
         gameStage.addActor(field);
         drawActors();
     }
@@ -68,15 +67,15 @@ public class GameScreen extends MyScreen {
 
     @Override
     public void render(float delta){
-        worldController.runMainGameCycle();
+        worldController.getGameCycle().run();
         gameStage.act();
+        gameStage.draw();
         score = worldController.getScore() + "";
         hiScore = AssetLoader.getHighScore() + "";
         spriteBatch.begin();
         AssetLoader.font.draw(spriteBatch, "" + worldController.getScore(), (136 / 2) - (3 * score.length() - 1), 111);
         AssetLoader.font.draw(spriteBatch, "" + AssetLoader.getHighScore(), (136 / 2) - (3 * hiScore.length() - 1), 311);
+        AssetLoader.particleEffectAttack.draw(spriteBatch, delta);
         spriteBatch.end();
-        gameStage.draw();
-
     }
 }
