@@ -21,7 +21,6 @@ public class AIController {
         strategicAI = new StrategicAI(this);
         tacticalAI = new TacticalAI(this);
         aiUnits = new ArrayList();
-        //updateAIUnitsCoordinates();
         waveDifficulty=INITIAL_WAVE_DIFFICULTY;
     }
 
@@ -109,7 +108,7 @@ public class AIController {
         }
     }
 
-    private void updateAIUnitsList(){
+    public void updateAIUnitsList(){
         ArrayList myActors=worldController.getActorsController().getActors();
         aiUnits.clear();
         for (int i=0; i<myActors.size(); i++){

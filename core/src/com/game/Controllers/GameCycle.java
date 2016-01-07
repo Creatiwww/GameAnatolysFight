@@ -3,9 +3,10 @@ package com.game.Controllers;
 import com.badlogic.gdx.utils.Timer;
 import com.game.AI.StrategicAI;
 import com.game.AI.TacticalAI;
+import com.game.Actors.Field;
 import com.game.Actors.Playable.Products.PlayableActor;
+import com.game.Main.AssetLoader;
 import com.game.UI.AnimationController;
-
 
 public class GameCycle {
 
@@ -16,6 +17,8 @@ public class GameCycle {
     private StrategicAI strategicAI;
     private TacticalAI tacticalAI;
     private float delay;
+    private boolean isFirstGameRun;
+    private boolean isGameInProgress;
 
     public enum GameState {
         WAVE_GENERATING_STARTED,
@@ -32,33 +35,104 @@ public class GameCycle {
         GAME_OVER_SHOWN
     }
 
+    public String getGameState(){
+        return gameState.toString();
+    }
+
+    public void  setGameState(String gs){
+        if (gs.equals("WAVE_GENERATING_STARTED")) gameState = GameState.WAVE_GENERATING_STARTED;
+        if (gs.equals("WAVE_GENERATING_IN_PROGRESS")) gameState = GameState.WAVE_GENERATING_IN_PROGRESS;
+        if (gs.equals("PLAYER_TURN_START")) gameState = GameState.PLAYER_TURN_START;
+        if (gs.equals("PLAYER_TURN_IN_PROGRESS")) gameState = GameState.PLAYER_TURN_IN_PROGRESS;
+        if (gs.equals("PLAYER_TURN_END")) gameState = GameState.PLAYER_TURN_END;
+        if (gs.equals("AI_TURN_START")) gameState = GameState.AI_TURN_START;
+        if (gs.equals("AI_TURN_IN_PROGRESS")) gameState = GameState.AI_TURN_IN_PROGRESS;
+        if (gs.equals("AI_TURN_END")) gameState = GameState.AI_TURN_END;
+        if (gs.equals("NOBODY_TURN")) gameState = GameState.NOBODY_TURN;
+        if (gs.equals("PAUSED")) gameState = GameState.PAUSED;
+        if (gs.equals("GAME_OVER")) gameState = GameState.GAME_OVER;
+        if (gs.equals("GAME_OVER_SHOWN")) gameState = GameState.GAME_OVER_SHOWN;
+
+        }
+
+/*    public void  setGameState(String gs){
+        switch (gs) {
+            case "WAVE_GENERATING_STARTED":
+                gameState = GameState.WAVE_GENERATING_STARTED;
+                break;
+            case "WAVE_GENERATING_IN_PROGRESS":
+                gameState = GameState.WAVE_GENERATING_IN_PROGRESS;
+                break;
+            case "PLAYER_TURN_START":
+                gameState = GameState.PLAYER_TURN_START;
+                break;
+            case "PLAYER_TURN_IN_PROGRESS":
+                gameState = GameState.PLAYER_TURN_IN_PROGRESS;
+                break;
+            case "PLAYER_TURN_END":
+                gameState = GameState.PLAYER_TURN_END;
+                break;
+            case "AI_TURN_START":
+                gameState = GameState.AI_TURN_START;
+                break;
+            case "AI_TURN_IN_PROGRESS":
+                gameState = GameState.AI_TURN_IN_PROGRESS;
+                break;
+            case "AI_TURN_END":
+                gameState = GameState.AI_TURN_END;
+                break;
+            case "NOBODY_TURN":
+                gameState = GameState.NOBODY_TURN;
+                break;
+            case "PAUSED":
+                gameState = GameState.PAUSED;
+                break;
+            case "GAME_OVER":
+                gameState = GameState.GAME_OVER;
+                break;
+            case "GAME_OVER_SHOWN":
+                gameState = GameState.GAME_OVER_SHOWN;
+                break;
+        }
+    }*/
+
     public GameCycle(WorldController worldController){
         this.worldController = worldController;
         aiController = worldController.getAiController();
         actorsController = worldController.getActorsController();
         strategicAI = worldController.getAiController().getStrategicAI();
         tacticalAI = worldController.getAiController().getTacticalAI();
+        isGameInProgress = false;
         gameState = GameState.WAVE_GENERATING_STARTED;
+
     }
 
     public void run(){
-
         switch (gameState){
             case WAVE_GENERATING_STARTED:
                 gameState = GameState.WAVE_GENERATING_IN_PROGRESS;
                 // generates next waves enemies and playable units
-                aiController.generateNextWavesPlayableUnits();
-                aiController.generateNextWavesEnemies();
+                if (AssetLoader.isFirstGameRun() || isGameInProgress) {
+                    //if (AssetLoader.isFirstGameRun())worldController.nullScore();
+                    aiController.generateNextWavesPlayableUnits();
+                    aiController.generateNextWavesEnemies();
+                }else{
+                    AssetLoader.restoreGame(actorsController.getField(), actorsController, this);
+                    aiController.updateAIUnitsList();
+                }
                 aiController.updateAIUnitsCoordinates();
                 worldController.getScreen().drawActors();
-                gameState = GameState.PLAYER_TURN_START;
+                if (AssetLoader.isFirstGameRun()|| isGameInProgress)gameState = GameState.PLAYER_TURN_START;
+                AssetLoader.saveGame(actorsController.getField(), worldController.getScore(), this, worldController);
                 break;
             case PLAYER_TURN_START:
                 gameState = GameState.PLAYER_TURN_IN_PROGRESS;
+
                 // after success movement by player should be switched to PLAYER_TURN_END
                 // in processMovementIntention() method of PlayableActorListner class
                 break;
             case PLAYER_TURN_END:
+                AssetLoader.saveGame(actorsController.getField(), worldController.getScore(), this, worldController);
                 gameState = GameState.NOBODY_TURN;
                 playAnimation();
                 // waiting while animation will be played
@@ -84,6 +158,7 @@ public class GameCycle {
                     worldController.getEnemyWave().setNextWave();
                     aiController.calculateNextWaveDifficulty();
                     worldController.getNotificationsInterface().toast("    Level    " + worldController.getEnemyWave().getWaveNumber() + "    ");
+                    isGameInProgress = true;
                     gameState = GameState.WAVE_GENERATING_STARTED;
                 } else {
                     strategicAI.defineStrategy();
@@ -93,6 +168,7 @@ public class GameCycle {
                 }
                 break;
             case AI_TURN_END:
+                AssetLoader.saveGame(actorsController.getField(), worldController.getScore(), this, worldController);
                 gameState = GameState.NOBODY_TURN;
                 playAnimation();
                 // waiting while animation will be played
@@ -111,6 +187,7 @@ public class GameCycle {
                 break;
             case GAME_OVER:
                 worldController.getNotificationsInterface().toast("    Game Over    ");
+                AssetLoader.clearPrefs();
                 gameState = GameState.GAME_OVER_SHOWN;
                 break;
             case PAUSED:

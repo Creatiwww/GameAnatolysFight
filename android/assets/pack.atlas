@@ -1,0 +1,20 @@
+
+pack.png
+size: 1024,512
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+test_actor_men
+  rotate: false
+  xy: 2, 2
+  size: 298, 299
+  orig: 298, 299
+  offset: 0, 0
+  index: -1
+test_actor_old_woman
+  rotate: false
+  xy: 302, 2
+  size: 298, 299
+  orig: 298, 299
+  offset: 0, 0
+  index: -1

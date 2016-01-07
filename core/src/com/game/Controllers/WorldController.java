@@ -11,7 +11,6 @@ public class WorldController  {
     private AIController aiController;
     private ScreenController screenController;
     private SpriteBatch batch;
-    //private Turn turn;
     private EnemyWave enemyWave;
     private NotificationsInterface notificationsInterface;
     boolean isGameOverToastShown = false;
@@ -57,6 +56,10 @@ public class WorldController  {
         return score;
     }
 
+    public void nullScore(){
+        score=0;
+    }
+
     public void addScore(int increment) {
         score += increment;
     }
@@ -67,18 +70,18 @@ public class WorldController  {
 
     public class EnemyWave {
         private int waveNumber;
-
         EnemyWave(){
             waveNumber=1;
         }
-
         public void setNextWave(){
             waveNumber++;
+        }
+        public void setWaveNumber(int waveNumber){
+            this.waveNumber=waveNumber;
         }
         public int getWaveNumber(){
             return waveNumber;
         }
-
     }
 }
 

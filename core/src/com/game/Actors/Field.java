@@ -16,6 +16,9 @@ public class Field extends Actor {
         coordinates=new Coordinates();
     }
 
+    public Cell[] getCellsArray () {
+        return cell;
+    }
     public Cell getCellByIndex(int m) {
         return cell[m];
     }
@@ -37,7 +40,7 @@ public class Field extends Actor {
         batch.draw(field, getX(), getY(), getWidth(), getHeight());
     }
 
-    public class Cell{
+    public class Cell {
         private float bLX,bRX,tLX,tRX,bLY,bRY,tLY,tRY;
         private float cX,cY; //center coordinates X Y
         private int indexX, indexY; //cell index from 1 to FIELD_SIZE_X
@@ -86,6 +89,17 @@ public class Field extends Actor {
             return this.indexY;
         }
         public MyActor getActorRef() {return this.actorRef;}
+        public double getCellActorHP() {
+            if(this.actorRef!=null)return this.getActorRef().getHP();
+            return -1;
+        }
+        public String getCellActorOwner() {
+            if(this.actorRef!=null) {
+                if (this.getActorRef().isOwnedByAI())return "AI";
+                return "Playable";
+                }
+            return "-1";
+        }
 
         public void setIndexX(int indexX){
             this.indexX =indexX;
@@ -103,7 +117,7 @@ public class Field extends Actor {
         }
     }
 
-    public class Coordinates{
+    public class Coordinates {
 
         private final int FIELD_SIZE_X=5;
         private final int FIELD_SIZE_Y=7;

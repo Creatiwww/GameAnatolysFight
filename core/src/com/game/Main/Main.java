@@ -21,7 +21,7 @@ public class Main extends Game {
 	@Override
 	public void create () {
 		//TODO: don't forget to change log level before publishing
-		Gdx.app.setLogLevel(Application.LOG_DEBUG); // Set Libgdx log level to DEBUG
+		//Gdx.app.setLogLevel(Application.LOG_DEBUG); // Set Libgdx log level to DEBUG
 		worldController = new WorldController(notificationsInterface);
 		paused = false; // Game world is active on start
 		setScreen(worldController.getScreen());

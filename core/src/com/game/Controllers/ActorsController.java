@@ -19,6 +19,7 @@ import com.game.Actors.Playable.Creators.CreatorPlayableActor5;
 import com.game.Actors.Playable.Listeners.PlayableActorsListener;
 import com.game.Actors.Field;
 import com.game.Actors.Playable.Products.PlayableActor;
+import com.game.Actors.RestartButton;
 import com.game.Main.AssetLoader;
 
 import java.util.ArrayList;
@@ -38,6 +39,7 @@ public class ActorsController {
     private ArrayList actors;
     private ArrayList <MyActor> pActors;
     private Field field;
+    private RestartButton restartButton;
     private WorldController worldController;
     private ArrayList availableCells;
     private ArrayList occupiedByAICells;
@@ -46,6 +48,7 @@ public class ActorsController {
 
     public ActorsController(WorldController worldController) {
         field = new Field();
+        restartButton = new RestartButton(field, worldController);
         actors = new ArrayList();
         this.worldController = worldController;
         field.setSize(field.getCoordinates().getFieldWidth(), field.getCoordinates().getFieldHeight());
@@ -61,7 +64,6 @@ public class ActorsController {
         creatorAIActor1 = new CreatorAIActor1();
         creatorAIActor2 = new CreatorAIActor2();
         creatorAIActor3 = new CreatorAIActor3();
-        //worldController.getTurn().startPlayerTurn();
     }
 
     public ArrayList getActors() {
@@ -82,9 +84,15 @@ public class ActorsController {
         return field;
     }
 
+    public RestartButton getRestartButton() {return restartButton;}
+
     public ArrayList getAvailableCell() {
         return availableCells;
     }
+
+    public WorldController getWorldController() {return worldController;}
+
+    public double getActorSizeModificator(){return ACTOR_SIZE_MODIFICATOR;}
 
     public ArrayList getOccupiedByAICell() {
         return occupiedByAICells;
@@ -339,6 +347,7 @@ public class ActorsController {
                 // remove from array of actors to be added to stage
                 this.actors.remove(i);
                 actor.remove();
+                i--;
             }
         }
     }

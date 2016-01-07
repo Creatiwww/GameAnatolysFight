@@ -55,7 +55,7 @@ public abstract class MyActor extends Actor {
         batch.draw(texture, getX(), getY(), getWidth(), getHeight());
     }
 
-    public class ActorPosition{
+    public class ActorPosition {
         public int cellIndexX, cellIndexY;
     }
 

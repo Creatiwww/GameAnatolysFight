@@ -3,6 +3,7 @@ package com.game.Actors.AI.Products;
 import com.game.Actors.MyActor;
 
 public class AIActor extends MyActor {
+    protected String aiType;
 
     protected void init(){
         super.init();
@@ -20,5 +21,9 @@ public class AIActor extends MyActor {
     }
     public void moveD(){
         this.actorPosition.cellIndexY--;
+    }
+
+    public String getAiType(){
+        return this.aiType;
     }
 }
