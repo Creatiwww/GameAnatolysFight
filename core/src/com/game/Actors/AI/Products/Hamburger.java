@@ -3,7 +3,8 @@ package com.game.Actors.AI.Products;
 public class Hamburger extends AIActor {
 
     public Hamburger() {
-        texturePath = "hamburger.png";
+        //texturePath = "hamburger.png";
+        texturePath = "hamburger";
         super.init();
         this.aiType="hamburger";
         this.maxHP=60;

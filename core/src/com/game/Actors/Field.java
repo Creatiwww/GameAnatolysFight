@@ -12,7 +12,7 @@ public class Field extends Actor {
     private Cell[] cell;
 
     public Field(){
-        field=new Texture(Gdx.files.internal("Field.png"));
+        field=new Texture(Gdx.files.internal("arts/Field.png"));
         coordinates=new Coordinates();
     }
 

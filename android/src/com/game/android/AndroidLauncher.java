@@ -10,9 +10,10 @@ import android.widget.Toast;
 import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
 import com.game.Main.Main;
+import com.game.UI.GetAndroidResInterface;
 import com.game.UI.NotificationsInterface;
 
-public class AndroidLauncher extends AndroidApplication implements NotificationsInterface {
+public class AndroidLauncher extends AndroidApplication implements NotificationsInterface, GetAndroidResInterface {
 
 	final AndroidLauncher context = this;
 
@@ -20,12 +21,25 @@ public class AndroidLauncher extends AndroidApplication implements Notifications
 	protected void onCreate (Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		AndroidApplicationConfiguration config = new AndroidApplicationConfiguration();
-		initialize(new Main(this), config);
+		initialize(new Main(this, this), config);
+	}
+
+	@Override
+	public String getStrLevel (){
+		return getResources().getString(R.string.level);
+	}
+	@Override
+	public String getStrRecord (){
+		return getResources().getString(R.string.record);
+	}
+	@Override
+	public String getStrScore (){
+		return getResources().getString(R.string.score);
 	}
 
 	@Override
 	public void toast(final String text) {
-		handler.post(new Runnable() {
+		/*handler.post(new Runnable() {
 			@Override
 			public void run() {
 				LayoutInflater inflater = getLayoutInflater();
@@ -33,13 +47,11 @@ public class AndroidLauncher extends AndroidApplication implements Notifications
 				TextView textT = (TextView) layout.findViewById(R.id.toast_text);
 				textT.setText(text);
 				Toast toast = new Toast(context);
-				//Toast toast=Toast.makeText(context, text, Toast.LENGTH_SHORT);
 				toast.setGravity(Gravity.CENTER, 0, 0);
 				toast.setDuration(Toast.LENGTH_LONG);
 				toast.setView(layout);
 				toast.show();
-				//Toast.makeText(context, text, Toast.LENGTH_SHORT).show();
 			}
-		});
+		});*/
 	}
 }

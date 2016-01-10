@@ -4,12 +4,9 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Interpolation;
 import com.game.Actors.MyActor;
 import com.game.Main.AssetLoader;
-
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.moveTo;
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.parallel;
-import static com.badlogic.gdx.scenes.scene2d.actions.Actions.scaleBy;
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.sequence;
-
 
 public class AnimationController {
 

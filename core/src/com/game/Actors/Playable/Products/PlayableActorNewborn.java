@@ -4,7 +4,8 @@ public class PlayableActorNewborn extends PlayableActor {
     private static final String TAG = PlayableActorNewborn.class.getName();
 
     public PlayableActorNewborn(){
-        texturePath = "baby.png";
+        //texturePath = "newborn.png";
+        texturePath = "newborn";
         init();
         this.getMovingFacilities().R=0;
         this.getMovingFacilities().L=0;

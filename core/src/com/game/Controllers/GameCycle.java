@@ -52,49 +52,7 @@ public class GameCycle {
         if (gs.equals("PAUSED")) gameState = GameState.PAUSED;
         if (gs.equals("GAME_OVER")) gameState = GameState.GAME_OVER;
         if (gs.equals("GAME_OVER_SHOWN")) gameState = GameState.GAME_OVER_SHOWN;
-
         }
-
-/*    public void  setGameState(String gs){
-        switch (gs) {
-            case "WAVE_GENERATING_STARTED":
-                gameState = GameState.WAVE_GENERATING_STARTED;
-                break;
-            case "WAVE_GENERATING_IN_PROGRESS":
-                gameState = GameState.WAVE_GENERATING_IN_PROGRESS;
-                break;
-            case "PLAYER_TURN_START":
-                gameState = GameState.PLAYER_TURN_START;
-                break;
-            case "PLAYER_TURN_IN_PROGRESS":
-                gameState = GameState.PLAYER_TURN_IN_PROGRESS;
-                break;
-            case "PLAYER_TURN_END":
-                gameState = GameState.PLAYER_TURN_END;
-                break;
-            case "AI_TURN_START":
-                gameState = GameState.AI_TURN_START;
-                break;
-            case "AI_TURN_IN_PROGRESS":
-                gameState = GameState.AI_TURN_IN_PROGRESS;
-                break;
-            case "AI_TURN_END":
-                gameState = GameState.AI_TURN_END;
-                break;
-            case "NOBODY_TURN":
-                gameState = GameState.NOBODY_TURN;
-                break;
-            case "PAUSED":
-                gameState = GameState.PAUSED;
-                break;
-            case "GAME_OVER":
-                gameState = GameState.GAME_OVER;
-                break;
-            case "GAME_OVER_SHOWN":
-                gameState = GameState.GAME_OVER_SHOWN;
-                break;
-        }
-    }*/
 
     public GameCycle(WorldController worldController){
         this.worldController = worldController;
@@ -157,7 +115,7 @@ public class GameCycle {
                     actorsController.deleteDeadUnits();
                     worldController.getEnemyWave().setNextWave();
                     aiController.calculateNextWaveDifficulty();
-                    worldController.getNotificationsInterface().toast("    Level    " + worldController.getEnemyWave().getWaveNumber() + "    ");
+                    //worldController.getNotificationsInterface().toast("    Level    " + worldController.getEnemyWave().getWaveNumber() + "    ");
                     isGameInProgress = true;
                     gameState = GameState.WAVE_GENERATING_STARTED;
                 } else {
@@ -168,7 +126,7 @@ public class GameCycle {
                 }
                 break;
             case AI_TURN_END:
-                AssetLoader.saveGame(actorsController.getField(), worldController.getScore(), this, worldController);
+                //AssetLoader.saveGame(actorsController.getField(), worldController.getScore(), this, worldController);
                 gameState = GameState.NOBODY_TURN;
                 playAnimation();
                 // waiting while animation will be played
@@ -186,7 +144,8 @@ public class GameCycle {
                 );
                 break;
             case GAME_OVER:
-                worldController.getNotificationsInterface().toast("    Game Over    ");
+                worldController.getScreenController().setGameOverScreen();
+                //worldController.getNotificationsInterface().toast("    Game Over    ");
                 AssetLoader.clearPrefs();
                 gameState = GameState.GAME_OVER_SHOWN;
                 break;
@@ -211,7 +170,6 @@ public class GameCycle {
             AnimationController.playAttackAnimation();
             AnimationController.setAttackingActor(null);
             AnimationController.setAttackedActor(null);
-            //worldController.getScreen().getGameStage().act();
         }
 
     }

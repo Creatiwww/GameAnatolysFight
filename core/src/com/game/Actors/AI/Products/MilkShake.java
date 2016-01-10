@@ -3,7 +3,8 @@ package com.game.Actors.AI.Products;
 public class MilkShake extends AIActor {
 
     public MilkShake() {
-        texturePath = "milkshake.png";
+        //texturePath = "milkshake.png";
+        texturePath = "milkshake";
         super.init();
         this.aiType="milkshake";
         this.maxHP=100;

@@ -3,7 +3,8 @@ package com.game.Actors.AI.Products;
 public class HotDog extends AIActor {
 
      public HotDog() {
-         texturePath = "hot_dog.png";
+         //texturePath = "hotDog.png";
+         texturePath = "hotDog";
          super.init();
          this.aiType="hotdog";
          this.maxHP=100;

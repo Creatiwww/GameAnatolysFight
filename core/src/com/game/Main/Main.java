@@ -1,10 +1,11 @@
 package com.game.Main;
 
-import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.game.Controllers.WorldController;
+import com.game.Screens.MyScreen;
+import com.game.UI.GetAndroidResInterface;
 import com.game.UI.NotificationsInterface;
 
 public class Main extends Game {
@@ -13,18 +14,22 @@ public class Main extends Game {
 	private WorldController worldController;
 	private boolean paused;
 	private NotificationsInterface notificationsInterface;
+	private GetAndroidResInterface getAndroidResInterface;
 
-	public Main(NotificationsInterface notificationsInterface){
-		this.notificationsInterface=notificationsInterface;
+	public Main(NotificationsInterface notificationsInterface, GetAndroidResInterface getAndroidResInterface){
+		this.notificationsInterface = notificationsInterface;
+		this.getAndroidResInterface = getAndroidResInterface;
 	}
 
 	@Override
 	public void create () {
-		//TODO: don't forget to change log level before publishing
-		//Gdx.app.setLogLevel(Application.LOG_DEBUG); // Set Libgdx log level to DEBUG
-		worldController = new WorldController(notificationsInterface);
+		worldController = new WorldController(notificationsInterface, getAndroidResInterface, this);
 		paused = false; // Game world is active on start
 		setScreen(worldController.getScreen());
+	}
+
+	public void setRenderedScreen(MyScreen screen){
+		setScreen(screen);
 	}
 
 	@Override

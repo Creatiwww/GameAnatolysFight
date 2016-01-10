@@ -10,16 +10,20 @@ import com.game.Actors.AvailableForMovementCell;
 import com.game.Actors.MergeableCell;
 import com.game.Actors.MyActor;
 import com.game.Actors.OccupiedByAICell;
+import com.game.Actors.UI.CloseButton;
 import com.game.Actors.Playable.Creators.CreatorPlayableActor;
 import com.game.Actors.Playable.Creators.CreatorPlayableActor1;
 import com.game.Actors.Playable.Creators.CreatorPlayableActor2;
 import com.game.Actors.Playable.Creators.CreatorPlayableActor3;
 import com.game.Actors.Playable.Creators.CreatorPlayableActor4;
 import com.game.Actors.Playable.Creators.CreatorPlayableActor5;
+import com.game.Actors.UI.HelpButton;
 import com.game.Actors.Playable.Listeners.PlayableActorsListener;
 import com.game.Actors.Field;
 import com.game.Actors.Playable.Products.PlayableActor;
-import com.game.Actors.RestartButton;
+import com.game.Actors.UI.RestartButton;
+import com.game.Actors.UI.StartButton;
+import com.game.Actors.UI.StartNewGameButton;
 import com.game.Main.AssetLoader;
 
 import java.util.ArrayList;
@@ -40,6 +44,10 @@ public class ActorsController {
     private ArrayList <MyActor> pActors;
     private Field field;
     private RestartButton restartButton;
+    private HelpButton helpButton;
+    private CloseButton closeButton;
+    private StartButton startButton;
+    private StartNewGameButton startNewGameButton;
     private WorldController worldController;
     private ArrayList availableCells;
     private ArrayList occupiedByAICells;
@@ -49,6 +57,10 @@ public class ActorsController {
     public ActorsController(WorldController worldController) {
         field = new Field();
         restartButton = new RestartButton(field, worldController);
+        helpButton = new HelpButton(field, worldController);
+        closeButton = new CloseButton(field, worldController);
+        startButton = new StartButton(field, worldController);
+        startNewGameButton = new StartNewGameButton(field, worldController);
         actors = new ArrayList();
         this.worldController = worldController;
         field.setSize(field.getCoordinates().getFieldWidth(), field.getCoordinates().getFieldHeight());
@@ -84,7 +96,25 @@ public class ActorsController {
         return field;
     }
 
-    public RestartButton getRestartButton() {return restartButton;}
+    public RestartButton getRestartButton() {
+        return restartButton;
+    }
+
+    public HelpButton getHelpButton() {
+        return helpButton;
+    }
+
+    public CloseButton getCloseButton() {
+        return closeButton;
+    }
+
+    public StartButton getStartButton() {
+        return startButton;
+    }
+
+    public StartNewGameButton getStartNewGameButton() {
+        return startNewGameButton;
+    }
 
     public ArrayList getAvailableCell() {
         return availableCells;
@@ -332,8 +362,9 @@ public class ActorsController {
                 // play sound
                 AssetLoader.dead.play();
                 if (actor.isOwnedByAI()) {
-                    // calculation of score incremental = Wave # * actor's cost * 100
-                    int increment = worldController.getEnemyWave().getWaveNumber() * actor.getCost() * 100;
+                    // calculation of score incremental = Wave # * actor's cost * SCORE_MULTIPLICATOR
+                    final int SCORE_MULTIPLICATOR = 1;
+                    int increment = worldController.getEnemyWave().getWaveNumber() * actor.getCost() * SCORE_MULTIPLICATOR;
                     worldController.addScore(increment);
                     // update high score if current score > high score in preferences
                     if (AssetLoader.getHighScore()<worldController.getScore()) AssetLoader.setHighScore(worldController.getScore());

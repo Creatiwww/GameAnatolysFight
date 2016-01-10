@@ -2,6 +2,8 @@
 <resources>
 
     <string name="app_name">game</string>
-    <string name="level">    Level #    </string>
+    <string name="level">level</string>
+    <string name="score">score</string>
+    <string name="record">high score</string>
 
 </resources>

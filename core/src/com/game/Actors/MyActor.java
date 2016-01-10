@@ -1,14 +1,14 @@
 package com.game.Actors;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.game.Main.AssetLoader;
 import com.game.UI.AnimationController;
 
 public abstract class MyActor extends Actor {
 
-    protected Texture texture;
+    protected TextureRegion textureRegion;
     protected String texturePath;
     protected ActorPosition actorPosition;
     protected Boolean owner; //true - player; false - AI
@@ -24,7 +24,7 @@ public abstract class MyActor extends Actor {
     public void setHP(double newHP){this.HP=newHP;}
 
     public void attack(MyActor actorRef){
-        actorRef.HP=actorRef.HP - this.ATK;
+        actorRef.HP = actorRef.HP - this.ATK;
         AnimationController.setAttackedActor(actorRef);
         AnimationController.setAttackingActor(this);
     }
@@ -42,8 +42,8 @@ public abstract class MyActor extends Actor {
     }
 
     protected void init(){
-        texture=new Texture(Gdx.files.internal(texturePath));
-        actorPosition= new ActorPosition();
+        textureRegion = AssetLoader.textureAtlas.findRegion(texturePath);
+        actorPosition = new ActorPosition();
     }
 
     protected void initHP(){
@@ -52,7 +52,7 @@ public abstract class MyActor extends Actor {
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
-        batch.draw(texture, getX(), getY(), getWidth(), getHeight());
+        batch.draw(textureRegion, getX(), getY(), getWidth(), getHeight());
     }
 
     public class ActorPosition {

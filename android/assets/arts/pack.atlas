@@ -1,0 +1,116 @@
+
+pack.png
+size: 1024,1024
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+AICell
+  rotate: false
+  xy: 2, 541
+  size: 438, 439
+  orig: 438, 439
+  offset: 0, 0
+  index: -1
+AvailableCell
+  rotate: false
+  xy: 2, 100
+  size: 438, 439
+  orig: 438, 439
+  offset: 0, 0
+  index: -1
+MergeableCell
+  rotate: false
+  xy: 442, 541
+  size: 438, 439
+  orig: 438, 439
+  offset: 0, 0
+  index: -1
+btnClose
+  rotate: false
+  xy: 2, 2
+  size: 96, 96
+  orig: 96, 96
+  offset: 0, 0
+  index: -1
+btnInfo
+  rotate: false
+  xy: 882, 884
+  size: 96, 96
+  orig: 96, 96
+  offset: 0, 0
+  index: -1
+btnReply
+  rotate: false
+  xy: 100, 2
+  size: 96, 96
+  orig: 96, 96
+  offset: 0, 0
+  index: -1
+hamburger
+  rotate: false
+  xy: 442, 105
+  size: 434, 434
+  orig: 434, 434
+  offset: 0, 0
+  index: -1
+
+pack2.png
+size: 1024,1024
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+granny
+  rotate: false
+  xy: 438, 620
+  size: 306, 307
+  orig: 306, 307
+  offset: 0, 0
+  index: -1
+hotDog
+  rotate: false
+  xy: 2, 493
+  size: 434, 434
+  orig: 434, 434
+  offset: 0, 0
+  index: -1
+milkshake
+  rotate: false
+  xy: 2, 57
+  size: 434, 434
+  orig: 434, 434
+  offset: 0, 0
+  index: -1
+newborn
+  rotate: false
+  xy: 438, 311
+  size: 306, 307
+  orig: 306, 307
+  offset: 0, 0
+  index: -1
+oldMan
+  rotate: false
+  xy: 438, 2
+  size: 306, 307
+  orig: 306, 307
+  offset: 0, 0
+  index: -1
+
+pack3.png
+size: 1024,512
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+youngMan
+  rotate: false
+  xy: 2, 2
+  size: 306, 307
+  orig: 306, 307
+  offset: 0, 0
+  index: -1
+youngWoman
+  rotate: false
+  xy: 310, 2
+  size: 306, 307
+  orig: 306, 307
+  offset: 0, 0
+  index: -1
