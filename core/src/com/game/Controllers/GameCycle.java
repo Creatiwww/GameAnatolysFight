@@ -3,7 +3,6 @@ package com.game.Controllers;
 import com.badlogic.gdx.utils.Timer;
 import com.game.AI.StrategicAI;
 import com.game.AI.TacticalAI;
-import com.game.Actors.Field;
 import com.game.Actors.Playable.Products.PlayableActor;
 import com.game.Main.AssetLoader;
 import com.game.UI.AnimationController;
@@ -115,7 +114,8 @@ public class GameCycle {
                     actorsController.deleteDeadUnits();
                     worldController.getEnemyWave().setNextWave();
                     aiController.calculateNextWaveDifficulty();
-                    //worldController.getNotificationsInterface().toast("    Level    " + worldController.getEnemyWave().getWaveNumber() + "    ");
+                    //worldController.getNotificationsInterface().toastText("    Level    " + worldController.getEnemyWave().getWaveNumber() + "    ");
+                   // worldController.getNotificationsInterface().toastPicture(null);
                     isGameInProgress = true;
                     gameState = GameState.WAVE_GENERATING_STARTED;
                 } else {
@@ -145,7 +145,7 @@ public class GameCycle {
                 break;
             case GAME_OVER:
                 worldController.getScreenController().setGameOverScreen();
-                //worldController.getNotificationsInterface().toast("    Game Over    ");
+                //worldController.getNotificationsInterface().toastText("    Game Over    ");
                 AssetLoader.clearPrefs();
                 gameState = GameState.GAME_OVER_SHOWN;
                 break;

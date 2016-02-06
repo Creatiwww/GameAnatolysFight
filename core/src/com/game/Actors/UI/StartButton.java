@@ -4,8 +4,6 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.game.Actors.Field;
-import com.game.Actors.Playable.Listeners.CloseButtonListener;
-import com.game.Actors.Playable.Listeners.StartButtonListener;
 import com.game.Controllers.WorldController;
 import com.game.Main.AssetLoader;
 

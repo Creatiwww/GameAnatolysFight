@@ -7,4 +7,9 @@ public class CreatorAIActor2 implements CreatorAIActor {
 
     @Override
     public AIActor factoryMethod() { return new HotDog(); }
+
+    @Override
+    public AIActor factoryMethod(String texturePath) {
+        return new HotDog (texturePath);
+    }
 }

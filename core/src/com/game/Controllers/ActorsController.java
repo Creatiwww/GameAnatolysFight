@@ -24,6 +24,7 @@ import com.game.Actors.Playable.Products.PlayableActor;
 import com.game.Actors.UI.RestartButton;
 import com.game.Actors.UI.StartButton;
 import com.game.Actors.UI.StartNewGameButton;
+import com.game.Actors.UI.UnitsButton;
 import com.game.Main.AssetLoader;
 
 import java.util.ArrayList;
@@ -48,11 +49,28 @@ public class ActorsController {
     private CloseButton closeButton;
     private StartButton startButton;
     private StartNewGameButton startNewGameButton;
+    private UnitsButton unitsButton;
     private WorldController worldController;
     private ArrayList availableCells;
     private ArrayList occupiedByAICells;
     private ArrayList mergeableCells;
-    final double ACTOR_SIZE_MODIFICATOR = 0.15;
+    public final double ACTOR_SIZE_MODIFICATOR = 0.15;
+    // score requirements to unlock new characters skins
+    public final int SCORES_REQ_SKIN_YOUNGMAN_1 = 10;
+    public final int SCORES_REQ_SKIN_YOUNGMAN_2 = 20;
+    public final int SCORES_REQ_SKIN_YOUNGMAN_3 = 30;
+    public final int SCORES_REQ_SKIN_YOUNGWOMAN_1 = 40;
+    public final int SCORES_REQ_SKIN_YOUNWOMAN_2 = 50;
+    public final int SCORES_REQ_SKIN_YOUNWOMAN_3 = 60;
+    public final int SCORES_REQ_SKIN_GRANNY_1 = 80;
+    public final int SCORES_REQ_SKIN_GRANNY_2 = 100;
+    public final int SCORES_REQ_SKIN_GRANNY_3 = 120;
+    public final int SCORES_REQ_SKIN_OLDMAN_1 = 140;
+    public final int SCORES_REQ_SKIN_OLDMAN_2 = 160;
+    public final int SCORES_REQ_SKIN_OLDMAN_3 = 180;
+    public final int SCORES_REQ_SKIN_BABY_1 = 200;
+    public final int SCORES_REQ_SKIN_BABY_2 = 220;
+    public final int SCORES_REQ_SKIN_BABY_3 = 240;
 
     public ActorsController(WorldController worldController) {
         field = new Field();
@@ -61,6 +79,7 @@ public class ActorsController {
         closeButton = new CloseButton(field, worldController);
         startButton = new StartButton(field, worldController);
         startNewGameButton = new StartNewGameButton(field, worldController);
+        unitsButton = new UnitsButton(field, worldController);
         actors = new ArrayList();
         this.worldController = worldController;
         field.setSize(field.getCoordinates().getFieldWidth(), field.getCoordinates().getFieldHeight());
@@ -110,6 +129,10 @@ public class ActorsController {
 
     public StartButton getStartButton() {
         return startButton;
+    }
+
+    public UnitsButton getUnitsButton() {
+        return unitsButton;
     }
 
     public StartNewGameButton getStartNewGameButton() {
@@ -220,15 +243,44 @@ public class ActorsController {
     }
 
     public int spawnPlayableUnit(int playableUnitTypeCode) {
+        int gameHighScore = AssetLoader.getHighScore();
+        int availableYoungManSkinCount = 1;
+        int availableYoungWomanSkinCount = 1;
+        if (gameHighScore > SCORES_REQ_SKIN_YOUNGMAN_1) availableYoungManSkinCount++;
+        if (gameHighScore > SCORES_REQ_SKIN_YOUNGMAN_2) availableYoungManSkinCount++;
+        if (gameHighScore > SCORES_REQ_SKIN_YOUNGMAN_3) availableYoungManSkinCount++;
+        if (gameHighScore > SCORES_REQ_SKIN_YOUNGWOMAN_1) availableYoungWomanSkinCount++;
+        if (gameHighScore > SCORES_REQ_SKIN_YOUNWOMAN_2) availableYoungWomanSkinCount++;
+        if (gameHighScore > SCORES_REQ_SKIN_YOUNWOMAN_3) availableYoungWomanSkinCount++;
+        Random random = new Random();
+        int youngManSkinCode = random.nextInt(availableYoungManSkinCount);
+        String youngManTexturePath="youngMan";
+        switch (youngManSkinCode){
+            case 1: youngManTexturePath="youngMan1";
+                break;
+            case 2: youngManTexturePath="youngMan2";
+                break;
+            case 3: youngManTexturePath="youngMan3";
+                break;
+        }
+        int youngWomanSkinCode = random.nextInt(availableYoungWomanSkinCount);
+        String youngWomanTexturePath="youngWoman";
+        switch (youngWomanSkinCode){
+            case 1: youngWomanTexturePath="youngWoman1";
+                break;
+            case 2: youngWomanTexturePath="youngWoman2";
+                break;
+            case 3: youngWomanTexturePath="youngWoman3";
+                break;
+        }
+
         switch (playableUnitTypeCode) {
             case 0:
-                actors.add(creatorPlayableActor1.factoryMethod());
+                actors.add(creatorPlayableActor1.factoryMethod(youngWomanTexturePath));
                 break;
             case 1:
-                actors.add(creatorPlayableActor2.factoryMethod());
+                actors.add(creatorPlayableActor2.factoryMethod(youngManTexturePath));
                 break;
-            case 2:
-                actors.add(creatorPlayableActor5.factoryMethod());
         }
         Field.Cell cell = field.getCellByIndex(0);
         int index = actors.size();
@@ -259,7 +311,23 @@ public class ActorsController {
     }
 
     public void spawnChild(int spawnCellIndex) {
-        actors.add(creatorPlayableActor5.factoryMethod());
+        int gameHighScore = AssetLoader.getHighScore();
+        int availableChildSkinCount = 1;
+        if (gameHighScore > SCORES_REQ_SKIN_BABY_1) availableChildSkinCount++;
+        if (gameHighScore > SCORES_REQ_SKIN_BABY_2) availableChildSkinCount++;
+        if (gameHighScore > SCORES_REQ_SKIN_BABY_3) availableChildSkinCount++;
+        Random random = new Random();
+        int babySkinCode = random.nextInt(availableChildSkinCount);
+        String babyTexturePath="newborn";
+        switch (babySkinCode){
+            case 1: babyTexturePath="baby1";
+                break;
+            case 2: babyTexturePath="baby2";
+                break;
+            case 3: babyTexturePath="baby3";
+                break;
+        }
+        actors.add(creatorPlayableActor5.factoryMethod(babyTexturePath));
         int actorIndex = actors.size() - 1;
         PlayableActor actor = (PlayableActor) actors.get(actorIndex);
         float actorSize = field.getCellWidth() * (1 - (float) ACTOR_SIZE_MODIFICATOR);
@@ -308,8 +376,40 @@ public class ActorsController {
                 }
 
                 if (playableActor.isYoung() && playableActor.getAge() == PlayableActor.OLD_START_AGE) {
-                    if (playableActor.isFemale()) actors.add(creatorPlayableActor3.factoryMethod());
-                    if (playableActor.isMan()) actors.add(creatorPlayableActor4.factoryMethod());
+
+                    int gameHighScore = AssetLoader.getHighScore();
+                    int availableOldManSkinCount = 1;
+                    int availableGrannySkinCount = 1;
+                    if (gameHighScore > SCORES_REQ_SKIN_OLDMAN_1) availableOldManSkinCount++;
+                    if (gameHighScore > SCORES_REQ_SKIN_OLDMAN_2) availableOldManSkinCount++;
+                    if (gameHighScore > SCORES_REQ_SKIN_OLDMAN_3) availableOldManSkinCount++;
+                    if (gameHighScore > SCORES_REQ_SKIN_GRANNY_1) availableGrannySkinCount++;
+                    if (gameHighScore > SCORES_REQ_SKIN_GRANNY_2) availableGrannySkinCount++;
+                    if (gameHighScore > SCORES_REQ_SKIN_GRANNY_3) availableGrannySkinCount++;
+                    Random random = new Random();
+                    int oldManSkinCode = random.nextInt(availableOldManSkinCount);
+                    String oldManTexturePath="oldMan";
+                    switch (oldManSkinCode){
+                        case 1: oldManTexturePath="oldMan1";
+                            break;
+                        case 2: oldManTexturePath="oldMan2";
+                            break;
+                        case 3: oldManTexturePath="oldMan3";
+                            break;
+                    }
+                    int grannySkinCode = random.nextInt(availableGrannySkinCount);
+                    String grannyTexturePath="granny";
+                    switch (grannySkinCode){
+                        case 1: grannyTexturePath="granny1";
+                            break;
+                        case 2: grannyTexturePath="granny2";
+                            break;
+                        case 3: grannyTexturePath="granny3";
+                            break;
+                    }
+
+                    if (playableActor.isFemale()) actors.add(creatorPlayableActor3.factoryMethod(grannyTexturePath));
+                    if (playableActor.isMan()) actors.add(creatorPlayableActor4.factoryMethod(oldManTexturePath));
                     PlayableActor newPlayableActor = (PlayableActor) actors.get(actors.size() - 1);
                     int IndexX = playableActor.getPosition().cellIndexX;
                     int IndexY = playableActor.getPosition().cellIndexY;
@@ -329,10 +429,39 @@ public class ActorsController {
                 }
 
                 if (playableActor.isNewBorn() && playableActor.getAge() == PlayableActor.YOUNG_START_AGE) {
+                    int gameHighScore = AssetLoader.getHighScore();
+                    int availableYoungManSkinCount = 1;
+                    int availableYoungWomanSkinCount = 1;
+                    if (gameHighScore > SCORES_REQ_SKIN_YOUNGMAN_1) availableYoungManSkinCount++;
+                    if (gameHighScore > SCORES_REQ_SKIN_YOUNGMAN_2) availableYoungManSkinCount++;
+                    if (gameHighScore > SCORES_REQ_SKIN_YOUNGMAN_3) availableYoungManSkinCount++;
+                    if (gameHighScore > SCORES_REQ_SKIN_YOUNGWOMAN_1) availableYoungWomanSkinCount++;
+                    if (gameHighScore > SCORES_REQ_SKIN_YOUNWOMAN_2) availableYoungWomanSkinCount++;
+                    if (gameHighScore > SCORES_REQ_SKIN_YOUNWOMAN_3) availableYoungWomanSkinCount++;
                     Random random = new Random();
+                    int youngManSkinCode = random.nextInt(availableYoungManSkinCount);
+                    String youngManTexturePath="youngMan";
+                    switch (youngManSkinCode){
+                        case 1: youngManTexturePath="youngMan1";
+                            break;
+                        case 2: youngManTexturePath="youngMan2";
+                            break;
+                        case 3: youngManTexturePath="youngMan3";
+                            break;
+                    }
+                    int youngWomanSkinCode = random.nextInt(availableYoungWomanSkinCount);
+                    String youngWomanTexturePath="youngWoman";
+                    switch (youngWomanSkinCode){
+                        case 1: youngWomanTexturePath="youngWoman1";
+                            break;
+                        case 2: youngWomanTexturePath="youngWoman2";
+                            break;
+                        case 3: youngWomanTexturePath="youngWoman3";
+                            break;
+                    }
                     int rndVal = random.nextInt(2);
-                    if (rndVal == 0) actors.add(creatorPlayableActor1.factoryMethod());
-                    if (rndVal == 1) actors.add(creatorPlayableActor2.factoryMethod());
+                    if (rndVal == 0) actors.add(creatorPlayableActor1.factoryMethod(youngWomanTexturePath));
+                    if (rndVal == 1) actors.add(creatorPlayableActor2.factoryMethod(youngManTexturePath));
                     PlayableActor newPlayableActor = (PlayableActor) actors.get(actors.size() - 1);
                     int IndexX = playableActor.getPosition().cellIndexX;
                     int IndexY = playableActor.getPosition().cellIndexY;

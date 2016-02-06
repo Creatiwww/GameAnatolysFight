@@ -3,9 +3,11 @@ package com.game.Main;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.game.Actors.AI.Creators.CreatorAIActor;
 import com.game.Actors.AI.Creators.CreatorAIActor1;
 import com.game.Actors.AI.Creators.CreatorAIActor2;
@@ -30,6 +32,8 @@ public class AssetLoader {
 
     public static Sound dead;
     public static BitmapFont font;
+    public static TextureRegion startImage;
+    public static Texture infoImage;
     public static Preferences prefs;
     public static ParticleEffect particleEffectAttack;
     public static TextureAtlas textureAtlas;
@@ -49,6 +53,8 @@ public class AssetLoader {
         particleEffectAttack.load(Gdx.files.internal("effects/explosion.p"), Gdx.files.internal("effects"));
         dead = Gdx.audio.newSound(Gdx.files.internal("sounds/dead.wav"));
         font = new BitmapFont(Gdx.files.internal("font/text.fnt"));
+        startImage = textureAtlas.findRegion("granny");
+        infoImage = new Texture(Gdx.files.internal("arts/helpScreen.png"));
         prefs = Gdx.app.getPreferences("MyGame");
         if (prefs.contains("isFirstGameRun")) {
             prefs.putBoolean("isFirstGameRun", false);
@@ -89,6 +95,7 @@ public class AssetLoader {
         ArrayList <String> actorReproductionPause = new ArrayList<String>();
         ArrayList <String> actorAge = new ArrayList<String>();
         ArrayList <String> actorAIType = new ArrayList<String>();
+        ArrayList <String> actorTexturePath = new ArrayList<String>();
         for (int i=0; i<field.getCoordinates().getFieldSize();i++){
             Field.Cell cell =  field.getCellByIndex(i);
             actorHP.add(String.valueOf(cell.getCellActorHP()));
@@ -97,7 +104,9 @@ public class AssetLoader {
             String reprodactionPause = "-1";
             String age = "-1";
             String aiType = "-1";
+            String texturePath = "-1";
             if (cell.getActorRef() != null) {
+                texturePath=cell.getActorRef().getTexturePath();
                 if (cell.getActorRef().isOwnedByPlayer()) {
                     PlayableActor playableActor = (PlayableActor) cell.getActorRef();
                     if (playableActor.isFemale()) gender = "f";
@@ -113,6 +122,7 @@ public class AssetLoader {
             actorReproductionPause.add(reprodactionPause);
             actorAge.add(age);
             actorAIType.add(aiType);
+            actorTexturePath.add(texturePath);
         }
         for (int i=0; i<actorAge.size(); i++){
             prefs.putString("cell"+i+"hp", actorHP.get(i));
@@ -121,6 +131,7 @@ public class AssetLoader {
             prefs.putString("cell"+i+"reprodactionPause", actorReproductionPause.get(i));
             prefs.putString("cell"+i+"age", actorAge.get(i));
             prefs.putString("cell"+i+"aiType", actorAIType.get(i));
+            prefs.putString("cell"+i+"texturePath", actorTexturePath.get(i));
         }
         String strScore =String.valueOf(score);
         prefs.putString("score", strScore);
@@ -136,34 +147,37 @@ public class AssetLoader {
     }
 
     public static void restoreGame (Field field, ActorsController actorsController, GameCycle gameCycle)  {
+        int score = Integer.parseInt(prefs.getString("score"));
+        actorsController.getWorldController().addScore(score);
+        Field.Cell cell;
+        String actorOwner;
         for(int i=0; i<field.getCoordinates().getFieldSize(); i++){
-            Field.Cell cell = field.getCellByIndex(i);
-            int index = actorsController.getActors().size();
-            int score = Integer.parseInt(prefs.getString("score"));
-            String actorOwner = prefs.getString("cell" + i + "owner");
-            int actorAge = Integer.parseInt(prefs.getString("cell" + i + "age"));
-            double actorHP = Double.parseDouble(prefs.getString("cell" + i + "hp"));
-            String actorGender = prefs.getString("cell" + i + "gender");
-            int actorReproductionPause = Integer.parseInt(prefs.getString("cell" + i + "reprodactionPause"));
-            String aiActorType = prefs.getString("cell"+i+"aiType");
-            actorsController.getWorldController().addScore(score);
+            cell = field.getCellByIndex(i);
+            //int index = actorsController.getActors().size();
+            actorOwner = prefs.getString("cell" + i + "owner");
             if (!actorOwner.equals("-1")) {
+                int actorAge = Integer.parseInt(prefs.getString("cell" + i + "age"));
+                double actorHP = Double.parseDouble(prefs.getString("cell" + i + "hp"));
+                String actorGender = prefs.getString("cell" + i + "gender");
+                int actorReproductionPause = Integer.parseInt(prefs.getString("cell" + i + "reprodactionPause"));
+                String aiActorType = prefs.getString("cell" + i + "aiType");
+                String texturePath = prefs.getString("cell" + i + "texturePath");
                 if (actorOwner.equals("Playable")){
                     if (actorAge<PlayableActor.YOUNG_START_AGE) {
-                        actorsController.getActors().add(creatorPlayableActor5.factoryMethod());
+                        actorsController.getActors().add(creatorPlayableActor5.factoryMethod(texturePath));
                     }
                     if (actorAge>PlayableActor.YOUNG_START_AGE-1 && actorAge<PlayableActor.OLD_START_AGE){
                         if (actorGender.equals("m")){
-                            actorsController.getActors().add(creatorPlayableActor2.factoryMethod());
+                            actorsController.getActors().add(creatorPlayableActor2.factoryMethod(texturePath));
                         }else{
-                            actorsController.getActors().add(creatorPlayableActor1.factoryMethod());
+                            actorsController.getActors().add(creatorPlayableActor1.factoryMethod(texturePath));
                         }
                     }
                     if (actorAge>PlayableActor.OLD_START_AGE-1){
                         if (actorGender.equals("m")){
-                            actorsController.getActors().add(creatorPlayableActor4.factoryMethod());
+                            actorsController.getActors().add(creatorPlayableActor4.factoryMethod(texturePath));
                         }else{
-                            actorsController.getActors().add(creatorPlayableActor3.factoryMethod());
+                            actorsController.getActors().add(creatorPlayableActor3.factoryMethod(texturePath));
                         }
                     }
                     int ind = actorsController.getActors().size();
@@ -181,13 +195,13 @@ public class AssetLoader {
 
                 } else {
                     if (aiActorType.equals("hamburger")){
-                        actorsController.getActors().add(creatorAIActor1.factoryMethod());
+                        actorsController.getActors().add(creatorAIActor1.factoryMethod(texturePath));
                     }
                     if (aiActorType.equals("hotdog")){
-                        actorsController.getActors().add(creatorAIActor2.factoryMethod());
+                        actorsController.getActors().add(creatorAIActor2.factoryMethod(texturePath));
                     }
                     if (aiActorType.equals("milkshake")){
-                        actorsController.getActors().add(creatorAIActor3.factoryMethod());
+                        actorsController.getActors().add(creatorAIActor3.factoryMethod(texturePath));
                     }
                     int ind = actorsController.getActors().size();
                     AIActor actor = (AIActor) actorsController.getActors().get(ind - 1);
@@ -215,7 +229,7 @@ public class AssetLoader {
     public static boolean isFirstGameRun(){
         if (prefs.contains("isFirstGameRun")){
             return prefs.getBoolean("isFirstGameRun");
-        }else {
+        } else {
             return true;
         }
     }

@@ -4,53 +4,95 @@ size: 1024,1024
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
-AICell
+baby1
   rotate: false
-  xy: 2, 541
-  size: 438, 439
-  orig: 438, 439
+  xy: 2, 620
+  size: 306, 307
+  orig: 306, 307
   offset: 0, 0
   index: -1
-AvailableCell
+baby2
   rotate: false
-  xy: 2, 100
-  size: 438, 439
-  orig: 438, 439
+  xy: 2, 311
+  size: 306, 307
+  orig: 306, 307
   offset: 0, 0
   index: -1
-MergeableCell
+baby3
   rotate: false
-  xy: 442, 541
-  size: 438, 439
-  orig: 438, 439
+  xy: 310, 620
+  size: 306, 307
+  orig: 306, 307
   offset: 0, 0
   index: -1
 btnClose
   rotate: false
-  xy: 2, 2
+  xy: 926, 831
   size: 96, 96
   orig: 96, 96
   offset: 0, 0
   index: -1
 btnInfo
   rotate: false
-  xy: 882, 884
+  xy: 926, 733
   size: 96, 96
   orig: 96, 96
   offset: 0, 0
   index: -1
 btnReply
   rotate: false
-  xy: 100, 2
+  xy: 926, 635
   size: 96, 96
   orig: 96, 96
   offset: 0, 0
   index: -1
+btnUnits
+  rotate: false
+  xy: 926, 537
+  size: 96, 96
+  orig: 96, 96
+  offset: 0, 0
+  index: -1
+granny
+  rotate: false
+  xy: 2, 2
+  size: 306, 307
+  orig: 306, 307
+  offset: 0, 0
+  index: -1
+granny1
+  rotate: false
+  xy: 310, 311
+  size: 306, 307
+  orig: 306, 307
+  offset: 0, 0
+  index: -1
+granny2
+  rotate: false
+  xy: 618, 620
+  size: 306, 307
+  orig: 306, 307
+  offset: 0, 0
+  index: -1
+granny3
+  rotate: false
+  xy: 310, 2
+  size: 306, 307
+  orig: 306, 307
+  offset: 0, 0
+  index: -1
 hamburger
   rotate: false
-  xy: 442, 105
-  size: 434, 434
-  orig: 434, 434
+  xy: 618, 311
+  size: 306, 307
+  orig: 306, 307
+  offset: 0, 0
+  index: -1
+hotDog
+  rotate: false
+  xy: 618, 2
+  size: 306, 307
+  orig: 306, 307
   offset: 0, 0
   index: -1
 
@@ -59,57 +101,127 @@ size: 1024,1024
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
-granny
+milkshake
   rotate: false
-  xy: 438, 620
+  xy: 2, 620
   size: 306, 307
   orig: 306, 307
   offset: 0, 0
   index: -1
-hotDog
-  rotate: false
-  xy: 2, 493
-  size: 434, 434
-  orig: 434, 434
-  offset: 0, 0
-  index: -1
-milkshake
-  rotate: false
-  xy: 2, 57
-  size: 434, 434
-  orig: 434, 434
-  offset: 0, 0
-  index: -1
 newborn
   rotate: false
-  xy: 438, 311
+  xy: 2, 311
   size: 306, 307
   orig: 306, 307
   offset: 0, 0
   index: -1
 oldMan
   rotate: false
-  xy: 438, 2
+  xy: 310, 620
   size: 306, 307
   orig: 306, 307
   offset: 0, 0
   index: -1
-
-pack3.png
-size: 1024,512
-format: RGBA8888
-filter: Nearest,Nearest
-repeat: none
-youngMan
+oldMan1
   rotate: false
   xy: 2, 2
   size: 306, 307
   orig: 306, 307
   offset: 0, 0
   index: -1
-youngWoman
+oldMan2
+  rotate: false
+  xy: 310, 311
+  size: 306, 307
+  orig: 306, 307
+  offset: 0, 0
+  index: -1
+oldMan3
+  rotate: false
+  xy: 618, 620
+  size: 306, 307
+  orig: 306, 307
+  offset: 0, 0
+  index: -1
+youngMan
   rotate: false
   xy: 310, 2
+  size: 306, 307
+  orig: 306, 307
+  offset: 0, 0
+  index: -1
+youngMan1
+  rotate: false
+  xy: 618, 311
+  size: 306, 307
+  orig: 306, 307
+  offset: 0, 0
+  index: -1
+youngMan2
+  rotate: false
+  xy: 618, 2
+  size: 306, 307
+  orig: 306, 307
+  offset: 0, 0
+  index: -1
+
+pack3.png
+size: 1024,1024
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+AICell
+  rotate: false
+  xy: 618, 795
+  size: 132, 132
+  orig: 132, 132
+  offset: 0, 0
+  index: -1
+AvailableCell
+  rotate: false
+  xy: 310, 177
+  size: 132, 132
+  orig: 132, 132
+  offset: 0, 0
+  index: -1
+MergeableCell
+  rotate: false
+  xy: 618, 661
+  size: 132, 132
+  orig: 132, 132
+  offset: 0, 0
+  index: -1
+youngMan3
+  rotate: false
+  xy: 2, 620
+  size: 306, 307
+  orig: 306, 307
+  offset: 0, 0
+  index: -1
+youngWoman
+  rotate: false
+  xy: 2, 311
+  size: 306, 307
+  orig: 306, 307
+  offset: 0, 0
+  index: -1
+youngWoman1
+  rotate: false
+  xy: 310, 620
+  size: 306, 307
+  orig: 306, 307
+  offset: 0, 0
+  index: -1
+youngWoman2
+  rotate: false
+  xy: 2, 2
+  size: 306, 307
+  orig: 306, 307
+  offset: 0, 0
+  index: -1
+youngWoman3
+  rotate: false
+  xy: 310, 311
   size: 306, 307
   orig: 306, 307
   offset: 0, 0

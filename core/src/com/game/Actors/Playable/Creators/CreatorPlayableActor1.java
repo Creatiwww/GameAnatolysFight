@@ -8,4 +8,9 @@ public class CreatorPlayableActor1 implements CreatorPlayableActor{
 
     @Override
     public PlayableActor factoryMethod() { return new PlayableActorYoungWoman(); }
+
+    @Override
+    public PlayableActor factoryMethod(String texturePath) {
+        return new PlayableActorYoungWoman(texturePath);
+    }
 }

@@ -7,5 +7,10 @@ public class CreatorAIActor3 implements CreatorAIActor {
 
     @Override
     public AIActor factoryMethod() { return new MilkShake(); }
+
+    @Override
+    public AIActor factoryMethod(String texturePath) {
+        return new MilkShake (texturePath);
+    }
 }
 

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/new_character_toast_root" android:orientation="vertical" android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="#000000">
+
+    <TextView
+        android:id="@+id/new_character_toast_textView"
+        android:text="new character unlocked!"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor = "#FFFFFF"
+        android:textSize="20sp"/>
+
+    <ImageView
+        android:id="@+id/new_character_toast_imageView"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:src="@drawable/ic_launcher"
+        android:layout_below="@+id/new_character_toast_text_view"
+        android:layout_margin="5dip"/>
+
+</LinearLayout>

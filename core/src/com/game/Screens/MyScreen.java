@@ -11,7 +11,7 @@ abstract public class MyScreen implements Screen {
     protected Batch batch;
 
     public MyScreen(WorldController worldController){
-        batch=worldController.getBatch();
+        batch = worldController.getBatch();
         actorsController = worldController.getActorsController();
     }
 

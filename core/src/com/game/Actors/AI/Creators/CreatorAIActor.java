@@ -4,4 +4,5 @@ import com.game.Actors.AI.Products.AIActor;
 
 public interface CreatorAIActor {
     AIActor factoryMethod();
+    AIActor factoryMethod(String texturePath);
 }

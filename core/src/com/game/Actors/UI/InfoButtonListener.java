@@ -1,4 +1,4 @@
-package com.game.Actors.Playable.Listeners;
+package com.game.Actors.UI;
 
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;

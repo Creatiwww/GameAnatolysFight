@@ -46,6 +46,10 @@ public abstract class MyActor extends Actor {
         actorPosition = new ActorPosition();
     }
 
+    public String getTexturePath (){
+        return texturePath;
+    }
+
     protected void initHP(){
         this.HP=this.maxHP;
     }

@@ -1,12 +1,12 @@
-package com.game.Actors.Playable.Listeners;
+package com.game.Actors.UI;
 
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.game.Actors.MyActor;
 import com.game.Controllers.WorldController;
 import com.game.Main.AssetLoader;
 
-public class RestartButtonListener extends ClickListener {
+public class RestartButtonListener extends InputListener {
     WorldController worldController;
 
     public RestartButtonListener(WorldController worldController){
@@ -14,7 +14,12 @@ public class RestartButtonListener extends ClickListener {
     }
 
     @Override
-    public void clicked (InputEvent event, float x, float y) {
+    public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+        return true;
+    }
+
+    @Override
+    public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
         for (Object actor:  worldController.getActorsController().getActors()){
             MyActor myActor = (MyActor)actor;
             myActor.setHP(-1);
@@ -24,7 +29,8 @@ public class RestartButtonListener extends ClickListener {
         worldController.getActorsController().ageIncrease();
         worldController.getActorsController().maturation();
         worldController.nullScore();
+        worldController.getEnemyWave().setWaveNumber(1);
         AssetLoader.clearPrefs();
         worldController.getGameCycle().setGameState("WAVE_GENERATING_STARTED");
-    };
+    }
 }

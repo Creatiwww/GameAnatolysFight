@@ -1,9 +1,11 @@
 package com.game.Controllers;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.utils.Timer;
 import com.game.Main.AssetLoader;
 import com.game.Main.Main;
 import com.game.Screens.MyScreen;
+import com.game.Screens.StartScreen;
 import com.game.UI.GetAndroidResInterface;
 import com.game.UI.NotificationsInterface;
 
@@ -17,7 +19,7 @@ public class WorldController  {
     private EnemyWave enemyWave;
     private NotificationsInterface notificationsInterface;
     private GetAndroidResInterface getAndroidResInterface;
-    boolean isGameOverToastShown = false;
+    //boolean isGameOverToastShown = false;
     private int score = 0;
     private GameCycle gameCycle;
 
@@ -75,7 +77,7 @@ public class WorldController  {
     }
 
     public void nullScore(){
-        score=0;
+        score = 0;
     }
 
     public void addScore(int increment) {
@@ -88,15 +90,19 @@ public class WorldController  {
 
     public class EnemyWave {
         private int waveNumber;
+
         EnemyWave(){
-            waveNumber=1;
+            waveNumber = 1;
         }
+
         public void setNextWave(){
             waveNumber++;
         }
+
         public void setWaveNumber(int waveNumber){
-            this.waveNumber=waveNumber;
+            this.waveNumber = waveNumber;
         }
+
         public int getWaveNumber(){
             return waveNumber;
         }
