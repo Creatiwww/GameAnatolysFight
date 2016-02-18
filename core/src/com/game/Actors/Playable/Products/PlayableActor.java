@@ -11,8 +11,8 @@ public class PlayableActor extends MyActor  {
     protected int reproductionPause;
     protected char type;
     public static final int YOUNG_START_AGE=3;
-    public static final int OLD_START_AGE=10;
-    public static final int OLD_END_AGE=13;
+    public static final int OLD_START_AGE=8;
+    public static final int OLD_END_AGE=15;
 
     public MovingFacilities getMovingFacilities(){
         return this.movingFacilities;

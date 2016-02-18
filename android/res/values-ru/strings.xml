@@ -5,5 +5,7 @@
     <string name="level">уровень №</string>
     <string name="score">результат</string>
     <string name="record">рекорд</string>
+    <string name="all_units_screen_label">Персонажи</string>
+    <string name="info_screen_label">Как играть</string>
 
 </resources>

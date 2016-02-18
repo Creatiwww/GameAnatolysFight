@@ -1,10 +1,10 @@
 package com.game.Screens;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.game.Controllers.WorldController;
@@ -12,30 +12,34 @@ import com.game.Main.AssetLoader;
 
 public class StartScreen extends MyScreen {
 
-    private Stage startStage;
-    private ImageButton startButton;
+    private Stage stage;
     private WorldController worldController;
     private SpriteBatch spriteBatch;
 
-    public StartScreen(WorldController worldController){
+    public StartScreen(final WorldController worldController){
         super(worldController);
         spriteBatch = worldController.getBatch();
         this.worldController = worldController;
-        startButton= (ImageButton) worldController.getActorsController().getStartButton();
-        startStage = new Stage(new StretchViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()), worldController.getBatch());
-        startStage.clear();
-       // startStage.addActor(startButton);
-        drawActors();
+        stage = new Stage(new StretchViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()), worldController.getBatch());
+        stage.addListener(new InputListener() {
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                return true;
+            }
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                worldController.getScreenController().setGameScreen();
+            }
+        });
     }
 
     @Override
     public Stage getStage(){
-        return startStage;
+        return stage;
     }
 
     @Override
     public void drawActors(){
-
     }
 
     @Override
@@ -44,8 +48,8 @@ public class StartScreen extends MyScreen {
 
     @Override
     public void render(float delta){
-        startStage.act();
-        startStage.draw();
+        stage.act();
+        stage.draw();
         spriteBatch.begin();
         spriteBatch.draw(AssetLoader.startImage,
                 Gdx.graphics.getWidth()/2-AssetLoader.startImage.getRegionWidth()/2,

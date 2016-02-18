@@ -53,42 +53,42 @@ btnUnits
   orig: 96, 96
   offset: 0, 0
   index: -1
-granny
+cola
   rotate: false
   xy: 2, 2
   size: 306, 307
   orig: 306, 307
   offset: 0, 0
   index: -1
-granny1
+gameOverPic
   rotate: false
   xy: 310, 311
   size: 306, 307
   orig: 306, 307
   offset: 0, 0
   index: -1
-granny2
+granny
   rotate: false
   xy: 618, 620
   size: 306, 307
   orig: 306, 307
   offset: 0, 0
   index: -1
-granny3
+granny1
   rotate: false
   xy: 310, 2
   size: 306, 307
   orig: 306, 307
   offset: 0, 0
   index: -1
-hamburger
+granny2
   rotate: false
   xy: 618, 311
   size: 306, 307
   orig: 306, 307
   offset: 0, 0
   index: -1
-hotDog
+granny3
   rotate: false
   xy: 618, 2
   size: 306, 307
@@ -101,63 +101,63 @@ size: 1024,1024
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
-milkshake
+hamburger
   rotate: false
   xy: 2, 620
   size: 306, 307
   orig: 306, 307
   offset: 0, 0
   index: -1
-newborn
+hotDog
   rotate: false
   xy: 2, 311
   size: 306, 307
   orig: 306, 307
   offset: 0, 0
   index: -1
-oldMan
+milkshake
   rotate: false
   xy: 310, 620
   size: 306, 307
   orig: 306, 307
   offset: 0, 0
   index: -1
-oldMan1
+newborn
   rotate: false
   xy: 2, 2
   size: 306, 307
   orig: 306, 307
   offset: 0, 0
   index: -1
-oldMan2
+oldMan
   rotate: false
   xy: 310, 311
   size: 306, 307
   orig: 306, 307
   offset: 0, 0
   index: -1
-oldMan3
+oldMan1
   rotate: false
   xy: 618, 620
   size: 306, 307
   orig: 306, 307
   offset: 0, 0
   index: -1
-youngMan
+oldMan2
   rotate: false
   xy: 310, 2
   size: 306, 307
   orig: 306, 307
   offset: 0, 0
   index: -1
-youngMan1
+oldMan3
   rotate: false
   xy: 618, 311
   size: 306, 307
   orig: 306, 307
   offset: 0, 0
   index: -1
-youngMan2
+shawarma
   rotate: false
   xy: 618, 2
   size: 306, 307
@@ -170,59 +170,93 @@ size: 1024,1024
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
-AICell
-  rotate: false
-  xy: 618, 795
-  size: 132, 132
-  orig: 132, 132
-  offset: 0, 0
-  index: -1
-AvailableCell
-  rotate: false
-  xy: 310, 177
-  size: 132, 132
-  orig: 132, 132
-  offset: 0, 0
-  index: -1
-MergeableCell
-  rotate: false
-  xy: 618, 661
-  size: 132, 132
-  orig: 132, 132
-  offset: 0, 0
-  index: -1
-youngMan3
+soda
   rotate: false
   xy: 2, 620
   size: 306, 307
   orig: 306, 307
   offset: 0, 0
   index: -1
-youngWoman
+youngMan
   rotate: false
   xy: 2, 311
   size: 306, 307
   orig: 306, 307
   offset: 0, 0
   index: -1
-youngWoman1
+youngMan1
   rotate: false
   xy: 310, 620
   size: 306, 307
   orig: 306, 307
   offset: 0, 0
   index: -1
-youngWoman2
+youngMan2
   rotate: false
   xy: 2, 2
   size: 306, 307
   orig: 306, 307
   offset: 0, 0
   index: -1
-youngWoman3
+youngMan3
   rotate: false
   xy: 310, 311
   size: 306, 307
   orig: 306, 307
+  offset: 0, 0
+  index: -1
+youngWoman
+  rotate: false
+  xy: 618, 620
+  size: 306, 307
+  orig: 306, 307
+  offset: 0, 0
+  index: -1
+youngWoman1
+  rotate: false
+  xy: 310, 2
+  size: 306, 307
+  orig: 306, 307
+  offset: 0, 0
+  index: -1
+youngWoman2
+  rotate: false
+  xy: 618, 311
+  size: 306, 307
+  orig: 306, 307
+  offset: 0, 0
+  index: -1
+youngWoman3
+  rotate: false
+  xy: 618, 2
+  size: 306, 307
+  orig: 306, 307
+  offset: 0, 0
+  index: -1
+
+pack4.png
+size: 512,256
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+AICell
+  rotate: false
+  xy: 2, 2
+  size: 132, 132
+  orig: 132, 132
+  offset: 0, 0
+  index: -1
+AvailableCell
+  rotate: false
+  xy: 136, 2
+  size: 132, 132
+  orig: 132, 132
+  offset: 0, 0
+  index: -1
+MergeableCell
+  rotate: false
+  xy: 270, 2
+  size: 132, 132
+  orig: 132, 132
   offset: 0, 0
   index: -1

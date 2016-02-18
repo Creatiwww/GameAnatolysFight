@@ -5,5 +5,7 @@
     <string name="level">level</string>
     <string name="score">score</string>
     <string name="record">high score</string>
+    <string name="all_units_screen_label">People</string>
+    <string name="info_screen_label">How to play</string>
 
 </resources>

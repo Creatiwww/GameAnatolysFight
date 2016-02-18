@@ -1,29 +1,14 @@
 package com.game.android;
 
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.ColorFilter;
-import android.graphics.Picture;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
-import android.graphics.drawable.DrawableContainer;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
-import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
-import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
-import com.game.Main.AssetLoader;
 import com.game.Main.Main;
 import com.game.UI.GetAndroidResInterface;
 import com.game.UI.NotificationsInterface;
@@ -50,6 +35,14 @@ public class AndroidLauncher extends AndroidApplication implements Notifications
 	@Override
 	public String getStrScore (){
 		return getResources().getString(R.string.score);
+	}
+	@Override
+	public String getStrAllUnitsScreenLabel (){
+		return getResources().getString(R.string.all_units_screen_label);
+	}
+	@Override
+	public String getStrInfoScreenLabel (){
+		return getResources().getString(R.string.info_screen_label);
 	}
 
 	@Override

@@ -2,7 +2,9 @@ package com.game.UI;
 
 public interface GetAndroidResInterface {
 
-    public String getStrLevel ();
-    public String getStrRecord ();
-    public String getStrScore ();
+    String getStrLevel ();
+    String getStrRecord ();
+    String getStrScore ();
+    String getStrAllUnitsScreenLabel();
+    String getStrInfoScreenLabel();
 }

@@ -19,7 +19,6 @@ public class WorldController  {
     private EnemyWave enemyWave;
     private NotificationsInterface notificationsInterface;
     private GetAndroidResInterface getAndroidResInterface;
-    //boolean isGameOverToastShown = false;
     private int score = 0;
     private GameCycle gameCycle;
 

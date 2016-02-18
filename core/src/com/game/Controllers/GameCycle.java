@@ -79,12 +79,11 @@ public class GameCycle {
                 }
                 aiController.updateAIUnitsCoordinates();
                 worldController.getScreen().drawActors();
-                if (AssetLoader.isFirstGameRun()|| isGameInProgress)gameState = GameState.PLAYER_TURN_START;
+                if (AssetLoader.isFirstGameRun() || isGameInProgress) gameState = GameState.PLAYER_TURN_START;
                 AssetLoader.saveGame(actorsController.getField(), worldController.getScore(), this, worldController);
                 break;
             case PLAYER_TURN_START:
                 gameState = GameState.PLAYER_TURN_IN_PROGRESS;
-
                 // after success movement by player should be switched to PLAYER_TURN_END
                 // in processMovementIntention() method of PlayableActorListner class
                 break;
@@ -96,7 +95,7 @@ public class GameCycle {
                 Timer.schedule(new Timer.Task() {
                     @Override
                     public void run() {
-                        actorsController.deleteDeadUnits();
+                        actorsController.deleteDeadUnits(false);
                         gameState = GameState.AI_TURN_START;
                     }
                 }
@@ -108,10 +107,10 @@ public class GameCycle {
                 // if all AI actors are dead, next wave starts
                 if (aiController.getAiUnits().isEmpty()){
                     for (Object actor: actorsController.getActors()){
-                        PlayableActor playableActor = (PlayableActor)actor;
+                        PlayableActor playableActor = (PlayableActor) actor;
                         playableActor.setHP(-1);
                     }
-                    actorsController.deleteDeadUnits();
+                    actorsController.deleteDeadUnits(false);
                     worldController.getEnemyWave().setNextWave();
                     aiController.calculateNextWaveDifficulty();
                     //worldController.getNotificationsInterface().toastText("    Level    " + worldController.getEnemyWave().getWaveNumber() + "    ");
@@ -133,7 +132,7 @@ public class GameCycle {
                 Timer.schedule(new Timer.Task() {
                     @Override
                     public void run() {
-                        actorsController.deleteDeadUnits();
+                        actorsController.deleteDeadUnits(false);
                         actorsController.reproductionPauseRedaction();
                         actorsController.ageIncrease();
                         actorsController.maturation();
@@ -146,7 +145,6 @@ public class GameCycle {
             case GAME_OVER:
                 worldController.getScreenController().setGameOverScreen();
                 //worldController.getNotificationsInterface().toastText("    Game Over    ");
-                AssetLoader.clearPrefs();
                 gameState = GameState.GAME_OVER_SHOWN;
                 break;
             case PAUSED:

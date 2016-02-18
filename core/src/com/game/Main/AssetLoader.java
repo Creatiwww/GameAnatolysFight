@@ -12,6 +12,9 @@ import com.game.Actors.AI.Creators.CreatorAIActor;
 import com.game.Actors.AI.Creators.CreatorAIActor1;
 import com.game.Actors.AI.Creators.CreatorAIActor2;
 import com.game.Actors.AI.Creators.CreatorAIActor3;
+import com.game.Actors.AI.Creators.CreatorAIActor4;
+import com.game.Actors.AI.Creators.CreatorAIActor5;
+import com.game.Actors.AI.Creators.CreatorAIActor6;
 import com.game.Actors.AI.Products.AIActor;
 import com.game.Actors.Field;
 import com.game.Actors.Playable.Creators.CreatorPlayableActor;
@@ -27,12 +30,13 @@ import com.game.Controllers.GameCycle;
 import com.game.Controllers.WorldController;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 public class AssetLoader {
 
     public static Sound dead;
     public static BitmapFont font;
-    public static TextureRegion startImage;
+    public static TextureRegion startImage, gameOverImage;
     public static Texture infoImage;
     public static Preferences prefs;
     public static ParticleEffect particleEffectAttack;
@@ -45,6 +49,9 @@ public class AssetLoader {
     private static CreatorAIActor creatorAIActor1;
     private static CreatorAIActor creatorAIActor2;
     private static CreatorAIActor creatorAIActor3;
+    private static CreatorAIActor creatorAIActor4;
+    private static CreatorAIActor creatorAIActor5;
+    private static CreatorAIActor creatorAIActor6;
 
     public static void load(){
         particleEffectAttack = new ParticleEffect();
@@ -53,7 +60,26 @@ public class AssetLoader {
         particleEffectAttack.load(Gdx.files.internal("effects/explosion.p"), Gdx.files.internal("effects"));
         dead = Gdx.audio.newSound(Gdx.files.internal("sounds/dead.wav"));
         font = new BitmapFont(Gdx.files.internal("font/text.fnt"));
-        startImage = textureAtlas.findRegion("granny");
+        Random random = new Random();
+        switch (random.nextInt(8)){
+            case 0 : startImage = textureAtlas.findRegion("granny");
+                break;
+            case 1 : startImage = textureAtlas.findRegion("oldMan");
+                break;
+            case 2 : startImage = textureAtlas.findRegion("newborn");
+                break;
+            case 3 : startImage = textureAtlas.findRegion("youngWoman");
+                break;
+            case 4 : startImage = textureAtlas.findRegion("youngMan");
+                break;
+            case 5 : startImage = textureAtlas.findRegion("milkshake");
+                break;
+            case 6 : startImage = textureAtlas.findRegion("hotDog");
+                break;
+            case 7 : startImage = textureAtlas.findRegion("hamburger");
+                break;
+        }
+        gameOverImage = textureAtlas.findRegion("gameOverPic");
         infoImage = new Texture(Gdx.files.internal("arts/helpScreen.png"));
         prefs = Gdx.app.getPreferences("MyGame");
         if (prefs.contains("isFirstGameRun")) {
@@ -72,6 +98,9 @@ public class AssetLoader {
         creatorAIActor1 = new CreatorAIActor1();
         creatorAIActor2 = new CreatorAIActor2();
         creatorAIActor3 = new CreatorAIActor3();
+        creatorAIActor4 = new CreatorAIActor4();
+        creatorAIActor5 = new CreatorAIActor5();
+        creatorAIActor6 = new CreatorAIActor6();
     }
 
     public static void startAttackEffect(float x, float y){
@@ -202,6 +231,15 @@ public class AssetLoader {
                     }
                     if (aiActorType.equals("milkshake")){
                         actorsController.getActors().add(creatorAIActor3.factoryMethod(texturePath));
+                    }
+                    if (aiActorType.equals("shawarma")){
+                        actorsController.getActors().add(creatorAIActor4.factoryMethod(texturePath));
+                    }
+                    if (aiActorType.equals("cola")){
+                        actorsController.getActors().add(creatorAIActor5.factoryMethod(texturePath));
+                    }
+                    if (aiActorType.equals("soda")){
+                        actorsController.getActors().add(creatorAIActor6.factoryMethod(texturePath));
                     }
                     int ind = actorsController.getActors().size();
                     AIActor actor = (AIActor) actorsController.getActors().get(ind - 1);

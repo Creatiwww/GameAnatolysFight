@@ -39,6 +39,10 @@ public class AIController {
         return aiUnits;
     }
 
+    public void  nullWaveDifficulty (){
+        waveDifficulty = INITIAL_WAVE_DIFFICULTY_ENEMY;
+    }
+
     /**
      * Generates calls to summon enemy to produce squads on the beginning of each wave.
      * Randomly defines which enemy should be summoned.

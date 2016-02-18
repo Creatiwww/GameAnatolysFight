@@ -19,7 +19,7 @@ public class StartNewGameButtonListener extends ClickListener {
             MyActor myActor = (MyActor)actor;
             myActor.setHP(-1);
         }
-        worldController.getActorsController().deleteDeadUnits();
+        worldController.getActorsController().deleteDeadUnits(true);
         worldController.getActorsController().reproductionPauseRedaction();
         worldController.getActorsController().ageIncrease();
         worldController.getActorsController().maturation();

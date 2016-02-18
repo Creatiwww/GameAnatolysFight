@@ -9,9 +9,7 @@ import com.game.UI.GetAndroidResInterface;
 import com.game.UI.NotificationsInterface;
 
 public class Main extends Game {
-	private static final String TAG = Main.class.getName();
 
-	private WorldController worldController;
 	private boolean paused;
 	private NotificationsInterface notificationsInterface;
 	private GetAndroidResInterface getAndroidResInterface;
@@ -23,7 +21,7 @@ public class Main extends Game {
 
 	@Override
 	public void create () {
-		worldController = new WorldController(notificationsInterface, getAndroidResInterface, this);
+		WorldController worldController = new WorldController(notificationsInterface, getAndroidResInterface, this);
 		paused = false; // Game world is active on start
 		setScreen(worldController.getScreen());
 	}

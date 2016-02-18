@@ -139,8 +139,8 @@ public class PlayableActorsListener extends DragListener {
         int pActorCellIndex=field.getCoordinates().getCellIndexByXYIndexes(indexX, indexY);
         Field.Cell cell=field.getCellByIndex(pActorCellIndex);
         PlayableActor secondPActor=(PlayableActor) cell.getActorRef();
-        draggedActor.setReproductionPause(3);
-        secondPActor.setReproductionPause(3);
+        if (draggedActor.isFemale())draggedActor.setReproductionPause(3);
+        if (secondPActor.isFemale())secondPActor.setReproductionPause(3);
         int spawnCellIndex=findAvailableForSpawnCell(draggedActor, secondPActor);
         worldController.getActorsController().spawnChild(spawnCellIndex);
     }

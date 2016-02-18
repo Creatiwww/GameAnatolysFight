@@ -24,12 +24,10 @@ public class RestartButtonListener extends InputListener {
             MyActor myActor = (MyActor)actor;
             myActor.setHP(-1);
         }
-        worldController.getActorsController().deleteDeadUnits();
-        worldController.getActorsController().reproductionPauseRedaction();
-        worldController.getActorsController().ageIncrease();
-        worldController.getActorsController().maturation();
+        worldController.getActorsController().deleteDeadUnits(true);
         worldController.nullScore();
         worldController.getEnemyWave().setWaveNumber(1);
+        worldController.getAiController().nullWaveDifficulty();
         AssetLoader.clearPrefs();
         worldController.getGameCycle().setGameState("WAVE_GENERATING_STARTED");
     }

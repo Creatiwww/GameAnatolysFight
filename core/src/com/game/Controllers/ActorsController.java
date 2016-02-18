@@ -5,6 +5,9 @@ import com.game.Actors.AI.Creators.CreatorAIActor;
 import com.game.Actors.AI.Creators.CreatorAIActor1;
 import com.game.Actors.AI.Creators.CreatorAIActor2;
 import com.game.Actors.AI.Creators.CreatorAIActor3;
+import com.game.Actors.AI.Creators.CreatorAIActor4;
+import com.game.Actors.AI.Creators.CreatorAIActor5;
+import com.game.Actors.AI.Creators.CreatorAIActor6;
 import com.game.Actors.AI.Products.AIActor;
 import com.game.Actors.AvailableForMovementCell;
 import com.game.Actors.MergeableCell;
@@ -41,6 +44,9 @@ public class ActorsController {
     private CreatorAIActor creatorAIActor1;
     private CreatorAIActor creatorAIActor2;
     private CreatorAIActor creatorAIActor3;
+    private CreatorAIActor creatorAIActor4;
+    private CreatorAIActor creatorAIActor5;
+    private CreatorAIActor creatorAIActor6;
     private ArrayList actors;
     private ArrayList <MyActor> pActors;
     private Field field;
@@ -71,6 +77,10 @@ public class ActorsController {
     public final int SCORES_REQ_SKIN_BABY_1 = 200;
     public final int SCORES_REQ_SKIN_BABY_2 = 220;
     public final int SCORES_REQ_SKIN_BABY_3 = 240;
+    // score requirements to unlock new enemies
+    public final int SCORES_REQ_ENEMY_4 = 100;
+    public final int SCORES_REQ_ENEMY_5 = 200;
+    public final int SCORES_REQ_ENEMY_6 = 300;
 
     public ActorsController(WorldController worldController) {
         field = new Field();
@@ -95,6 +105,9 @@ public class ActorsController {
         creatorAIActor1 = new CreatorAIActor1();
         creatorAIActor2 = new CreatorAIActor2();
         creatorAIActor3 = new CreatorAIActor3();
+        creatorAIActor4 = new CreatorAIActor4();
+        creatorAIActor5 = new CreatorAIActor5();
+        creatorAIActor6 = new CreatorAIActor6();
     }
 
     public ArrayList getActors() {
@@ -209,13 +222,17 @@ public class ActorsController {
     public int spawnEnemyUnit(int enemyTypeCode) {
         switch (enemyTypeCode) {
             case 0:
-                actors.add(creatorAIActor1.factoryMethod());
+                if (SCORES_REQ_ENEMY_4 < worldController.getScore()) actors.add(creatorAIActor4.factoryMethod());
+                else actors.add(creatorAIActor1.factoryMethod());
                 break;
             case 1:
-                actors.add(creatorAIActor2.factoryMethod());
+                if (SCORES_REQ_ENEMY_5 < worldController.getScore()) actors.add(creatorAIActor5.factoryMethod());
+                else actors.add(creatorAIActor2.factoryMethod());
                 break;
             case 2:
-                actors.add(creatorAIActor3.factoryMethod());
+                if (SCORES_REQ_ENEMY_6 < worldController.getScore()) actors.add(creatorAIActor6.factoryMethod());
+                else actors.add(creatorAIActor3.factoryMethod());
+                break;
         }
         int index = actors.size();
         AIActor actor = (AIActor) actors.get(index - 1);
@@ -476,6 +493,7 @@ public class ActorsController {
                     newPlayableActor.setPosition(cell.getcX() - newPlayableActor.getWidth() / 2, cell.getcY() - newPlayableActor.getHeight() / 2);
                     newPlayableActor.addListener(new PlayableActorsListener(newPlayableActor, worldController));
                     newPlayableActor.setHP(bufHP * newPlayableActor.getHP());
+                    newPlayableActor.setReproductionPause(2);
                     this.actors.remove(i);
                     i--;
                 }
@@ -484,13 +502,13 @@ public class ActorsController {
         worldController.getScreen().drawActors();
     }
 
-    public void deleteDeadUnits() {
+    public void deleteDeadUnits(boolean restart) {
         for (int i = 0; i < actors.size(); i++) {
             MyActor actor = (MyActor) this.actors.get(i);
             if (actor.getHP() <= 0) {
                 // play sound
                 AssetLoader.dead.play();
-                if (actor.isOwnedByAI()) {
+                if (actor.isOwnedByAI() && !restart) {
                     // calculation of score incremental = Wave # * actor's cost * SCORE_MULTIPLICATOR
                     final int SCORE_MULTIPLICATOR = 1;
                     int increment = worldController.getEnemyWave().getWaveNumber() * actor.getCost() * SCORE_MULTIPLICATOR;
