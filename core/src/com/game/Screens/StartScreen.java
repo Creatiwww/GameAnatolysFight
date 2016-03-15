@@ -15,10 +15,12 @@ public class StartScreen extends MyScreen {
     private Stage stage;
     private WorldController worldController;
     private SpriteBatch spriteBatch;
+    private float imageSize;
 
     public StartScreen(final WorldController worldController){
         super(worldController);
         spriteBatch = worldController.getBatch();
+        imageSize = worldController.getActorsController().getField().getCellWidth() * (float) (1 + 0.5);
         this.worldController = worldController;
         stage = new Stage(new StretchViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()), worldController.getBatch());
         stage.addListener(new InputListener() {
@@ -43,6 +45,9 @@ public class StartScreen extends MyScreen {
     }
 
     @Override
+    public void displayStoryPicture (){};
+
+    @Override
     public void drawAvailableForMovementCells(){
     }
 
@@ -52,8 +57,10 @@ public class StartScreen extends MyScreen {
         stage.draw();
         spriteBatch.begin();
         spriteBatch.draw(AssetLoader.startImage,
-                Gdx.graphics.getWidth()/2-AssetLoader.startImage.getRegionWidth()/2,
-                Gdx.graphics.getHeight()/2-AssetLoader.startImage.getRegionHeight()/2);
+                Gdx.graphics.getWidth()/2 - imageSize/2,
+                Gdx.graphics.getHeight()/2 - imageSize/2,
+                imageSize,
+                imageSize);
         spriteBatch.end();
         Timer.schedule(new Timer.Task() {
             @Override

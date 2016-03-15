@@ -17,6 +17,8 @@ abstract public class MyScreen implements Screen {
 
     abstract public void drawAvailableForMovementCells();
 
+    abstract public void displayStoryPicture ();
+
     abstract public void drawActors();
 
     abstract public Stage getStage();

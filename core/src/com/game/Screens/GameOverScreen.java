@@ -14,6 +14,7 @@ import com.game.Main.AssetLoader;
 public class GameOverScreen extends MyScreen {
 
     private Stage stage;
+    private float imageSize;
     private SpriteBatch spriteBatch;
     private String strScore = actorsController.getWorldController().getAndroidResInterface().getStrScore();
     private String strRecord = actorsController.getWorldController().getAndroidResInterface().getStrRecord();
@@ -21,12 +22,15 @@ public class GameOverScreen extends MyScreen {
     private WorldController worldController = actorsController.getWorldController();
     private Field field = actorsController.getField();
     private float w, h, c1w, c1h, p1w, p1h, c2w, c3w, c4w, c5w, c6w, c7w, c2h, c5h;
+    private float scale;
     private boolean isElementsPositioningVariablesInitiated = false;
 
     public GameOverScreen(final WorldController worldController){
         super(worldController);
         spriteBatch = worldController.getBatch();
+        imageSize = actorsController.getField().getCellWidth() * (float) (1 + 0.5);
         stage = new Stage(new StretchViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()), worldController.getBatch());
+        scale = AssetLoader.scale;
         stage.addListener(new InputListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -40,9 +44,6 @@ public class GameOverScreen extends MyScreen {
                     myActor.setHP(-1);
                 }
                 actorsController.deleteDeadUnits(false);
-                //actorsController.reproductionPauseRedaction();
-                //actorsController.ageIncrease();
-                //actorsController.maturation();
                 worldController.nullScore();
                 worldController.getEnemyWave().setWaveNumber(1);
                 worldController.getAiController().nullWaveDifficulty();
@@ -57,16 +58,16 @@ public class GameOverScreen extends MyScreen {
         if (!isElementsPositioningVariablesInitiated) {
             w = Gdx.graphics.getWidth();
             h = Gdx.graphics.getHeight();
-            AssetLoader.font.getData().setScale(1f);
+            AssetLoader.font.getData().setScale(scale);
             c1w = AssetLoader.font.draw(spriteBatch, "Game Over", 0, 0).width;
             c1h = AssetLoader.font.draw(spriteBatch, "Game Over", 0, 0).height;
-            p1w = AssetLoader.gameOverImage.getRegionWidth();
-            p1h = AssetLoader.gameOverImage.getRegionHeight();
+            p1w = imageSize;
+            p1h = imageSize;
             c2w = AssetLoader.font.draw(spriteBatch, "" + worldController.getEnemyWave().getWaveNumber(), 0, 0).width;
             c2h = AssetLoader.font.draw(spriteBatch, "" + worldController.getEnemyWave().getWaveNumber(), 0, 0).height;
             c3w = AssetLoader.font.draw(spriteBatch, "" + worldController.getScore(), 0, 0).width;
             c4w = AssetLoader.font.draw(spriteBatch, "" + AssetLoader.getHighScore(), 0, 0).width;
-            AssetLoader.font.getData().setScale(0.6f);
+            AssetLoader.font.getData().setScale(0.6f * scale);
             c5w = AssetLoader.font.draw(spriteBatch, strLevel, 0, 0).width;
             c5h = AssetLoader.font.draw(spriteBatch, strLevel, 0, 0).height;
             c6w = AssetLoader.font.draw(spriteBatch, strScore, 0, 0).width;
@@ -85,6 +86,9 @@ public class GameOverScreen extends MyScreen {
     }
 
     @Override
+    public void displayStoryPicture (){};
+
+    @Override
     public void drawAvailableForMovementCells(){
     }
 
@@ -94,7 +98,7 @@ public class GameOverScreen extends MyScreen {
         stage.draw();
         spriteBatch.begin();
         initiatePositioningVariables();
-        AssetLoader.font.getData().setScale(1f);
+        AssetLoader.font.getData().setScale(scale);
         // Draw Game Over capture
         AssetLoader.font.draw(spriteBatch, "Game Over", w/2 - c1w/2, h/2 + p1h + 2*c1h);
         // Draw level number
@@ -104,7 +108,7 @@ public class GameOverScreen extends MyScreen {
         // Draw high score
         float temp = 0.83333f*w;
         AssetLoader.font.draw(spriteBatch, "" + AssetLoader.getHighScore(), temp- c4w/2, h/2 - p1h );
-        AssetLoader.font.getData().setScale(0.6f);
+        AssetLoader.font.getData().setScale(0.6f * scale);
         // Draw level capture
         AssetLoader.font.draw(spriteBatch, strLevel, w/6 - c5w/2,  h/2 - p1h - 2*c5h);
         // Draw score capture
@@ -112,7 +116,7 @@ public class GameOverScreen extends MyScreen {
         // Draw record capture
         AssetLoader.font.draw(spriteBatch, strRecord, temp - c7w/2,  h/2 - p1h - 2*c5h);
         // Draw evil warm picture
-        spriteBatch.draw(AssetLoader.gameOverImage, w/2 - p1w/2, h/2 - p1h/4);
+        spriteBatch.draw(AssetLoader.gameOverImage, w/2 - p1w/2, h/2 - p1h/4, imageSize, imageSize);
         spriteBatch.end();
     }
 }

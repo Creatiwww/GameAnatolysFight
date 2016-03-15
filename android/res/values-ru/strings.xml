@@ -2,10 +2,10 @@
 <resources>
 
     <string name="app_name">game</string>
-    <string name="level">уровень №</string>
+    <string name="level">День</string>
     <string name="score">результат</string>
     <string name="record">рекорд</string>
-    <string name="all_units_screen_label">Персонажи</string>
+    <string name="all_units_screen_label">Родня</string>
     <string name="info_screen_label">Как играть</string>
 
 </resources>

@@ -1,5 +1,6 @@
 package com.game.Controllers;
 
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.utils.Timer;
 import com.game.AI.StrategicAI;
 import com.game.AI.TacticalAI;
@@ -67,12 +68,16 @@ public class GameCycle {
     public void run(){
         switch (gameState){
             case WAVE_GENERATING_STARTED:
+                AssetLoader.gameMusic.stop();
+                AssetLoader.gameMusic = AssetLoader.getRandomMusic();
+                if (worldController.isMusicOn()) AssetLoader.gameMusic.play();
+
                 gameState = GameState.WAVE_GENERATING_IN_PROGRESS;
                 // generates next waves enemies and playable units
                 if (AssetLoader.isFirstGameRun() || isGameInProgress) {
-                    //if (AssetLoader.isFirstGameRun())worldController.nullScore();
                     aiController.generateNextWavesPlayableUnits();
                     aiController.generateNextWavesEnemies();
+                    //worldController.getNotificationsInterface().toastText("New character unlocked");
                 }else{
                     AssetLoader.restoreGame(actorsController.getField(), actorsController, this);
                     aiController.updateAIUnitsList();
@@ -80,6 +85,9 @@ public class GameCycle {
                 aiController.updateAIUnitsCoordinates();
                 worldController.getScreen().drawActors();
                 if (AssetLoader.isFirstGameRun() || isGameInProgress) gameState = GameState.PLAYER_TURN_START;
+                if (worldController.getScore() == 0) {
+                    worldController.getScreen().displayStoryPicture();
+                }
                 AssetLoader.saveGame(actorsController.getField(), worldController.getScore(), this, worldController);
                 break;
             case PLAYER_TURN_START:
@@ -113,8 +121,6 @@ public class GameCycle {
                     actorsController.deleteDeadUnits(false);
                     worldController.getEnemyWave().setNextWave();
                     aiController.calculateNextWaveDifficulty();
-                    //worldController.getNotificationsInterface().toastText("    Level    " + worldController.getEnemyWave().getWaveNumber() + "    ");
-                   // worldController.getNotificationsInterface().toastPicture(null);
                     isGameInProgress = true;
                     gameState = GameState.WAVE_GENERATING_STARTED;
                 } else {
@@ -144,7 +150,6 @@ public class GameCycle {
                 break;
             case GAME_OVER:
                 worldController.getScreenController().setGameOverScreen();
-                //worldController.getNotificationsInterface().toastText("    Game Over    ");
                 gameState = GameState.GAME_OVER_SHOWN;
                 break;
             case PAUSED:
@@ -152,6 +157,7 @@ public class GameCycle {
                 break;
             case WAVE_GENERATING_IN_PROGRESS: case PLAYER_TURN_IN_PROGRESS: case NOBODY_TURN: case GAME_OVER_SHOWN:
                 // do nothing;
+                //worldController.getNotificationsInterface().toastPicture(null);
         }
 
         // game over when all PActor are dead (size of its array = 0) and it wasn't shown

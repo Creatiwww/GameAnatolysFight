@@ -33,8 +33,8 @@ public class AnimationController {
         float yFrom = attackingActor.getY();
         // cell with calculation
         final int FIELD_SIZE_X = 5;
-        float paddingsXWidth=(Gdx.graphics.getWidth()/16);
-        float cellWidth=(Gdx.graphics.getWidth()-2*paddingsXWidth)/FIELD_SIZE_X;
+        float paddingsXWidth = (Gdx.graphics.getWidth()/16);
+        float cellWidth = (Gdx.graphics.getWidth()-2*paddingsXWidth)/FIELD_SIZE_X;
         float xCenterTo = attackedActor.getX()+ cellWidth/2;
         float yCenterTo = attackedActor.getY()+ cellWidth/2;
         attackingActor.addAction(

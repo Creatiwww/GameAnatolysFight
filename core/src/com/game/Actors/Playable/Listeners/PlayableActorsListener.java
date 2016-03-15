@@ -23,21 +23,22 @@ public class PlayableActorsListener extends DragListener {
     private int actorCellIndexBeforeMovementX,actorCellIndexBeforeMovementY;
     private int oldCellIndex;
     private boolean aiCell;
+    public boolean ifStorePictureExist;
 
     public PlayableActorsListener(PlayableActor draggedActor, WorldController worldController){
-        this.draggedActor=draggedActor;
-        this.field=worldController.getActorsController().getField();
-        this.worldController=worldController;
+        this.draggedActor = draggedActor;
+        this.field = worldController.getActorsController().getField();
+        this.worldController = worldController;
         this.actorsController = worldController.getActorsController();
-        rightFieldEdge =field.getCoordinates().getRightFieldEdge();
-        leftFieldEdge=field.getCoordinates().getLeftFieldEdge();
-        topFieldEdge=field.getCoordinates().getTopFieldEdge();
+        rightFieldEdge = field.getCoordinates().getRightFieldEdge();
+        leftFieldEdge = field.getCoordinates().getLeftFieldEdge();
+        topFieldEdge = field.getCoordinates().getTopFieldEdge();
         bottomFieldEdge = field.getCoordinates().getBottomFieldEdge();
-        originalActorsWidth=draggedActor.getWidth();
-        originalActorsHeight=draggedActor.getHeight();
-        float actorsSizeIncrease=0.3f;
-        actorsNewWidth = originalActorsWidth*(1+actorsSizeIncrease); // actor's size after increase
-        actorsNewHeight = originalActorsHeight*(1+actorsSizeIncrease);
+        originalActorsWidth = draggedActor.getWidth();
+        originalActorsHeight = draggedActor.getHeight();
+        float actorsSizeIncrease = 0.3f;
+        actorsNewWidth = originalActorsWidth * (1 + actorsSizeIncrease); // actor's size after increase
+        actorsNewHeight = originalActorsHeight*(1 + actorsSizeIncrease);
         aiCell = false;
     }
 
@@ -45,6 +46,7 @@ public class PlayableActorsListener extends DragListener {
     public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
         if ( worldController.getGameCycle().gameState == GameCycle.GameState.PLAYER_TURN_IN_PROGRESS /*worldController.getTurn().isPlayerTurn()*/) { // if this is a turn of player not AI
             super.touchDown(event, x, y, pointer, button);
+            if(!ifStorePictureExist) actorsController.getStoryPictures().remove();
             draggedActor.toFront();
             float actorPossitionX = event.getListenerActor().getX();
             float actorPossitionY = event.getListenerActor().getY();
@@ -54,7 +56,7 @@ public class PlayableActorsListener extends DragListener {
             int IndexY = findYCellIndex(actorCenterPossitionY);
             actorCellIndexBeforeMovementX = IndexX;
             actorCellIndexBeforeMovementY = IndexY;
-            oldCellIndex=field.getCoordinates().getCellIndexByXYIndexes(actorCellIndexBeforeMovementX, actorCellIndexBeforeMovementY);
+            oldCellIndex = field.getCoordinates().getCellIndexByXYIndexes(actorCellIndexBeforeMovementX, actorCellIndexBeforeMovementY);
             draggedActor.getPosition().cellIndexX = IndexX;
             draggedActor.getPosition().cellIndexY = IndexY;
             draggedActor.setSize(actorsNewWidth, actorsNewHeight);
@@ -225,12 +227,12 @@ public class PlayableActorsListener extends DragListener {
     }
 
     private float fitActorToTouchCenterX(float x){
-        x=x - draggedActor.getWidth() / 2;
+        x = x - draggedActor.getWidth() / 2;
         return x;
     }
 
     private float fitActorToTouchCenterY(float y){
-        y=y - draggedActor.getWidth() / 2;
+        y = y - draggedActor.getWidth() / 2;
         return y;
     }
 
@@ -269,25 +271,25 @@ public class PlayableActorsListener extends DragListener {
     }
 
     private boolean movementFacilitiesCheck(int IndexX,int IndexY){
-        int oldPositionX=draggedActor.getPosition().cellIndexX;
-        int oldPositionY=draggedActor.getPosition().cellIndexY;
-        int newPositionX=IndexX;
-        int newPositionY=IndexY;
-        int R=draggedActor.getMovingFacilities().R;
-        int T=draggedActor.getMovingFacilities().T;
-        int B=draggedActor.getMovingFacilities().B;
-        int L=draggedActor.getMovingFacilities().L;
-        int TR=draggedActor.getMovingFacilities().TR;
-        int TL=draggedActor.getMovingFacilities().TL;
-        int BR=draggedActor.getMovingFacilities().BR;
-        int BL=draggedActor.getMovingFacilities().BL;
+        int oldPositionX = draggedActor.getPosition().cellIndexX;
+        int oldPositionY = draggedActor.getPosition().cellIndexY;
+        int newPositionX = IndexX;
+        int newPositionY = IndexY;
+        int R = draggedActor.getMovingFacilities().R;
+        int T = draggedActor.getMovingFacilities().T;
+        int B = draggedActor.getMovingFacilities().B;
+        int L = draggedActor.getMovingFacilities().L;
+        int TR = draggedActor.getMovingFacilities().TR;
+        int TL = draggedActor.getMovingFacilities().TL;
+        int BR = draggedActor.getMovingFacilities().BR;
+        int BL = draggedActor.getMovingFacilities().BL;
 
-        boolean X=false;
-        boolean Y=false;
-        boolean XY=false;
-        boolean YX=false;
-        boolean flag=false;
-        if (oldPositionX==newPositionX && oldPositionY==newPositionY) return false; // if we move to the same cell
+        boolean X =false;
+        boolean Y = false;
+        boolean XY = false;
+        boolean YX = false;
+        boolean flag = false;
+        if (oldPositionX == newPositionX && oldPositionY==newPositionY) return false; // if we move to the same cell
         if(((IndexX-oldPositionX>0)&&(IndexX-oldPositionX<=R))||((oldPositionX-IndexX>0)&&(oldPositionX-IndexX<=L)))X=true; // X means that actor does movement in right direction and this was in line with his movement facilities
         if(((IndexY-oldPositionY>0)&&(IndexY-oldPositionY<=T))||((oldPositionY-IndexY>0)&&(oldPositionY-IndexY<=B)))Y=true;
         if ((((oldPositionX-IndexX>0)&&(oldPositionX-IndexX<=BL))&&((oldPositionY-IndexY>0)&&(oldPositionY-IndexY<=BL)))||(((IndexX-oldPositionX>0)&&(IndexX-oldPositionX<=TR))&&((IndexY-oldPositionY>0)&&(IndexY-oldPositionY<=TR))))XY=true;

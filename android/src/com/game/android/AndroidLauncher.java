@@ -14,7 +14,6 @@ import com.game.UI.GetAndroidResInterface;
 import com.game.UI.NotificationsInterface;
 
 public class AndroidLauncher extends AndroidApplication implements NotificationsInterface, GetAndroidResInterface {
-
 	final AndroidLauncher context = this;
 
 	@Override
@@ -23,23 +22,26 @@ public class AndroidLauncher extends AndroidApplication implements Notifications
 		AndroidApplicationConfiguration config = new AndroidApplicationConfiguration();
 		initialize(new Main(this, this), config);
 	}
-
 	@Override
 	public String getStrLevel (){
 		return getResources().getString(R.string.level);
 	}
+
 	@Override
 	public String getStrRecord (){
 		return getResources().getString(R.string.record);
 	}
+
 	@Override
 	public String getStrScore (){
 		return getResources().getString(R.string.score);
 	}
+
 	@Override
 	public String getStrAllUnitsScreenLabel (){
 		return getResources().getString(R.string.all_units_screen_label);
 	}
+
 	@Override
 	public String getStrInfoScreenLabel (){
 		return getResources().getString(R.string.info_screen_label);
@@ -66,49 +68,6 @@ public class AndroidLauncher extends AndroidApplication implements Notifications
 
 	@Override
 	public void toastPicture(final String path) {
-		/*handler.post(new Runnable() {
-			@Override
-			public void run() {
-				LayoutInflater inflater = getLayoutInflater();
 
-				View layout = inflater.inflate(R.layout.new_character_toast, (ViewGroup) findViewById(R.id.new_character_toast_root));
-				//TextView textT = (TextView) layout.findViewById(R.id.toast_text);
-				//textT.setText(path);
-				ImageView imageView = (ImageView) layout.findViewById(R.id.new_character_toast_imageView);
-				TextureRegion textureRegion = AssetLoader.textureAtlas.findRegion(path);
-				//SpriteDrawable spriteDrawable = new SpriteDrawable(new Sprite(textureRegion));
-				final TextureRegionDrawable textureRegionDrawable = new TextureRegionDrawable(textureRegion);
-				Drawable drawable = new Drawable() {
-					@Override
-					public void draw(Canvas canvas) {
-						canvas.drawText("уй",1f,1f,);
-					}
-
-					@Override
-					public void setAlpha(int alpha) {
-
-					}
-
-					@Override
-					public void setColorFilter(ColorFilter cf) {
-
-					}
-
-					@Override
-					public int getOpacity() {
-						return 0;
-					}
-				};
-
-				Dr
-				imageView.setImageDrawable(drawable);
-				imageView.setImageBitmap(Bitmap.createBitmap());
-				Toast toast = new Toast(context);
-				toast.setGravity(Gravity.CENTER, 0, 0);
-				toast.setDuration(Toast.LENGTH_LONG);
-				toast.setView(layout);
-				toast.show();
-			}
-		});*/
 	}
 }

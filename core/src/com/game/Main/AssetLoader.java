@@ -2,6 +2,7 @@ package com.game.Main;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -35,12 +36,15 @@ import java.util.Random;
 public class AssetLoader {
 
     public static Sound dead;
+    public static Music gameMusic;
     public static BitmapFont font;
     public static TextureRegion startImage, gameOverImage;
     public static Texture infoImage;
     public static Preferences prefs;
     public static ParticleEffect particleEffectAttack;
     public static TextureAtlas textureAtlas;
+    public static float scale;
+    private static ArrayList musicList;
     private static CreatorPlayableActor creatorPlayableActor1;
     private static CreatorPlayableActor creatorPlayableActor2;
     private static CreatorPlayableActor creatorPlayableActor3;
@@ -53,13 +57,37 @@ public class AssetLoader {
     private static CreatorAIActor creatorAIActor5;
     private static CreatorAIActor creatorAIActor6;
 
+    public static Music getRandomMusic(){
+        Random random = new Random();
+        int trackId = random.nextInt(musicList.size());
+        return (Music) musicList.get(trackId);
+    }
+
     public static void load(){
+        Music track1 = Gdx.audio.newMusic(Gdx.files.internal("music/music1.ogg"));
+        Music track2 = Gdx.audio.newMusic(Gdx.files.internal("music/music2.ogg"));
+        Music track3 = Gdx.audio.newMusic(Gdx.files.internal("music/music3.mp3"));
+        Music track4 = Gdx.audio.newMusic(Gdx.files.internal("music/music4.mp3"));
+        Music track5 = Gdx.audio.newMusic(Gdx.files.internal("music/music5.mp3"));
+        musicList = new ArrayList();
+        musicList.add(track1);
+        musicList.add(track2);
+        musicList.add(track3);
+        musicList.add(track4);
+        musicList.add(track5);
+        gameMusic = getRandomMusic();
+        gameMusic.setVolume(0.5f);
+        gameMusic.setLooping(true);
         particleEffectAttack = new ParticleEffect();
         textureAtlas = new TextureAtlas(Gdx.files.internal("arts/pack.atlas"));
         // The first argument tells where the effect data is, the second tells where the base image is
         particleEffectAttack.load(Gdx.files.internal("effects/explosion.p"), Gdx.files.internal("effects"));
         dead = Gdx.audio.newSound(Gdx.files.internal("sounds/dead.wav"));
-        font = new BitmapFont(Gdx.files.internal("font/text.fnt"));
+        font = new BitmapFont(Gdx.files.internal("font/font.fnt"));
+        float DISPLAY_WITH_BASELINE = 1080;
+        float displayWith = Gdx.graphics.getWidth();
+        scale =  displayWith / DISPLAY_WITH_BASELINE;
+        font.getData().setScale(scale);
         Random random = new Random();
         switch (random.nextInt(8)){
             case 0 : startImage = textureAtlas.findRegion("granny");
@@ -79,6 +107,7 @@ public class AssetLoader {
             case 7 : startImage = textureAtlas.findRegion("hamburger");
                 break;
         }
+
         gameOverImage = textureAtlas.findRegion("gameOverPic");
         infoImage = new Texture(Gdx.files.internal("arts/helpScreen.png"));
         prefs = Gdx.app.getPreferences("MyGame");
@@ -182,7 +211,6 @@ public class AssetLoader {
         String actorOwner;
         for(int i=0; i<field.getCoordinates().getFieldSize(); i++){
             cell = field.getCellByIndex(i);
-            //int index = actorsController.getActors().size();
             actorOwner = prefs.getString("cell" + i + "owner");
             if (!actorOwner.equals("-1")) {
                 int actorAge = Integer.parseInt(prefs.getString("cell" + i + "age"));
@@ -259,11 +287,6 @@ public class AssetLoader {
         actorsController.getWorldController().getEnemyWave().setWaveNumber(Integer.parseInt(prefs.getString("enemyWave")));
     }
 
-    public static void setFirstGameRun(){
-        prefs.putBoolean("isFirstGameRun", true);
-        prefs.flush();
-    }
-
     public static boolean isFirstGameRun(){
         if (prefs.contains("isFirstGameRun")){
             return prefs.getBoolean("isFirstGameRun");
@@ -285,5 +308,6 @@ public class AssetLoader {
         font.dispose();
         particleEffectAttack.dispose();
         textureAtlas.dispose();
+        gameMusic.dispose();
     }
 }

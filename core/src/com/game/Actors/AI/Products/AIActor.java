@@ -13,12 +13,15 @@ public class AIActor extends MyActor {
     public void moveR(){
         this.actorPosition.cellIndexX++;
     }
+
     public void moveL(){
         this.actorPosition.cellIndexX--;
     }
+
     public void moveT(){
         this.actorPosition.cellIndexY++;
     }
+
     public void moveD(){
         this.actorPosition.cellIndexY--;
     }

@@ -1,6 +1,7 @@
 package com.game.Controllers;
 
 import com.badlogic.gdx.Gdx;
+import com.game.Main.AssetLoader;
 import com.game.Screens.AllUnitsScreen;
 import com.game.Screens.GameOverScreen;
 import com.game.Screens.GameScreen;
@@ -21,7 +22,6 @@ public class ScreenController  {
         infoScreen = new InfoScreen(worldController);
         startScreen = new StartScreen(worldController);
         gameOverScreen = new GameOverScreen(worldController);
-        allUnitsScreen = new AllUnitsScreen(worldController);
 
         // Game starts with the screen mentioned below
         screen = startScreen;
@@ -29,6 +29,7 @@ public class ScreenController  {
     }
 
     public void setInfoScreen(){
+        AssetLoader.gameMusic.pause();
         screen = infoScreen;
         switchScreen();
     }
@@ -39,16 +40,21 @@ public class ScreenController  {
     }
 
     public void setGameScreen(){
+        if(worldController.isMusicOn()){AssetLoader.gameMusic.play();}
         screen = gameScreen;
         switchScreen();
     }
 
     public void setGameOverScreen(){
+        AssetLoader.gameMusic.pause();
         screen = gameOverScreen;
         switchScreen();
     }
 
     public void setAllUnitsScreen(){
+        AssetLoader.gameMusic.pause();
+        allUnitsScreen = null;
+        allUnitsScreen = new AllUnitsScreen(worldController);
         screen = allUnitsScreen;
         switchScreen();
     }

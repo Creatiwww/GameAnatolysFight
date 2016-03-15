@@ -44,6 +44,9 @@ public class InfoScreen extends MyScreen {
     }
 
     @Override
+    public void displayStoryPicture (){};
+
+    @Override
     public void drawAvailableForMovementCells(){
     }
 
@@ -53,10 +56,6 @@ public class InfoScreen extends MyScreen {
         stage.draw();
         spriteBatch.begin();
         spriteBatch.draw(AssetLoader.infoImage, field.getCellByIndex(0).getbLX(),field.getCellByIndex(0).getbLY(), field.getCoordinates().getFieldWidth(), field.getCoordinates().getFieldHeight());
-/*        AssetLoader.font.getData().setScale(1f);
-        AssetLoader.font.draw(spriteBatch, strInfoScreenLabel,
-                Gdx.graphics.getWidth() / 2 - (AssetLoader.font.draw(spriteBatch, strInfoScreenLabel, 0, 0).width) / 2,
-                actorsController.getField().getCellByIndex(actorsController.getField().getFeildSizeY() - 1).gettLY() + actorsController.getField().getCellByIndex(actorsController.getField().getFeildSizeY() - 1).gettLY() / 13);*/
         spriteBatch.end();
     }
 

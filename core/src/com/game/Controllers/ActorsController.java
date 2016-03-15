@@ -24,9 +24,10 @@ import com.game.Actors.UI.HelpButton;
 import com.game.Actors.Playable.Listeners.PlayableActorsListener;
 import com.game.Actors.Field;
 import com.game.Actors.Playable.Products.PlayableActor;
+import com.game.Actors.UI.MusicButton;
 import com.game.Actors.UI.RestartButton;
 import com.game.Actors.UI.StartButton;
-import com.game.Actors.UI.StartNewGameButton;
+import com.game.Actors.UI.StoryPictures;
 import com.game.Actors.UI.UnitsButton;
 import com.game.Main.AssetLoader;
 
@@ -48,39 +49,40 @@ public class ActorsController {
     private CreatorAIActor creatorAIActor5;
     private CreatorAIActor creatorAIActor6;
     private ArrayList actors;
+    private StoryPictures storyPictures;
     private ArrayList <MyActor> pActors;
     private Field field;
     private RestartButton restartButton;
     private HelpButton helpButton;
     private CloseButton closeButton;
     private StartButton startButton;
-    private StartNewGameButton startNewGameButton;
     private UnitsButton unitsButton;
+    private MusicButton musicButton;
     private WorldController worldController;
     private ArrayList availableCells;
     private ArrayList occupiedByAICells;
     private ArrayList mergeableCells;
     public final double ACTOR_SIZE_MODIFICATOR = 0.15;
     // score requirements to unlock new characters skins
-    public final int SCORES_REQ_SKIN_YOUNGMAN_1 = 10;
-    public final int SCORES_REQ_SKIN_YOUNGMAN_2 = 20;
-    public final int SCORES_REQ_SKIN_YOUNGMAN_3 = 30;
-    public final int SCORES_REQ_SKIN_YOUNGWOMAN_1 = 40;
-    public final int SCORES_REQ_SKIN_YOUNWOMAN_2 = 50;
-    public final int SCORES_REQ_SKIN_YOUNWOMAN_3 = 60;
-    public final int SCORES_REQ_SKIN_GRANNY_1 = 80;
-    public final int SCORES_REQ_SKIN_GRANNY_2 = 100;
-    public final int SCORES_REQ_SKIN_GRANNY_3 = 120;
-    public final int SCORES_REQ_SKIN_OLDMAN_1 = 140;
-    public final int SCORES_REQ_SKIN_OLDMAN_2 = 160;
-    public final int SCORES_REQ_SKIN_OLDMAN_3 = 180;
-    public final int SCORES_REQ_SKIN_BABY_1 = 200;
-    public final int SCORES_REQ_SKIN_BABY_2 = 220;
-    public final int SCORES_REQ_SKIN_BABY_3 = 240;
+    public final int SCORES_REQ_SKIN_YOUNGMAN_1 = 1500;
+    public final int SCORES_REQ_SKIN_YOUNGMAN_2 = 3750;
+    public final int SCORES_REQ_SKIN_YOUNGMAN_3 = 5000;
+    public final int SCORES_REQ_SKIN_YOUNGWOMAN_1 = 1000;
+    public final int SCORES_REQ_SKIN_YOUNWOMAN_2 = 3500;
+    public final int SCORES_REQ_SKIN_YOUNWOMAN_3 = 5000;
+    public final int SCORES_REQ_SKIN_GRANNY_1 = 2000;
+    public final int SCORES_REQ_SKIN_GRANNY_2 = 4000;
+    public final int SCORES_REQ_SKIN_GRANNY_3 = 5500;
+    public final int SCORES_REQ_SKIN_OLDMAN_1 = 3000;
+    public final int SCORES_REQ_SKIN_OLDMAN_2 = 4500;
+    public final int SCORES_REQ_SKIN_OLDMAN_3 = 6000;
+    public final int SCORES_REQ_SKIN_BABY_1 = 3000;
+    public final int SCORES_REQ_SKIN_BABY_2 = 4500;
+    public final int SCORES_REQ_SKIN_BABY_3 = 6000;
     // score requirements to unlock new enemies
-    public final int SCORES_REQ_ENEMY_4 = 100;
-    public final int SCORES_REQ_ENEMY_5 = 200;
-    public final int SCORES_REQ_ENEMY_6 = 300;
+    public final int SCORES_REQ_ENEMY_4 = 300;
+    public final int SCORES_REQ_ENEMY_5 = 700;
+    public final int SCORES_REQ_ENEMY_6 = 1100;
 
     public ActorsController(WorldController worldController) {
         field = new Field();
@@ -88,8 +90,10 @@ public class ActorsController {
         helpButton = new HelpButton(field, worldController);
         closeButton = new CloseButton(field, worldController);
         startButton = new StartButton(field, worldController);
-        startNewGameButton = new StartNewGameButton(field, worldController);
         unitsButton = new UnitsButton(field, worldController);
+        musicButton = new MusicButton(field, worldController);
+        final String PATH = "welcomeStoryPic";
+        storyPictures = new StoryPictures(PATH);
         actors = new ArrayList();
         this.worldController = worldController;
         field.setSize(field.getCoordinates().getFieldWidth(), field.getCoordinates().getFieldHeight());
@@ -132,6 +136,8 @@ public class ActorsController {
         return restartButton;
     }
 
+    public StoryPictures getStoryPictures() {return storyPictures;}
+
     public HelpButton getHelpButton() {
         return helpButton;
     }
@@ -148,8 +154,8 @@ public class ActorsController {
         return unitsButton;
     }
 
-    public StartNewGameButton getStartNewGameButton() {
-        return startNewGameButton;
+    public MusicButton getMusicButton() {
+        return musicButton;
     }
 
     public ArrayList getAvailableCell() {
@@ -514,7 +520,8 @@ public class ActorsController {
                     int increment = worldController.getEnemyWave().getWaveNumber() * actor.getCost() * SCORE_MULTIPLICATOR;
                     worldController.addScore(increment);
                     // update high score if current score > high score in preferences
-                    if (AssetLoader.getHighScore()<worldController.getScore()) AssetLoader.setHighScore(worldController.getScore());
+                    if (AssetLoader.getHighScore() < worldController.getScore())
+                        AssetLoader.setHighScore(worldController.getScore());
                 }
 
                 // remove ref from the cell

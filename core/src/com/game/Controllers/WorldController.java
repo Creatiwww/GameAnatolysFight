@@ -21,6 +21,7 @@ public class WorldController  {
     private GetAndroidResInterface getAndroidResInterface;
     private int score = 0;
     private GameCycle gameCycle;
+    private boolean isMusicOn;
 
     public WorldController (NotificationsInterface notificationsInterface, GetAndroidResInterface getAndroidResInterface, Main main) {
         AssetLoader.load();
@@ -33,6 +34,7 @@ public class WorldController  {
         this.getAndroidResInterface = getAndroidResInterface;
         screenController = new ScreenController(this);
         gameCycle = new GameCycle(this);
+        isMusicOn = true;
     }
 
     public GetAndroidResInterface getAndroidResInterface(){
@@ -74,6 +76,12 @@ public class WorldController  {
     public int getScore() {
         return score;
     }
+
+    public void turnOnMusic (){isMusicOn = true;}
+
+    public void turnOffMusic() {isMusicOn = false;}
+
+    public boolean isMusicOn () {return isMusicOn;}
 
     public void nullScore(){
         score = 0;
